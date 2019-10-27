@@ -1,0 +1,195 @@
+<style lang="scss">
+$fontcolor: #7b7b7b;
+$activecolor: #13b113;
+.popup-login {
+    border-radius: 3px;
+    padding: 20rpx;
+}
+.login-name {
+    font-size: 28rpx;
+    color: #666;
+    padding: .8rem 0;
+    text-align: center;
+    position: relative;
+    .cross-icon {
+        position: absolute;
+        top: 20rpx;
+        right: 20rpx;
+    }
+}
+.login-but {
+    margin: 50rpx 60rpx;
+    .wx-but {
+        background: #1BAC1B;
+        border-radius: 3px;
+        color: #fff;
+        width:380rpx;
+
+
+        .van-icon {
+            width:48rpx;
+            vertical-align:middle;
+            height:37rpx;
+            margin-right:16rpx;
+
+
+        }
+    }
+    .phone-but {
+        width:380rpx;
+        border-radius: 3px;
+        background: #F8F8F8;
+        color: #333;
+        border: 1px #999 solid;
+        margin-top: 20rpx;
+        vertical-align:middle;
+        .van-icon {
+            width:42rpx;
+            vertical-align:middle;
+            height:48rpx;
+            margin-right:16rpx;
+        }
+    }
+    // 1afa29
+}
+
+
+</style>
+<template>
+     <view>
+         <van-popup show="{{ isLogin }}" bind:close="onCloseLogin" custom-class="popup-login">
+             <view class="login-name">
+                 登陆
+                 <van-icon name="cross" custom-class="cross-icon" bind:tap="onCloseLogin" size="40rpx" />
+             </view>
+             <view class="login-but">
+                 <van-button type="default" custom-class="wx-but" open-type="getPhoneNumber" bind:getphonenumber="getphonenumber"><van-icon size="40rpx" name="https://h5.cuco.cn/wechatCucoXImage/wx.png" />微信账号快速登陆</van-button>
+                 <van-button type="default" bind:click="onLogin" custom-class="phone-but"><van-icon size="40rpx" name="https://h5.cuco.cn/wechatCucoXImage/phone.png" />手机号注册/登陆</van-button>
+             </view>
+         </van-popup>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+import {url} from '../lib/util'
+export default class login extends wepy.component {
+    props = {
+    };
+    data = {
+        isLogin: true,
+        self:{},
+    };
+     
+
+
+    methods = {
+
+     onLogin() {
+            wx.navigateTo({
+                url: `./login`
+            })
+     },
+        getphonenumber(e) {
+            console.log(this)
+               console.log(e);
+         if(e.detail.errMsg != 'getPhoneNumber:ok') {
+            wx.showToast({
+                title: '获取手机号失败,请使用手机号登陆',
+                icon: 'none',
+                duration: 2000
+            })
+            wx.navigateTo({
+                url: `./login`
+            })
+
+            return false;
+        }
+
+
+        var self = this;
+
+            wx.login({
+                success(r) {
+                    self.$root.$parent.getRequest(url.getPhoneNumber, 'POST', {
+                        code: r.code,
+                        iv: e.detail.iv,
+                        encryptedData: e.detail.encryptedData
+                    }).then((res) => {
+                        
+                        try {
+                            var data = JSON.parse(res.data);
+                            wx.setStorageSync('mobile', data.purePhoneNumber)
+                            // self.$parent.globalData.userInfo.mobile = data.purePhoneNumber;
+                            console.log(data)
+                            self.methods.getMemberUserInfo(self);
+
+                        } catch(e) {
+                            wx.showToast({
+                                title: '获取手机号失败,请使用手机号登陆',
+                                icon: 'none',
+                                duration: 2000
+                            })
+                            console.log(e)
+                        }
+                        
+                    })
+                }
+            })
+            
+        },
+        getMemberUserInfo(e) {
+            console.log(e)
+            e.$root.$parent.getRequest(url.getMemberInfo, 'POST', {
+                xcxOpenId: wx.getStorageSync('openId'),
+                mobile: wx.getStorageSync('mobile'),
+                materialId: wx.getStorageSync('materialId') || '',
+            }).then((result) => {
+                // this.$parent.globalData.userInfo  = result.data;
+                wx.setStorageSync('riskAuditStatus', result.data.riskAuditStatus)
+                wx.setStorageSync('isRiskAuditStatus', result.data.riskAuditStatus == 1 || result.data.riskAuditStatus == 5)
+                wx.setStorageSync('mobile', result.data.mobile)
+        
+                this.getMemberInfoToken(e);
+            })
+        },
+        getMemberInfoToken(e) {
+            e.$root.$parent.getRequest(url.memberLogin, 'POST', {
+                isFromApplet: 1,
+                mobile:  wx.getStorageSync('mobile'),
+                materialId: wx.getStorageSync('materialId') || '',
+            }).then((result) =>{
+                console.log(result);
+                // this.memberInfo = result.data;
+
+                wx.setStorageSync('token', result.data.token);
+                wx.setStorageSync('mobile', result.data.mobile)
+                e.$root.onRefresh(result.data);
+                // wx.switchTab({
+                //     url: `./cloudHomeBar`
+                // })
+            })
+        },
+        
+        onCloseLogin() {
+            console.log(this)
+            // this.isLogin = false;
+            this.$root.onLoginHide();
+            console.log(this.$root.isLogin)
+            this.$apply();
+        },
+    
+        butlerTask(butler, usedStatus, memberMobile) {
+            this.butler = butler;
+            this.usedStatus = usedStatus;
+            this.memberMobile = memberMobile
+            this.$apply();
+        }
+    };
+
+    onLoad() {
+
+    }
+}
+</script>

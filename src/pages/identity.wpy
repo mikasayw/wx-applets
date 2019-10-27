@@ -1,0 +1,422 @@
+<style lang="scss">
+
+    .identity-Authentication {
+        font-size: 50rpx;
+        color: #333;
+        margin-top: 50rpx;
+        
+        padding-bottom: 10rpx;
+        border-bottom: 1px #CCCCCC solid;
+        .identity-t {
+            color: #666;
+            font-size: 26rpx;
+            margin-top: 11rpx;
+        }
+    }
+    .tips-t {
+        font-size: 30rpx;
+        color: #333;
+        margin-top: 35rpx;
+    }
+
+    .identity  {
+        margin-left: 40rpx;
+        margin-right: 40rpx;
+        .card {
+            margin-top: 20rpx;
+            .frontCard {
+                width: 47.8%;
+                    height: 204rpx;
+                .card-img {
+                    width: 100%;
+                    height: 100%;
+                }
+                
+            }
+            .backCard {
+                width: 47.8%;
+                    height: 204rpx;
+                .card-img { 
+                    width: 100%;
+                    height: 100%;
+                }
+                
+            }
+            
+        }
+        .check {
+            color:#666;
+            font-size: 26rpx;
+            margin-left: -10rpx;
+            margin-top: 70rpx;
+            text {
+                display: inline-block;
+                margin-left: -8rpx;
+            }
+            checkbox {
+                transform:scale(.6);
+                vertical-align: middle;
+               
+            }
+        }
+    }
+
+    .cell {
+        margin-left: -20rpx;
+        .van-cell-group {
+            border: none;
+            &:after {
+                border: none;
+            }
+        }
+        .van-cell {
+            margin-left: -20rpx;
+            margin: 24rpx 0;
+        }
+    }
+
+    button.real {
+        color:#1E5F9B;
+        border: 0;
+        font-size: 26rpx;
+    }
+    .picker {
+        color: #333;
+        font-size: 26rpx;
+        margin-left: 30rpx;
+    }
+
+
+</style>
+<template>
+  <view class="container">
+      <view class="identity">
+          <view class="identity-Authentication">
+              <view>实名认证</view> 
+              <view class="identity-t">库可云车会严格保障您的信息安全</view> 
+          </view>     
+          <view class="card">
+              <van-row>
+                <van-col span="11" custom-class="frontCard" bind:tap="onUploadFrontCard">
+                    <view class="card-img" style="background: url({{frontCardUrl?frontCardUrl : frontCardNormal}}) no-repeat; background-size: 100% 100%; " ></view>
+                </van-col>
+                <van-col span="11" offset='1' custom-class="backCard"   bind:tap="onUploadBackCard">
+                    <view class="card-img" style="background:url({{backCardUrl?backCardUrl : backCardNormal}}) no-repeat; background-size: 100% 100%; " ></view>
+                </van-col>
+              </van-row>
+          </view>
+          <view class="tips-t">
+              请上传清晰、无反光、无遮挡的证件照片
+          </view>
+          <view class="cell">
+              <van-cell-group>
+                    <van-field
+                        value="{{ cardInfo.idCardName }}"
+                        placeholder="请输入身份证姓名"
+                        id='1'
+                        bind:input="onInputCard"
+                    />
+                     <van-field
+                        value="{{ cardInfo.idcardNum }}"
+                        placeholder="请输入身份证号"
+                        id='2'
+                        bind:input="onInputCard"
+                        maxlength="18"
+                        type="idcard"
+                    />
+                    <!-- <van-field
+                        readonly
+                        value="{{  }}"
+                        placeholder="过期时间"
+                        bind:tap="onCardChange"
+                    /> -->
+                    <van-cell-group>
+                        <picker
+                                mode="date"
+                                value="{{cardInfo.idcardPeriodValidity}}"
+                                start="{{start}}"
+                                end="2199-09-01"
+                                bindchange="bindDateChange"
+                            >
+                                <view class="picker">
+                                    <text wx:if="{{cardInfo.idcardPeriodValidity}}">
+                                        {{cardInfo.idcardPeriodValidity}}
+                                    </text>
+                                    <text wx:else style="color:#999" >
+                                        过期时间
+                                    </text>
+                                    
+                                </view>
+                                </picker>
+                    </van-cell-group>
+                                
+                </van-cell-group>
+          </view>
+          <view>
+                <checkbox-group bindchange="onChangeCheck" class="check">
+                    <label class="checkbox">
+                        <checkbox  checked="{{isCheck}}" color="#979797" />
+                        <text>我已阅读并同意</text>
+                    </label>
+                    <text style="color:#1675FF" data-ids='1' bind:tap="onClickBook">《库可云车用户协议》</text>
+                </checkbox-group>
+          </view>
+          <view style="text-align:center; margin-top: 20rpx;">
+              <van-button type="default" round="{{true}}" custom-class="buts" bind:tap="onClickSure">确定</van-button>
+              <view style=" margin-top: 20rpx;">
+                  <van-button type="default" custom-class="real" bind:tap="onClickReal">身份证不在身边</van-button>
+              </view> 
+          </view>
+      </view>
+
+      <!-- <van-popup show="{{ isCardDate }}" position="bottom" bind:close="onClosePopup"> -->
+        <!-- <van-datetime-picker
+                type="date"
+                value="{{ currentDate }}"
+                bind:cancel="onClosePopup"
+                bind:confirm="onSelectSureInput"
+                formatter="{{ formatter }}"
+                max-date="{{maxDate}}"
+                />
+        -->
+        <!-- </view> -->
+       
+        <!-- </van-popup>  -->
+        <van-toast id="van-toast" />
+
+  </view>
+</template>
+
+<script>
+
+
+
+  import wepy from 'wepy'
+
+  import { url, serverUrl } from '../lib/util';
+  import Toast from '../components/vant/toast/toast';
+  import moment from 'moment'
+  moment.locale('zh-cn');
+  
+  export default class Index extends wepy.page {
+    config = {
+      "navigationBarTitleText": '身份认证'
+    }
+    components = {
+    }
+
+    data = {
+        isCardDate: false,
+        value: '',
+        isCheck: false,
+        memberInfo: {},
+     
+        frontCardNormal: 'https://h5.cuco.cn/wechatCucoXImage/frontIdCard.jpg',
+        backCardNormal: 'https://h5.cuco.cn/wechatCucoXImage/backIdCard.jpg',
+        frontCardUrl: '', // 身份证正面
+        backCardUrl: '', // 身份证反面
+        cardInfo: {
+            idcardNum: '', //身份证号
+            idCardName: '', //身份证姓名
+            idcardPeriodValidity: '',
+        },
+        start: moment(new Date()).format('YYYY-MM-DD'),
+        date: moment(new Date()).format('YYYY-MM-DD'),
+        currentDate: new Date().getTime(),
+        minDate: new Date().getTime(),
+        maxDate: new Date(2099, 10, 1).getTime(),
+        formatter(type, value) {
+            if (type === 'year') {
+                return `${value}年`;
+            } else if (type === 'month') {
+                return `${value}月`;
+            }
+            return value;
+        }
+
+
+    }
+    bindDateChange(e) {
+        console.log(e.detail.value)
+
+        // 直接赋值失败，必须 assign
+        this.cardInfo = Object.assign({}, this.cardInfo, {idcardPeriodValidity: e.detail.value})
+        // this.cardInfo.idcardPeriodValidity = e.detail.value
+        this.$apply();
+    }
+
+    computed = {
+   
+    }
+    onClickBook(e) {
+         wx.navigateTo({
+            url: `./agreement`
+        })    
+    }
+    onClickReal() {
+        wx.navigateTo({
+            url: `./real`
+        })    
+    }
+    onInputCard(e) {
+        console.log(e);
+        var index = e.currentTarget.id; 
+
+        if(index == 1) {
+            this.cardInfo.idCardName  = e.detail;
+        } else if( index == 2) {
+            this.cardInfo.idcardNum = e.detail;
+        } 
+    }
+    onClickSure() {
+        if(!this.frontCardUrl) {
+            Toast('请上传身份证正面')
+            return false;
+        } else if(!this.backCardUrl) {
+            Toast('请上传身份证反面')
+            return false;
+        } else if(!this.cardInfo.idcardNum) {
+            Toast('请填写身份证姓名')
+            return false;
+        } else if(!this.cardInfo.idCardName) {
+            Toast('请填写身份证号')
+            return false;
+        } else if(!this.cardInfo.idcardPeriodValidity) {
+            Toast('请填写身份证号有效期')
+            return false;
+        } else if(!this.isCheck) {
+            Toast('请阅读用户协议,并同意')
+            return false;
+        } else {
+            this.$parent.getRequest(url.saveMemberInfo, 'POST', {
+                picType: 0, // 上传类型0：身份证，1：驾驶证
+                name: this.cardInfo.idCardName,
+                idcardNum: this.cardInfo.idcardNum,
+                idcardFront: this.frontCardUrl,
+                idcardBack: this.backCardUrl,
+                idcardPeriodValidity: moment(this.cardInfo.idcardPeriodValidity).format('YYYY-MM-DD HH:mm:ss')
+            }).then((res) => {
+                if(res.code != '0000') {
+                    return false;
+                }
+
+                wx.navigateTo({
+                    url: `./license`
+                })
+                console.log(res)
+            })
+        }
+    }
+    onClosePopup() {
+         this.isCardDate = false;
+    }
+    onChangeCheck(e) {
+        console.log(e);
+        this.isCheck = this.isCheck ? false : true;
+        console.log(this.isCheck);
+    }
+    onSelectSureInput(e) {
+        console.log(e.detail)
+        this.cardInfo.idcardPeriodValidity = moment(e.detail).format('YYYY-MM-DD')
+        this.isCardDate = false;
+    }
+    onCardChange() {
+        console.log(111)
+        if(this.cardInfo.idcardPeriodValidity) {
+            this.currentDate = new Date().getTime(this.cardInfo.idcardPeriodValidity)
+        }
+        this.isCardDate = true;
+    }
+
+    // 身份证正面
+    onUploadFrontCard() {
+        
+        this.$parent.uploadTask(url.uploadFrontIdCard).then((res) => {
+            console.log(res)
+            if(res.code != '0000') {
+                return false;
+            }
+
+            if(res.data.isSuccessURL == 1) {
+                this.frontCardUrl =res.data.imageURL;
+            }  else {
+                this.frontCardUrl = res.data.idcardFront;
+                this.cardInfo.idcardNum  = res.data.idcardNum;
+                this.cardInfo.idCardName = res.data.idCardName;
+            }
+            this.$apply();
+        }) 
+    }
+
+    // 身份证反面
+    onUploadBackCard() {
+        this.$parent.uploadTask(url.uploadBackIdCard).then((res) => {
+            console.log(res)
+            if(res.code != '0000') {
+                return false;
+            }
+
+            if(res.data.isSuccessURL == 1) {
+                this.backCardUrl =res.data.imageURL;
+            } else {
+                this.backCardUrl = res.data.idcardBack;
+                this.cardInfo.idcardPeriodValidity = res.data.idcardPeriodValidity;
+
+            }
+            this.$apply();
+        })
+    }
+
+    methods = {
+ 
+  
+    }
+
+    events = {
+     
+    }
+
+    onShow() {
+        
+    }
+
+    onLoad() {
+        let self = this
+
+
+        // 回显数据
+        this.$parent.getRequest(url.memberCardIdInfo, 'POST', {})
+        .then((res) => {
+            console.log(res);
+
+            if( res.code != '0000') {
+                return false;
+            }
+
+            this.memberInfo = res.data.memberInfo
+            if(res.data.memberInfo ) {
+                this.frontCardUrl = res.data.memberInfo.idcardFront || '';
+                this.backCardUrl = res.data.memberInfo.idcardBack || '';
+
+                this.cardInfo = {
+                    idcardNum: res.data.memberInfo.idcardNum || '', //身份证号
+                    idCardName: res.data.memberInfo.name || '', //身份证姓名
+                    idcardPeriodValidity: res.data.memberInfo.idcardPeriodValidity ? res.data.memberInfo.idcardPeriodValidity.substr(0,10) : '',
+                }
+            }
+            this.$apply();
+        })
+
+
+      
+      
+      // this.$parent.getUserInfo(function (userInfo) {
+      //   if (userInfo) {
+      //     self.userInfo = userInfo
+      //   }
+      // })
+    }
+  }
+
+
+</script>

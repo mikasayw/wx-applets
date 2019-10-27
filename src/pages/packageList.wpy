@@ -1,0 +1,468 @@
+<style lang="scss">
+$fffcolor: #fff;
+page {
+    background: $fffcolor;
+}
+.package {
+    .van-tabs__line {
+        background-color: #364A67
+    }
+    .pack-list {
+        .van-tab {
+            font-size: 28rpx;
+        }
+    }
+    .perso-pack {
+        padding: 20rpx 0;
+    }
+    .package-item {
+        width: 90%;
+        margin: 20rpx auto;
+        height: 373rpx;
+        position: relative;
+        box-shadow: 0 0 15px rgba(0, 0, 0, .3);
+        border-radius: 10px;
+        // transition-duration:0.5s;
+        // -webkit-transition-duration:0.5s;
+        
+        .package-name {
+            color: $fffcolor;
+            font-size: 30rpx;
+            font-weight: bold;
+        }
+        .package-len {
+            color: $fffcolor;
+            font-size: 26rpx;
+        }
+        .pack-info {
+            padding-left: 40rpx;
+            padding-top: 40rpx;
+        }
+        .icon_1 {
+            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAcCAYAAAAN3M1lAAAAAXNSR0IArs4c6QAABMpJREFUWAmdmGuIVVUUx+9MZln4KURCxBCTtIjQoqmxScfH+CiQoKJUUqZsMERNJqMGnFKLJqTEKCOxAYciiPBDmjo+ctCUwEjIFJMeioj50V5mdfv9j2sf1j7n3LlXN6yzHvu39l57n333vTOlcrk8HpmD3F6qocE9gXQjD1XDYZ5HDiMLqrHZ/noCY5AbkUYGuDMLFPjTid2EPAs/u6Dfh+bh3IysgV3oO6rZKux7BzUwQLWd2+b4Vvj+dq7bsZ2wNe9cfV1d3TckH3UDaOduc35kwn9C4HMX1M61OD81YdfhbEoDl3dujvMrmtqxEgMcQB1zVBOTjXZ+ZMK/T2C7Cz4H3+z81ITtwOlJA6VSF+yjzi80k8KsZz/6hKMmMsAo52fNdwnssmAdeil8UxYyfwVaO60m9m3Yfs9nWhgrK5OwDzmJhDaJAUYGx2vj1xNTjpomXA7fmHjuYexyQp9ZWOx62FkOi8y0MEVtgC8xf5RP0wDNDDAi8TIP+P8IvYXoKKhpvHb4exPPPYxdQiicz2uw34Od5rDUjApT1AbYg/mzfJqYqQwwPPEyD/h/Cb2JHLIuTfgi/HjzU2XsIgLhfA7A/gB2UgqZkStMcStuN+Zpx01jgGHmR8om7CJ42Do04cvwd0UgDuw/qDZEi1e7FtkE+0Di2aOwMPXZZL2YZ4zVTrQwgC7MXIO/RPA15Fvr1IQd8HeYnyrYv3GeRvoseB1a3yYN5ievKdg5bavbQcdZ69ROzGCAoTmYgE24GvM769eEK+H17RI12L8ILEAOWscgdA/s3fJ1uKs2YK1+JhIK0u5sZfBfi5Lhryf+KhIK+hO7A95fR0kq7A0YHyP3JIFS6Tf0YzUVpgQGGIjSx3uIfNoFJtKAhc0m1O7dasA5eL2+XIMdTFD3XDiTpyqesVx2PqB770ralfDlmgpjRXqVM5CwWzq8+tQWNni9yk4k7NYf2PrU5prtbA8dYbcuYLdVLYzEAYDTEX++vuC1nCeWa/DJgafDn6+V8D9kYdhBxDYj4Xz9jv0k7JF+C7OiWoDDFaE7aDuJ59C5Bq9z2IGEK+Ii9ivwx7MwrHb1Q+Q+69MHZB5schdWLIxE3VtTkWGWqBt+B4lnzY8UvF73S0h4JXrdq+CPRiCOLWAjZpP16ep4CvaQ+cX3GIkqeDIy3EB9J+4k8Yz5kbJFvEAwfA1pZ9fAH4lAHFgdjQ1Is/VpAa2w+81PVG7HrCgl3WKgiuol8bT5kbKi2gk2WId29nV4/QCNmrH6uaQzq6YFPAO7N/HcIyqMRN1rE5GRxugjvpvEX8yPlC1iGcFG69AiuuC/jkAcY/WLNvwU1wLaYHuzrPy0MCvqQWKjDFRRe0n8yfxIGb+YoHLUVNRa+K8Szz2MXUvoEQuLXQy7zWGRmRZGdAIy2vXuI/Gk87PmIgJTLKhFrIPvy0Lmv4F+3GyxS2G3mF+oksJY0f30hntHYB+JJwozCMIvRIVzIuwd+D0ysg12FbG5Lt4O+6nzC816EsfRE+4dQQdIzN07IRteK384+OgN8Dudn5qw+sXamga4TmA/cn5FUzs21vUeJDF377h+mTOdvxF+q/Oz5nwX6ITtdn7/Jqu62n8RVPxDIszI2OFfBPNDrFb9P12KyrcygB7yAAAAAElFTkSuQmCC) no-repeat;
+            background-size: 100%;
+            width: 46rpx;
+            height: 36rpx;
+            position: absolute;
+            right: 40rpx;
+            bottom: 50rpx;
+        }
+        .custom-btu {
+            position: absolute;
+            right: 40rpx;
+            bottom: 50rpx;
+            border-radius: 80px;
+            border: 1px #fff solid;
+            font-size: 26rpx;
+            color:#fff;
+            text-align: center;
+            line-height: 100%;
+            padding: 16rpx 35rpx;
+        }
+    }
+    .custom {
+        width: 94%;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 10px;
+        margin-bottom: 25rpx;
+        overflow: hidden;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 7;
+        transition-duration:0.5s;
+        -webkit-transition-duration:0.5s;
+        
+        .custom-body {
+            padding: 26rpx 0;
+        }
+        .custom-foot {
+            box-shadow: none;
+        }
+        .van-tabs__line {
+            background-color: #333 !important;
+        }
+        .custom-name {
+            padding: 35rpx 60rpx;
+            position: relative;
+            line-height: 100%;
+            color: #333;
+            font-size: 35rpx;
+            border-bottom:1px #ccc solid;
+        }
+        .custom-cross {
+            position: absolute;
+            right: 60rpx;
+            top: 24rpx;
+        }
+
+        .custom-day, .custom-mode {
+            margin: 0 60rpx;
+            .custom-day-text {
+                line-height: 88rpx;
+                color: #999;
+                font-size: 25rpx;
+            }
+        }
+        .buy {
+            background: none;
+            border-radius: 80rpx;
+            color: #fff;
+            padding: 0 14rpx;
+            width: 210rpx;
+            border: 1px #122B4D solid;
+            color: #122B4D;
+            
+        }
+        .custom-foot-buy {
+            margin: 28rpx 0;
+            padding-top: 14rpx;
+        }
+        .custom-foot-amount {
+            margin-top: 8rpx;
+            font-weight: bold;
+        }
+        .custom-foot-a {
+            color: #333;
+            font-size: 32rpx;
+            font-weight: bold;
+        }
+        .custom-foot-t {
+            color: #0168FF;
+            font-size: 24rpx;
+        }
+        // .custom-active {
+        //     border-bottom:2px #ccc solid;
+        // }
+    }
+    .custom-show {
+        bottom: 0rpx;
+        transition-duration:0.3s;
+        -webkit-transition-duration:0.3s;
+
+    }
+    .mark-custom {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        bottom: 0;
+        top: 0;
+        right: 0;
+        left: 0;
+        background: rgba(0, 0, 0, .3);
+        z-index: 6;
+    }
+    .custom-bottom {
+        bottom: -999rpx;
+        transition-duration:0.5s;
+        -webkit-transition-duration:0.5s;
+    }
+    .package-des {
+        font-size: 22rpx;
+        color: #0168FF;
+        display: block;
+    }
+   
+}
+
+
+</style>
+<template>
+    <view class="container package">
+         <!-- <van-transition name="fade" > -->
+             <!-- <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">getPhone</button> -->
+            <view class="mark-custom" bind:tap="onCloseCustom" wx:if="{{ isCustom }}"></view>
+        <!-- </van-transition> -->
+        <view>
+            <van-tabs animated swipeable sticky custom-class="pack-list"  border="{{false}}" active="{{ active }}" bind:change="onChangePack" line-width="40">
+                <van-tab title="个人套餐">
+                    <view class="perso-pack">
+                        <view class="package-item" bindtap="onClickDetail"   wx:for="{{packageList}}" data-item="{{item}}" wx:if="{{item.packageType == 0}}" wx:key="index" style="background: url({{item.imageUrl}}) no-repeat; background-size: 100%; ">
+                            <view class="pack-info">
+                                <view class="package-name">{{item.packageName}} | 
+                                    <text wx:if="{{item.packageType == 0}}">￥{{filter.numFormat(item.rechargeOnce)}}</text> 
+                                    <!-- <text wx:if="{{item.packageType == 1}}">{{item.surplusDays}}</text> -->
+                                </view>
+                                <view class="package-len">{{item.packageDesc}}</view>
+                            <!-- <image src="{{item.packageImage}}"/> -->
+                            </view>
+                            <view class="icon_1"></view>
+                        </view>
+                    </view>
+                </van-tab>
+                <van-tab title="企业套餐">
+                    <view class="perso-pack">
+                        <view class="package-item" bindtap="onClickDetail" wx:for="{{packageList}}" data-item="{{item}}" wx:if="{{item.packageType == 1}}" wx:key="index" style="background: url({{item.imageUrl}}) no-repeat; background-size: 100%; ">
+                            <view class="pack-info">
+                                <view class="package-name">{{item.packageName}} | 
+                                    <text wx:if="{{item.packageType == 1}}">￥{{filter.numFormat(item.rechargeOnce)}}</text> 
+                                </view>
+                                <view class="package-len">{{item.packageDesc}}</view>
+                            </view>
+                            <view class="icon_1"></view>
+                        </view>
+                    </view>
+                </van-tab>
+                <van-tab title="定制套餐">
+                    <view class="perso-pack">
+                        <view class="package-item"  wx:for="{{packageList}}" wx:if="{{item.packageType == 2}}" wx:key="index" style="background: url({{item.imageUrl}}) no-repeat; background-size: 100%; ">
+                            <view class="pack-info">
+                                <view class="package-name">{{item.brand}}  {{item.carType}}
+                                    <!-- <text wx:if="{{item.packageType == 2}}">{{item.surplusDays}}</text> -->
+                                </view>
+                                <view class="package-len">{{item.packageDesc}}</view>
+                            </view>
+                            <view class="custom-btu" data-item="{{item}}" bind:tap="onClickCustom">去定制</view>
+                        </view>
+                    </view>
+                </van-tab>
+            </van-tabs>
+        </view>
+        <view wx:if="{{loading}}" class="loading-auto">
+            <van-loading color="#000" size="100rpx" />
+        </view>
+
+
+        <!-- <view wx:if="{{isCustom}}"> -->
+
+        <!-- <van-popup custom-class="custom" show="{{isCustom}}" bind:close="onCloseCustom" position="bottom"> -->
+            <view class="custom {{isCustom ? 'custom-show' :'custom-bottom'}}">
+                <view class="custom-name">
+                    {{customRow.brand}} {{customRow.carType}}
+                    <text class="package-des" wx:if="{{currentCustomAmount.packageDescription}}">{{currentCustomAmount.packageDescription}}</text>    
+                    <van-icon name="cross" size="46rpx" bind:click="onCloseCustom" color="#999" custom-class="custom-cross"  />
+                </view>
+                <view class="custom-body">
+                    <van-row custom-class="custom-day" >
+                        <van-col span="5" offset="0" class="custom-day-text">使用天数</van-col>
+                        <van-col span="14">
+                            <van-tabs tab-class="way-item" tab-active-class="custom-active" border="{{false}}"  active="{{ customActive }}" line-width="{{wayWidth}}" bind:click="onClickCustomWay">
+                                <van-tab  wx:for="{{customRow.uesCarWay}}" wx:key="index"  title="{{item.dayCount}}天" ></van-tab>
+                            </van-tabs>
+                        </van-col>
+                    </van-row>
+                    <van-row custom-class="custom-mode">
+                        <van-col span="5" offset="0" class="custom-day-text">使用方式</van-col>
+                        <van-col span="14">
+                            <van-tabs border="{{false}}" active="{{ modeActive }}" line-width="{{modeWidth}}" bind:click="onClickMode">
+                                <van-tab wx:for="{{modeList}}" wx:key="index" title="{{item.isContinuity == 1 ? '连续用车': '按需用车'}}"></van-tab>
+                            </van-tabs>
+                        </van-col>
+                    </van-row>
+                </view>
+                <view class="custom-foot">
+                    <van-row custom-class="custom-foot-buy">
+                        <van-col span="12">
+                            <view class="custom-foot-amount" wx:if="{{currentCustomAmount.rechargeOnce}}">￥{{filter.numFormat(currentCustomAmount.rechargeOnce)}}</view>
+                            <!-- <view class="custom-foot-t" wx:if="{{currentCustomAmount.price}}">相当于￥{{currentCustomAmount.price}}/天</view> -->
+                            <view> </view>
+                        </van-col>
+                        <van-col span="12" style="text-align:right;position: relative; float: right ">
+                            <van-button type="default" bind:click="onWechatBuy" custom-class="buy" wx:if="{{currentCustomAmount.isOpen == 1}}">立即购买</van-button>
+                            <van-button type="default" bind:click="onSeek" custom-class="buy" wx:else>咨询产品</van-button>
+                        </van-col>
+                    </van-row>
+                </view>
+            </view>
+            <van-toast id="van-toast" />
+            <view wx:if="{{loadingPay}}" class="toast-loading loading-auto">
+                <van-loading type="spinner" color="#fff" />
+            </view>
+      <!-- </van-popup> -->
+        <!-- </view> -->     
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+import {url, getRequest} from '../lib/util';
+import Toast from '../components/vant/toast/toast';
+import filter from '../wxs/filter.wxs';
+export default class Index extends wepy.page {
+    config = {
+        navigationBarTitleText: '云车套餐'
+    };
+    components = {};
+
+    data = {
+        active: 0,
+        packageList: [],
+        loading: true,
+        customRow: {
+            uesCarWay: []
+        },
+        isCustom: false,
+        customActive: 0,
+        modeActive: 0,
+        wayWidth: 32,
+        modeWidth: 55,
+        modeList: [{isContinuity:1},{isContinuity:1}],
+        currentCustomAmount: {},
+        loadingPay: false,
+    };
+
+    computed = {};
+
+    methods = {};
+
+    onClickDetail(e) {
+        var row = e.currentTarget.dataset.item;
+        wx.navigateTo({
+            url: `./packageDetail?id=${row.packageId}&packageType=${row.packageType}`
+        })
+        console.log(e);
+    }
+
+    events = {};
+    onWechatBuy() {
+        this.loadingPay = true;
+
+
+            // 身份认证
+         if(!wx.getStorageSync('isRiskAuditStatus')) {
+            wx.setStorageSync('routerAuth', `./packageList?packageType=3`) // 缓存进入前路由
+             this.loadingPay = false;
+            this.$parent.toRouterAuth();
+            return false;
+        }
+        console.log(this.currentCustomAmount)
+        this.$parent.getRequest(url.wechatPay, 'POST', {
+            money: this.currentCustomAmount.rechargeOnce,
+            accountType: 7,
+            isFromApplet: 1,
+            openId: wx.getStorageSync('openId'),
+            payType: 0,
+            packageIds: [this.currentCustomAmount.packageId],
+        }).then((res) => {
+             this.loadingPay = false;
+            var obj = res.data.obj;
+                wx.requestPayment({
+                    timeStamp: obj.timeStamp,
+                    nonceStr: obj.nonceStr,
+                    package: obj.package,
+                    signType: 'MD5',
+                    paySign: obj.paySign,
+                    success(data) {
+                        console.log(data);
+
+                        wx.navigateBack({
+                            delta: 1
+                        })
+                    },
+                    fail(fail) {
+                        console.log(fail)
+                    }
+                })
+        })
+    }
+    onSeek() {
+        this.loading = true;
+        
+        this.$parent.getRequest(url.rightsInterestsSeek, 'POST', {
+            rightsInterestsIdList: [this.currentCustomAmount.packageId]
+        }).then((res) => {
+            this.loading = false;
+            console.log(res);
+
+            if(res.code != '0000')  {
+                return false;
+            }
+            wx.showToast({
+                title: '客户经理稍后将为您详细解答',
+                icon: 'none',
+                duration: 3000
+            })
+
+        })
+    }
+    getPhoneNumber(e) {
+        console.log(e)
+    console.log(e.detail.errMsg)
+    console.log(e.detail.iv)
+    console.log(e.detail.encryptedData)
+  }
+    onCloseCustom() {
+        this.isCustom = false;
+    }
+    onChangePack(e) {
+        this.active = e.detail.index;
+        if(this.active == 2) {
+        }
+        this.cityPackage(this.active)
+
+    }
+    onClickCustom(e) {
+        let row = e.target.dataset.item;
+        this.customActive = 0;
+        this.modeActive = 0;
+        this.customRow = row;
+        this.modeList = this.customRow.uesCarWay[0].modes;
+        this.currentCustomAmount = this.modeList[0]
+
+        this.isCustom = true;
+        // this.$apply();
+    }
+    onClickCustomWay(e) {
+        this.customActive = e.detail.index;
+        this.modeList = this.customRow.uesCarWay[e.detail.index].modes;
+        console.log(this.modeList)
+        this.currentCustomAmount = this.modeList[this.modeActive]
+        console.log(this.currentCustomAmount)
+    }
+    onClickMode(e) {
+        this.modeActive = e.detail.index;
+        this.currentCustomAmount = this.modeList[e.detail.index]
+    }
+
+    wxs = {
+        filter: filter
+    }
+    cityPackage() {
+        this.loading = true;
+      
+        this.$parent.getRequest(url.memberPackageList, 'POST', {
+            "cityCode": wx.getStorageSync('cityCode'),
+            packageType: this.active,
+        }).then((res) => {
+            console.log(res);
+            this.isCustom = false;
+            this.loading = false;
+            this.packageList = res.data
+            this.$apply();
+        })
+    }
+    onLoad(option) {
+
+        console.log(option)
+        try {
+            if(option.cityCode) {
+                console.log(option.cityName)
+                wx.setStorageSync('cityCode', option.cityCode || '110000');
+                wx.setStorageSync('cityName', option.cityName || '北京');
+            }
+        } catch (error) {
+            
+        }
+        this.active = option.packageType || 0;
+        this.cityPackage(this.active)
+       
+        // wx.setNavigationBarColor({
+        //     frontColor: '#ffffff',
+        //     backgroundColor: '#202231',
+        //     animation: {
+        //         duration: 200,
+        //         timingFunc: 'easeIn'
+        //     }
+        // });
+
+        // this.$parent.getUserInfo(function (userInfo) {
+        //   if (userInfo) {
+        //     self.userInfo = userInfo
+        //   }
+        // })
+    }
+}
+</script>

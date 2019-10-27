@@ -1,0 +1,1311 @@
+<style lang="scss">
+page {
+    background: #fff;
+    padding-bottom: 180rpx;
+}
+
+.order {
+    background: #f3f4f6;
+}
+
+// 费用明细
+.detailed {
+    position: relative;
+    background: #fff;
+    margin-top: 20rpx;
+
+    .detailed-t {
+        // border-bottom: 1px #ddd solid;
+        font-size: 36rpx;
+        color: #333;
+        padding: 35rpx 40rpx;
+    }
+    .price-r {
+        text-align: right;
+    }
+    .collapse {
+        .van-collapse-item {
+            border: none !important;
+            &:after {
+                border: none !important;
+            }
+        }
+        .van-cell {
+            border: none !important;
+            &:after {
+                border: none !important;
+            }
+        }
+        .van-cell__title {
+            font-size: 26rpx;
+            color: #999;
+        }
+    }
+    .panel-detailed {
+        padding-top: 10rpx;
+        border: none !important;
+        &:after {
+            border: none !important;
+        }
+        .van-cell {
+            border: none !important;
+            &:after {
+                border: none !important;
+            }
+        }
+
+        .van-cell__title {
+            font-size: 26rpx;
+            color: #999;
+        }
+        .van-cell__value {
+            font-size: 40rpx;
+            color: #333;
+        }
+    }
+}
+.text-apis {
+    background: #fff;
+    margin-top: 20rpx;
+    color: #999;
+    font-size: 28rpx;
+    padding: 30rpx 40rpx;
+}
+.pay-order {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    width: 100%;
+    padding: 0;
+    margin: auto;
+    &:after {
+        content: ' ';
+        transform: scale(0.5);
+        width: 200%;
+        border-top: 1px #ccc solid;
+        position: absolute;
+        top: 0;
+        left: -50%;
+    }
+    .custom-foot-buy {
+        padding: 28rpx 35rpx 28rpx 35rpx;
+        .custom-foot-amount {
+            font-size: 44rpx;
+            vertical-align: bottom;
+            color: #333;
+            text {
+                font-size: 24rpx;
+            }
+        }
+        .custom-foot-t {
+            color: #666;
+        }
+        .pay-type-foot {
+            color: #ff8366;
+            font-size: 22rpx;
+        }
+    }
+}
+
+.collapse-icon-hidden {
+    .van-icon {
+        visibility: hidden;
+    }
+}
+.car-brand .order-cancel {
+    position: absolute;
+    right: 0rpx;
+    top: -10rpx;
+    background: none;
+    color:#0168FF;
+    border: 0;
+}
+.coupon {
+    position: relative;
+    border: 1px #DFE0E1 solid;
+    border-radius: 3px;
+    margin-top: 20rpx;
+    background: #F3F4F6;
+    padding-right: 20rpx;
+    .coupon-check {
+        margin-top: 70rpx;
+    }
+
+    .coupon-name {
+        color: #666666;
+        font-size: 28rpx;
+        text-align: left;
+        margin-top: 25rpx;
+    }
+    .coupon-date {
+        font-size: 22rpx;
+        color: #666;
+        text-align: left;
+        margin-top: 55rpx;
+        margin-bottom:20rpx;
+        line-height:100%;
+
+    }
+    .coupon-total {
+        font-size: 26rpx;
+        color: #666;
+        line-height: 100%;
+        position: absolute;
+        right: 20rpx;
+        bottom: 20rpx;
+        text {
+            font-size: 50rpx;
+            font-weight: bold;
+
+        }
+    }
+    .coupon-c {
+        border-left: 1px #E0E0E1 dashed;
+        padding-left: 25rpx;
+    }
+  
+    // .coupon-loading {
+    //     position: absolute;
+    //     left: 0;
+    //     top: 0;
+    //     width: 100%;
+    //     height: 100%;
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    // }
+}
+    .exclusive {
+        font-size: 28rpx;
+        color:#333;
+    }
+    .exclusive-desc {
+        font-size: 22rpx;
+        color:#666;
+        margin-top: 4rpx;
+    }
+
+  .charge-text {
+        font-size: 26rpx;
+        color:#999;
+        padding: 0 60rpx;
+        .charge-t {
+            padding: 15rpx 30rpx;
+        }
+    }
+    .popup-head {
+        border: none !important;
+    }
+    .used-tips {
+        .used-tips-t {
+            color: #333;
+            font-size: 34rpx;
+            padding: 28rpx 0 24rpx 0;
+            text-align: center;
+            position: relative;
+            .van-icon {
+                position: absolute;
+                top:5rpx;
+                right:50rpx;
+
+            }
+        }
+        .certificateText,.memberInfoUploadText {
+            padding-left: 90rpx;
+            padding-right: 40rpx;
+            color: #999;
+            position: relative;
+            font-size: 26rpx;
+            .van-icon {
+                vertical-align: middle;
+                margin-right: 4rpx;
+                position: absolute;
+                left: 40rpx;
+                top: 8rpx;
+            }
+
+        }
+        .member-update-t {
+            padding-left: 90rpx;
+            margin-top: 20rpx;
+            color: #0168FF;
+            font-size: 24rpx;
+            .van-icon {
+                vertical-align: middle;
+                margin-top: -2rpx;
+            }
+        }
+        .certificateText {
+        }
+        .memberInfoUploadText {
+            margin-top: 30rpx;
+        }
+
+            
+    }
+    .car-used-price {
+        color: #666;
+        font-size: 30rpx;
+        padding-bottom: 70rpx;
+    }
+    
+</style>
+<template>
+    <view class="container">
+        <view wx:if="{{loadingInfo}}" class="full-loading loading-auto">
+            <van-loading type="spinner" color="#000" />
+        </view>
+       
+        <view class="order" wx:else>
+            <view wx:if="{{couponLoading}}" class="toast-loading loading-auto">
+                <van-loading type="spinner" color="#fff" />
+            </view>
+            <view class="order-info">
+                <view class="car-brand" style="padding-bottom: 22rpx;">
+                    <van-button type="default" bind:click="onClickCancel" custom-class="order-cancel" wx:if="{{usedStatus == 0 || usedStatus == 1 || usedStatus == 2}}">取消订单</van-button>
+                    <text
+                        style="font-weight: bold"
+                    >{{orderInfo.memberCarUsed.carBrand}} {{orderInfo.memberCarUsed.cartypeName}}</text>
+                    
+                    <text
+                        class="pay-countDown"
+                        wx:if="{{orderInfo.memberCarUsed.usedStatus == 0 || memberCarUsedPayment}}"
+                    >| 等待支付 {{countDownTime}}</text>
+                    <view
+                        class="status-name inline-block"
+                        wx:if="{{!orderInfo.memberCarUsedPayment}}"
+                    >
+                        <text wx:if="{{orderInfo.memberCarUsed.usedStatus == 1}}">| 待执行</text>
+                        <view
+                            class="inline-block"
+                            wx:if="{{orderInfo.memberCarUsed.usedStatus == 2}}"
+                        >
+                            <dial></dial>
+                        </view>
+                        <text wx:if="{{orderInfo.memberCarUsed.usedStatus == 3}}">| 用车中</text>
+                        <text
+                            class="inline-block"
+                            wx:if="{{orderInfo.memberCarUsed.usedStatus == 4}}"
+                        >
+                            <dial></dial>
+                        </text>
+                        <text wx:if="{{orderInfo.memberCarUsed.usedStatus == 5}}">| 已完成</text>
+                        <text wx:if="{{orderInfo.memberCarUsed.usedStatus == 6}}">| 已取消</text>
+                    </view>
+                    <view
+                        class="carPlateNum"
+                        wx:if="{{orderInfo.memberCarUsed.carPlateNum}}"
+                    >{{orderInfo.memberCarUsed.carPlateNum}}</view>
+                    <!-- <view
+                        class="order-price"
+                        wx:if="{{orderInfo.preBuyPackage}}"
+                    >￥{{orderInfo.preBuyPackage.carUsedPrice}}/天</view> -->
+                    
+                </view>
+                <view class="car-used-price">
+                ￥{{orderInfo.usedPackage.carUsedPrice}}/天 
+                <text wx:if="{{orderInfo.payWayType == 3}}">【会员专享车型】</text>
+                <text wx:else>【体验用车】</text>
+                </view>    
+                <van-row>
+                    <van-col span="1">
+                        <van-icon name="clock" color="#ccc" size="26rpx"/>
+                    </van-col>
+                    <van-col span="6" offset="1" class="car-l">
+                        <view class="init-time">
+                            <view class="time">{{orderInfo.memberCarUsed.sendTime}}</view>
+                            <text>{{orderInfo.memberCarUsed.sendWeek}} {{orderInfo.memberCarUsed.carTimeStart}}</text>
+                        </view>
+                    </van-col>
+                    <van-col span="10" class="car-day">
+                        {{memberCarUsedPayment ? memberCarUsedPayment.carUsedPlanDays : orderInfo.memberCarUsed.carUsedPlanDays}}天
+                        <view class="car-line"></view>
+                    </van-col>
+                    <van-col span="6" class="car-r">
+                        <view class="init-time">
+                            <view class="time">{{orderInfo.memberCarUsed.returnTime}}</view>
+                            <text>{{orderInfo.memberCarUsed.returnWeek}} {{orderInfo.memberCarUsed.carTimeEnd}}</text>
+                        </view>
+                    </van-col>
+                </van-row>
+                <van-row custom-class="car-address">
+                    <van-col span="1">
+                        <van-icon name="location" color="#ccc" size="26rpx"/>
+                    </van-col>
+                    <van-col span="22" offset="1" class="init-time" wx:if="{{usedStatus == 0 || usedStatus == 1 || usedStatus == 2 || usedStatus == 6}}">
+                        <view class="time">{{orderInfo.memberCarUsed.SendAddress}} </view>
+                        <text>{{orderInfo.memberCarUsed.SendAddressName}}</text>
+                    </van-col>
+
+                    <van-col span="22" offset="1" class="init-time" wx:else>
+                        <view class="time">{{orderInfo.memberCarUsed.returnAddress}}</view>
+                        <text>{{orderInfo.memberCarUsed.returnAddressName}}</text>
+                    </van-col>
+                </van-row>
+            </view>
+            <view class="detailed" wx:if="{{orderInfo}}">
+                <view class="detailed-t van-hairline--bottom">费用明细</view>
+                <van-collapse
+                    value="{{ activeNames }}"
+                    border="false"
+                    bind:change="onChangeColl"
+                    custom-class="collapse"
+                >
+                    <van-collapse-item
+                        title="管家上门取送车服务"
+                        custom-class="collapse-icon-hidden"
+                        border="false"
+                        content-class="price-r"
+                        value="免费"
+                        name="0"
+                        disabled
+                    ></van-collapse-item>
+
+                    <!-- 天次  -->
+                    <view wx:for="{{orderInfo.memberDayPackageList}}" wx:key="index" wx:if="{{orderInfo.memberDayPackageList && orderInfo.memberDayPackageList.length}}">
+                        <van-switch-cell
+                        title="{{isNeedContinuityName[item.isNeedContinuity]+ item.packageName +'(余额'+item.surplusDays+'天)'}}"
+                        checked="{{ item.beUsed }}"
+                        data-item="{{item}}"
+                        bind:change="onDayChange"
+                        />
+                    </view>
+
+                    <van-collapse-item
+                        title="用车费用"
+                        border="false"
+                        content-class="price-r"
+                        value="￥{{orderInfo.carUsedAmount}}"
+                        name="1"
+                    >{{orderInfo.aveCarUsedPriceStr || ''}}</van-collapse-item>
+                    <van-collapse-item
+                        content-class="price-r"
+                        border="false"
+                        value="￥{{orderInfo.baseSafeTotalAmount || 0}}"
+                        name="2"
+                    >
+                        <view slot="title">基础保障服务费
+                            <van-icon name="info-o" bind:click="onIcon" id="1" color="#999"/>
+                        </view>
+                        {{orderInfo.aveCarUsedBaseSafeStr || ''}}
+                    </van-collapse-item>
+                    <van-collapse-item
+                        wx:if="{{orderInfo.rateCouponAmount}}"
+                        border="{{false}}"
+                        title="折返卡优惠"
+                        content-class="price-r"
+                        value="-￥{{orderInfo.rateCouponAmount}}"
+                        name="3"
+                    >￥{{orderInfo.rateCouponAmount}} x 1张</van-collapse-item>
+
+                     <van-collapse-item
+                        wx:if="{{memberCouponList && usedStatus == 0}}"
+                        border="{{false}}"
+                        title="优惠券"
+                        content-class="price-r"
+                        value="可用{{memberCouponList.length}}张"
+                        name="4"
+                    >
+                    
+                        <view wx:for="{{memberCouponList}}" bind:tap="onSelectCheck" data-item="{{item}}" wx:key="index" class="coupon">
+                            <!--  loading -->
+                            
+                            <van-row>
+                                <van-col span="2" >
+                                    <view class="coupon-check">
+                                        <van-icon wx:if="{{!item.isCheck}}" name="circle" size="24rpx" color="#999" />
+                                        <van-icon wx:else name="checked" size="24rpx" color="#999"/>
+                                        <!-- isCheck -->
+                                    </view>
+                                </van-col>
+                                <van-col span="16" offset="1" custom-class="coupon-c">
+                                    <view class="coupon-name">{{item.couponName}}</view>
+                                    <view class="coupon-date">有效期至 {{item.expirationDate}}</view>
+                                </van-col>
+                                <van-col span="5" >
+                                    
+                                     <view class="coupon-total" wx:if="{{item.useMode == 2}}"><text>{{item.total * 10}}</text>折</view>
+                                     <view class="coupon-total" wx:else>
+                                         <view wx:if="{{item.useMode == 1 && item.couponType == 1}}"><text>{{item.total}}</text>元/天</view>
+                                         <view wx:else><text>{{item.total}}</text>元</view>
+
+                                     </view>
+                                </van-col>
+                            </van-row>
+                        </view>
+                    </van-collapse-item>
+                    <van-collapse-item
+                        wx:if="{{orderInfo.couponDiscountAmount}}"
+                        custom-class="collapse-icon-hidden"
+                        border="{{false}}"
+                        title="优惠券"
+                        content-class="price-r"
+                        disabled
+                        value="-￥{{orderInfo.couponDiscountAmount}}"
+                        name="5"
+                    >
+                    </van-collapse-item>
+                </van-collapse>
+                <van-panel
+                    wx:if="{{orderInfo.memberCarUsed.usedStatus != 0}}"
+                    custom-class="panel-detailed"
+                    title="合计"
+                    status="￥{{orderInfo.totalAmount}}"
+                ></van-panel>
+            </view>
+            <view
+                class="text-apis"
+                wx:if="{{orderInfo.certificateText || orderInfo.preAuthorizationText}}"
+            >
+                <view wx:if="{{orderInfo.certificateText}}">{{orderInfo.certificateText}}</view>
+                <view wx:if="{{orderInfo.preAuthorizationText}}">{{orderInfo.preAuthorizationText}}</view>
+            </view>
+        </view>
+        <view class="custom-foot pay-order" wx:if="{{orderInfo.memberCarUsed.usedStatus == '0'}}">
+            <van-row custom-class="custom-foot-buy">
+                
+                <view >
+                    <van-col span="12" wx:if="{{orderInfo.usedPackage}}">
+                         <view wx:if="{{orderInfo.payWayType == 3}}">
+                             <view class="custom-foot-amount" style="margin-top: 10rpx;">
+                                <text>￥</text>
+                                {{orderInfo.totalAmount}}
+                            </view>
+                            <!-- <view class="exclusive">套餐用户专属</view>
+                            <view class="exclusive-desc">{{orderInfo.preBuyPackageDesc}}</view> -->
+                        </view>
+                        <view wx:else>
+                            <view class="custom-foot-amount">
+                                <text>￥</text>
+                                {{orderInfo.totalAmount}}
+                            </view>
+                            <view wx:if="{{orderInfo.usedPackage.packageId != 2}}">
+                                <view wx:if="{{orderInfo.payWayType == 2 || (orderInfo.totalAmount > orderInfo.usedPackage.balance)}}"  class="pay-type-foot">余额不足（余额:￥{{orderInfo.usedPackage.balance}}）</view>
+                            </view>
+                            <view wx:if="{{orderInfo.payWayType == 0 || orderInfo.payWayType == 1}}" class="custom-foot-t" >可用余额￥{{orderInfo.accountBalance}}</view>
+                        </view>
+
+                    </van-col>
+                    <van-col span="12" style="text-align:right">
+                        <view wx:if="{{!isRiskAuditStatus}}">
+                            <van-button type="default" bind:tap="onRiskStatus" custom-class="buy">认证用车</van-button>
+                        </view>
+                        <view wx:else>
+                            <view wx:if="{{orderInfo.payWayType == 0 || orderInfo.payWayType == 1}}">
+                                <van-button type="default" bind:click="onDepositValid" custom-class="buy">确认支付</van-button>
+                            </view>
+                            <view wx:if="{{orderInfo.payWayType == 2}}">
+                                <van-button type="default" bind:click="onClickRenew" custom-class="buy">续费套餐</van-button>
+                            </view>
+                            <view wx:if="{{orderInfo.payWayType == 3}}">
+                                <van-button type="default" bind:tap="onClickMessage" custom-class="buy">了解套餐</van-button>
+                                <!-- <van-button type="default" bind:tap="onClickPayPackage" custom-class="buy">购买套餐</van-button> -->
+                            </view>
+                        </view>
+                        
+                    </van-col>
+                </view>
+                <!-- <view wx:else>
+                    <van-col span="24" style="text-align:center">
+                        <van-button type="default" bind:click="onOrderUpdate"  custom-class="buy">修改订单</van-button>
+                    </van-col>
+                </view> -->
+            </van-row>
+        </view>
+
+        
+         <view wx:if="{{loadingPay}}" class="toast-loading loading-auto">
+            <van-loading type="spinner" color="#fff" />
+        </view>
+   
+        <van-toast id="van-toast"/>
+        <van-dialog id="van-dialog" />
+
+         <view wx:if="{{updateLoading}}" class="toast-loading loading-auto">
+            <van-loading type="spinner" color="#fff" />
+        </view>
+
+         <van-popup show="{{ isCharge }}" bind:close="onHideCharge" position="bottom" custom-class="popup">
+            <view class="popup-head">基础保障服务费</view>
+            <view  class="charge-text">
+                <view class="charge-t" wx:for="{{chargeList}}" wx:key="index">
+                        {{index+1}}、{{item}}
+                </view>
+            </view>
+        </van-popup>
+      <van-popup show="{{ isPickTips && usedStatus == 1}}" bind:close="onClickPickTipsHide" position="bottom" custom-class="popup">
+          <view class="used-tips">
+            <view class="used-tips-t">用车提示 <van-icon bind:click="onClickPickTipsHide" name="cross" color="#999" size="30rpx" /></view>
+            <view class="certificateText" wx:if="{{orderInfo.certificateText}}"><van-icon size="32rpx" name="https://h5.cuco.cn/wechatCucoXImage/order_icon_1.png" />{{orderInfo.certificateText}}</view>
+            <view class="memberInfoUploadText" wx:if="{{orderInfo.memberInfoUploadText}}"><van-icon size="32rpx" name="https://h5.cuco.cn/wechatCucoXImage/order_icon_2.png" />{{orderInfo.memberInfoUploadText}}</view>
+            <view class="member-update-t" wx:if="{{orderInfo.memberInfoUploadText}}" bind:tap="onRiskStatus">去上传<van-icon name="arrow" color="#0168FF" size="26rpx" /></view>
+          </view>
+      </van-popup>
+        
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+//   0:待支付; 1:待执行; 2:送车中; 3:用车中; 4:取车中; 5:已完成; 6:已取消; 7:支付失败取消; 8:管家取消; 9:已失联;', 10已延期
+import { url, getRequest, getCountTime, debounce } from '../lib/util';
+import moment from 'moment';
+import Toast from '../components/vant/toast/toast';
+import Dialog from '../components/vant/dialog/dialog';
+import Dial from '../components/dial';
+export default class Index extends wepy.page {
+    config = {
+        navigationBarTitleText: '订单详情',
+        'enablePullDownRefresh': true,
+    };
+    components = {
+        dial: Dial
+    };
+
+    data = {
+        isPickTips: false,
+        chargeList: [
+            '用户用车期间，库可云车平台将按照”每台车每天“收取基础保障服务费，具体金额与所预定车型相关。',
+            '用户在用车期间所发生的一切事故，保险理赔范围内的损失无需用户承担，具体赔偿范围及赔付金额以保险公司条款为准。',
+            '保险理赔范围外或因用户自身原因导致保险公司拒赔的损失，由用户承担。'
+        ],
+        isCharge: false,
+        isRiskAuditStatus: null, // true 已认证，false 未认证
+        couponLoading: false,
+        orderId: '',
+        loadingInfo: true,
+        updateLoading: false,
+        usedStatusName: {
+            '1': '待执行',
+            '2': '管家送车中',
+            '3': '用车中',
+            '4': '管家取车中',
+            '5': '已完成',
+            '6': '已取消'
+        },
+        orderInfo: null,
+        activeNames: [],
+        isFlas: false, // 阻塞
+        week: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+        memberCarUsedPayment: null,
+        memberCarUsed: null,
+        usedStatus: '',
+        memberCouponList: [], //优惠券列表
+        memberDayPackageList: [], // 天次套餐
+        usedCouponId: [], // 选择优惠券ids
+        usedDaysPackageId: [], // 选择天次ids
+        timer: null,
+        isNeedContinuityName: ['非连续', '连续'],
+        countDownTime: '',
+        loadingPay: false,
+
+    };
+
+    computed = {};
+     onHide() {
+        console.log('onHide')
+        console.log(1111)
+
+        
+        clearInterval(this.timer)
+    }
+    onClickMessage() {
+        getRequest(url.sendMessage, 'POST', {
+            memberCarUsedId : this.memberCarUsedPayment.memberCarUsedId,
+            cartypeName: this.memberCarUsed.cartypeName,
+            carUsedPlanTimeStart: this.memberCarUsed.carUsedPlanTimeStart,
+            carUsedPlanTimeEnd: this.memberCarUsed.carUsedPlanTimeEnd,
+        }).then((res) => {
+            console.log(res)
+            // Toast.success('发送成功');
+            wx.navigateTo({
+                // url: `./packageDetail?id=${row.packageId}&packageType=${row.packageType}`
+                url: `./packageDetail?id=${this.orderInfo.usedPackage.packageId}`
+            })
+        })
+    }
+    onClickPayPackage() {
+        wx.navigateTo({
+            url: `./packageDetail?id=${this.orderInfo.usedPackage.packageId}`
+        })
+    }
+    onRiskStatus() {
+        var riskAuditStatus = wx.getStorageSync('riskAuditStatus');
+        if(riskAuditStatus == 3 || riskAuditStatus == 2 || riskAuditStatus == 4) {
+            wx.navigateTo({
+                url: './state'
+            })
+            return false;
+        }
+        // wx.setStorageSync('orderId', this.orderId);
+        wx.setStorageSync('routerAuth', `./orderDetail?orderId=${this.orderId}`)
+
+          if(getCurrentPages().length >= 8) {
+                wx.reLaunch({
+                    url: './identity'
+                })
+            } else {
+                wx.navigateTo({
+                    url: './identity'
+                })
+            }
+    }
+
+    onClickPickTipsHide() {
+        this.isPickTips = false;
+    }
+    // onUpdateCard() {
+    //     if(getCurrentPages().length >= 8) {
+    //         wx.reLaunch({
+    //             url: './identity'
+    //         })
+    //     } else {
+    //         wx.navigateTo({
+    //             url: './identity'
+    //         })
+    //     }
+    // }
+    onClickRenew() {
+        wx.navigateTo({
+            url: `./fixedPay`
+        })
+    }
+    
+    onDayChange(e) {
+        let self = this;
+        console.log(e.currentTarget.dataset.item);
+        let row = e.currentTarget.dataset.item;
+
+        if(row.beUsed) {
+            this.usedDaysPackageId.map((item, index) => {
+                if(item == row.id) {
+                    this.usedDaysPackageId.splice(index, 1)
+                }
+            })
+
+            self.updateLoading = true;
+            self.getOrderDetail();
+            return false;
+            
+        }
+
+       
+
+
+
+        // 
+        if(!row.beUsed) {
+            self.updateLoading = true;
+            this.$parent.getRequest(url.postponeConfirm, 'POST', {
+                id: this.orderId,
+                usedDaysPackageId: String(row.id).split(',')
+            }).then((res) => {
+                console.log(res);
+                if(res.data.isNeedConfirm) {
+
+                    wx.showModal({
+                        title: '支付确认',
+                        confirmColor: "#333",
+                        content: `您选择了连续用车套餐，你的还车时间将修改为 ${moment(res.data.carUsedPlanTimeEnd).format('YYYY-MM-DD HH:mm')}`,
+                        success(r) {
+                            if (r.confirm) {
+
+                                  self.orderInfo.memberDayPackageList.map((item) => {
+                                        if(item.id == row.id) {
+                                            item.beUsed = row.beUsed ? false: true;
+                                            if(item.beUsed) {
+                                                self.usedDaysPackageId.push(row.id)
+                                            }
+                                        }
+                                        return item;
+                                    })
+                                
+                                self.updateLoading = true;
+                                self.$parent.getRequest(url.updateCarUsed, 'POST', {
+                                    operatorType: 1,
+                                    id: self.memberCarUsed.id,
+                                    carUsedAddressSendLon: self.memberCarUsed.carUsedAddressSendLon,
+                                    carUsedAddressSendLat: self.memberCarUsed.carUsedAddressSendLat,
+                                    carUsedAddressReturnLon: self.memberCarUsed.carUsedAddressReturnLon,
+                                    carUsedAddressReturnLat: self.memberCarUsed.carUsedAddressReturnLat,
+                                    carUsedAddressReturn: self.memberCarUsed.carUsedAddressReturn,
+                                    carUsedAddressSend: self.memberCarUsed.carUsedAddressSend,
+                                    cityCode: self.memberCarUsed.cityCode,
+                                    cartypeId: self.memberCarUsed.cartypeId,
+                                    carUsedPlanTimeStart: self.memberCarUsed.carUsedPlanTimeStart,
+                                    carUsedPlanTimeEnd: res.data.carUsedPlanTimeEnd,
+                                }).then((result) => {
+                                    if(result.code == '0000') {
+                                        clearInterval(self.timer)
+                                        self.getOrderDetail();
+                                    } 
+                                })
+                                
+                            } else if (r.cancel) {
+                                self.updateLoading = false;
+
+                                self.orderInfo.memberDayPackageList.map((item) => {
+                                    if(item.id == row.id) {
+                                        item.beUsed = false
+                                       
+                                    }
+                                    return item;
+                                })
+
+                                console.log(self.usedDaysPackageId)
+
+                                // self.orderInfo.memberDayPackageList.map((item) => {
+                                //     if(item.id == row.id) {
+                                //         item.beUsed = false;
+                                //     }
+                                //     return item;
+                                // })
+                            }
+                        }
+                    })
+                } else {
+                    clearInterval(self.timer)
+                    self.usedDaysPackageId.push(row.id)
+                    self.getOrderDetail();
+                }
+            })
+        } 
+
+
+    }
+    onClickCancel() {
+        
+        Dialog.confirm({
+            title: '提示',
+            message: '是否确定取消订单？'
+            }).then(() => {
+                this.$parent.getRequest(url.cancelOrder, 'POST', {
+                    id: this.orderId
+                }).then((res) =>{
+                    if(res.code != '0000') {
+                        return false;
+                    } 
+                    clearInterval(this.timer)
+
+                    Toast.success('订单已取消');
+                    setTimeout(() => {
+                       
+                        // wx.redirectTo({
+                        //     url: './orderList'
+                        // })
+                        wx.switchTab({
+                            url: './garageBar'
+                        })
+                        // if(getCurrentPages().length >= 8) {
+                        //     wx.reLaunch({
+                        //         url: './orderList'
+                        //     })
+                        // } else {
+                        //     wx.navigateTo({
+                        //         url: './orderList'
+                        //     })
+                        // }
+                        
+                        
+                    }, 1000)
+                })
+            }).catch(() => {
+        });
+        
+    }
+    PayMake() {
+        var self = this;
+        this.$parent.getRequest(url.wechatPay, 'POST', {
+                isFromApplet: 1,
+                id:this.orderId,
+                // money: this.orderInfo.totalAmount > this.orderInfo.usedPackage.balance,
+                accountType: 1,
+                paymentId: this.memberCarUsedPayment.id,
+                payType: 1,
+                openId: wx.getStorageSync('openId'),
+                isUsedDaysPackage: this.usedDaysPackageId.length >= 1 ? 1: 0, // 是否使用天次
+                usedDaysPackageId: this.usedDaysPackageId, // 使用天次套餐ID集合（选择就传）
+                usedCouponId: this.usedCouponId, //使用优惠券ID集合（选择就传）
+
+            }).then((res) => {
+                this.loadingPay = false;
+                this.$apply();
+                var obj = res.data.obj;
+                wx.requestPayment({
+                    timeStamp: obj.timeStamp,
+                    nonceStr: obj.nonceStr,
+                    package: obj.package,
+                    signType: 'MD5',
+                    paySign: obj.paySign,
+                    success(data) {
+                        console.log(data);
+                        self.loadingInfo = true;
+                        self.getOrderDetail();
+                    },
+                    fail(fail) {
+                        console.log(fail)
+                    }
+                })
+            })
+    }
+    onDepositValid() {
+        let self = this;
+        this.loadingPay = true;
+
+
+        // this.orderInfo.totalAmount > this.orderInfo.accountBalance 套餐余额不足 补齐差价
+        if(this.orderInfo.usedPackage.packageId != 2 || this.orderInfo.totalAmount > this.orderInfo.accountBalance) {
+            self.onWechatBuy();
+            return false;
+        }
+        this.$parent.getRequest(url.depositValid, 'POST', { 
+            carTypeId: this.memberCarUsed.cartypeId,
+        }).then((res) => {
+            this.loadingPay = false;
+            this.$apply();
+            if(res.code != '0000') {
+                return false;
+            }
+
+            if(res.data.isNeedTopUpDeposit ) {
+                wx.showModal({
+                    title: '',
+                    content: `${res.data.nounTips.title}`,
+                    confirmText: '在线支付',
+                    cancelText: '接车支付',
+                    confirmColor: '#0168FF',
+                    success(r) {
+                        if (r.confirm) {
+                            self.onDepositPay(res.data.needTopUpDepositNum);
+                        } else if (r.cancel) {
+                            self.onWechatBuy();
+                        }
+                    }
+                })
+                return false;
+            }
+            self.onWechatBuy();
+            console.log(res)
+        })
+    }
+    onDepositPay(money) {
+
+        // 保证全在线支付
+        let self = this;
+        this.$parent.getRequest(url.wechatPay, 'POST', {
+            money:money,
+            isComplement: 1,
+            accountType: 2,
+            payType: 0,
+            isFromApplet: 1,
+            openId: wx.getStorageSync('openId')
+        }).then((res) => {
+            var obj = res.data.obj;
+            wx.requestPayment({
+                timeStamp: obj.timeStamp,
+                nonceStr: obj.nonceStr,
+                package: obj.package,
+                signType: 'MD5',
+                paySign: obj.paySign,
+                success(data) {
+                    wx.showToast({
+                        title: '充值成功',
+                        icon: 'success',
+                        duration: 1000
+                    })
+                    self.onWechatBuy();
+                },
+                fail(fail) {
+                    console.log(fail)
+                }
+            })
+        })
+    }
+    onWechatBuy() {
+        //payWayType; 0.余额支付，1.微信支付，2.立即充值, 3.购买套餐, 4.企业账户余额不足
+
+        // payType;//结算类型：0:充值; 1:用车费用
+
+        // accountType;//变动项：1:余额;2:违损保证金;6:购买套餐冻结金额 ）；7购买天次套餐8：参加活动缴费类型
+
+        let self = this;
+
+
+
+        
+        if(this.orderInfo.totalAmount != 0) {
+
+            if(this.orderInfo.usedPackage.balance == 0 && this.orderInfo.accountBalance == 0) {
+                self.PayMake();
+                return false;
+            }
+        }
+
+
+        if(this.orderInfo.payWayType == 0 && this.orderInfo.totalAmount > this.orderInfo.accountBalance
+             ) {
+                 this.loadingPay = false;
+                 this.$apply();
+            wx.showModal({
+                title: '确认支付',
+                showCancel: false,
+                confirmColor:'#000000',
+                content: `余额不足，您需要补齐差额￥${parseFloat(this.orderInfo.totalAmount - this.orderInfo.accountBalance).toFixed(2)}`,
+                success(res) {
+                    if (res.confirm) {
+                        self.PayMake()
+                    } 
+                }
+            })
+            return false;
+        }
+
+        
+
+        console.log(this.orderInfo.payWayType)
+
+        if(this.orderInfo.payWayType == 0) {
+            this.loadingPay = false;
+            this.$apply();
+            
+            Dialog.confirm({
+                title: '确认支付',
+                message: `是否确认支付 ¥ ${this.orderInfo.totalAmount}`,
+                }).then(() => {
+                     this.$parent.getRequest(url.usedCarPayment, 'POST', {
+                        payWayType: 0,
+                        id: this.memberCarUsed.id,
+                        usedDaysPackageId: this.usedDaysPackageId, // 使用天次套餐ID集合（选择就传）
+                        usedCouponId: this.usedCouponId //使用优惠券ID集合（选择就传）
+                    }).then((res) => {
+                        if(res.code != '0000') {
+                            return false;
+                        }
+                        Toast.success('支付成功');
+                        self.loadingInfo = true;
+                        self.getOrderDetail();
+                    })
+                }).catch(() => {
+                // on cancel
+            });
+           
+        } else {
+            this.$parent.getRequest(url.wechatPay, 'POST', {
+                isFromApplet: 1,
+                money: this.orderInfo.totalAmount,
+                accountType: 1,
+                paymentId: this.memberCarUsedPayment.id,
+                payType: 0,
+                id: this.orderId,
+                isUsedDaysPackage: this.usedDaysPackageId.length >= 1 ? 1: 0, // 是否使用天次
+                usedDaysPackageId: this.usedDaysPackageId, // 使用天次套餐ID集合（选择就传）
+                usedCouponId: this.usedCouponId, //使用优惠券ID集合（选择就传）
+                openId: wx.getStorageSync('openId')
+
+            }).then((res) => {
+                this.loadingPay = false;
+                this.$apply();
+                var obj = res.data.obj;
+                wx.requestPayment({
+                    timeStamp: obj.timeStamp,
+                    nonceStr: obj.nonceStr,
+                    package: obj.package,
+                    signType: 'MD5',
+                    paySign: obj.paySign,
+                    success(data) {
+                        console.log(data);
+                        self.loadingInfo = true;
+                        self.getOrderDetail();
+                    },
+                    fail(fail) {
+                        console.log(fail)
+                    }
+                })
+            })
+        }
+        
+    }
+    onChangeColl(e) {
+        if (!this.isFlas) {
+            this.activeNames = e.detail;
+        }
+        this.isFlas = false;
+    }
+    onIcon(e) {
+        this.isFlas = true;
+        this.isCharge = true;
+        this.activeNames = [];
+    }
+    onHideCharge() {
+        this.isCharge = false;
+    }
+    updateCoupon() {
+
+        // 超出优惠券使用张数，重新计算
+        if(this.memberCouponList && this.memberCouponList.length) {
+            this.usedCouponId = []
+            this.memberCouponList.map((item) => {
+                if(item.isCheck) {
+                    this.usedCouponId.push(item.id)
+                }
+            })
+        }
+    }
+    onSelectCheck(e) {
+        var row = e.currentTarget.dataset.item;
+
+        this.couponLoading = true;
+
+        // 记录选择优惠券id
+        if(this.usedCouponId.indexOf(row.id) != -1) {
+              this.usedCouponId.map((item, index) => {
+                if(item == row.id) {    
+                    this.usedCouponId.splice(index, 1);
+                }
+                // return item;
+            })
+        } else {
+            this.usedCouponId.push(row.id);
+        }
+
+        console.log(this.usedCouponId)
+        
+        this.getOrderDetail();
+
+    }
+
+    methods = {
+        onOrderUpdate() {
+            let itemList =  [];
+
+            let updateInfo = [0, 1, 3, 4, 10],
+                replaceInfo = [0, 3, 10];
+
+            if(updateInfo.indexOf(this.usedStatus) != -1) {
+                itemList = ['修改信息']
+            }
+            if(replaceInfo.indexOf(this.usedStatus) != -1) {
+                itemList.push('更换车型')
+            }
+
+            wx.showActionSheet({
+                itemList: itemList,
+                success(res) {
+                    console.log(res.tapIndex)
+                },
+                fail(res) {
+                    console.log(res.errMsg)
+                }
+            })
+        }
+    };
+
+    getOrderDetail() {
+        var self = this;
+        this.$parent.getRequest(url.carUserDetail, 'POST', {
+            id: this.orderId || 124,
+            // accountId: '69379',
+            usedDaysPackageId: this.usedDaysPackageId,
+            usedCouponId: this.usedCouponId,
+            "cityCode": wx.getStorageSync('cityCode'),
+        }).then(res => {
+            console.log(res.data);
+            this.loadingInfo = false;
+            this.couponLoading = false;
+            this.updateLoading = false;
+
+            if(res.code == '1000') {
+                this.updateCoupon();
+            }
+
+            if(res.code != '0000') {
+                return false;
+            }
+
+          
+
+            this.orderInfo = {};
+            this.orderInfo = res.data;
+            this.usedStatus = res.data.memberCarUsed.usedStatus;
+            this.memberCarUsed = res.data.memberCarUsed;
+
+            // 优惠券部分
+            this.memberCouponList = res.data.memberCouponList || [];
+            if(res.data.usedCouponList && res.data.usedCouponList.length) {
+                this.usedCouponId = res.data.usedCouponList.map((item) => {
+                    return res.data.usedCouponList  <= 0 ? [] :item.id;
+                })
+            }
+
+            if(this.memberCouponList && this.memberCouponList.length) {
+                this.memberCouponList.map((item) => {
+                     if(this.usedCouponId.indexOf(item.id) != -1) {
+                            item.isCheck = true;
+                        } else {
+                            item.isCheck = false;
+                     }
+                    return item;
+                })
+            }
+
+
+            // 虚拟拨号 组件通信
+            this.$invoke(
+                'dial',
+                'butlerTask',
+                res.data.butlerTask,
+                this.usedStatus,
+                res.data.memberCarUsed.memberMobile
+            );
+
+
+
+            // 待执行 用车提示
+            if(res.data.certificateText || res.data.memberInfoUploadText) {
+                this.isPickTips = true;
+            }
+
+            // 送车地址
+            var sendIndex = res.data.memberCarUsed.carUsedAddressSend.indexOf('-') // index;
+            this.memberCarUsed.SendAddressName = res.data.memberCarUsed.carUsedAddressSend.split('-')[0];
+            this.memberCarUsed.SendAddress = res.data.memberCarUsed.carUsedAddressSend.substr(sendIndex == -1 ? 0 : sendIndex+1) 
+                
+            // 判断是否有地址描述    
+            if(sendIndex == -1) {
+                this.memberCarUsed.SendAddress =res.data.memberCarUsed.carUsedAddressSend.split('-')[0];
+            }
+
+            // 取车地址
+
+            var ReturnIndex = res.data.memberCarUsed.carUsedAddressReturn.indexOf('-') // index;
+            this.memberCarUsed.returnAddressName = res.data.memberCarUsed.carUsedAddressReturn.split('-')[0];
+            this.memberCarUsed.returnAddress = res.data.memberCarUsed.carUsedAddressReturn.substr(ReturnIndex == -1 ? 0 : ReturnIndex+1) 
+
+            // 判断是否有地址描述    
+            if(ReturnIndex == -1) {
+                this.memberCarUsed.returnAddress =res.data.memberCarUsed.carUsedAddressReturn.split('-')[0];
+            }
+
+
+
+            this.memberCarUsed.sendTime = moment(
+                res.data.memberCarUsed.carUsedPlanTimeStart
+            ).format('MM月DD日');
+            this.memberCarUsed.returnTime = moment(
+                res.data.memberCarUsed.carUsedPlanTimeEnd
+            ).format('MM月DD日');
+            this.memberCarUsed.sendWeek = this.week[
+                moment(res.data.memberCarUsed.carUsedPlanTimeStart).format('d')
+            ];
+            this.memberCarUsed.returnWeek = this.week[
+                moment(res.data.memberCarUsed.carUsedPlanTimeEnd).format('d')
+            ];
+            this.memberCarUsed.carTimeStart = moment(
+                res.data.memberCarUsed.carUsedPlanTimeStart
+            ).format('HH:mm');
+            this.memberCarUsed.carTimeEnd = moment(
+                res.data.memberCarUsed.carUsedPlanTimeEnd
+            ).format('HH:mm');
+            this.memberCarUsedPayment = res.data.memberCarUsedPayment;
+            var countTime = parseInt(
+                moment(res.data.payEndTime).format('X') -
+                    moment(new Date()).format('X')
+            );
+            if (
+                res.data.memberCarUsed.usedStatus == 0 ||
+                res.data.memberCarUsedPayment
+            ) {
+              
+              this.countDownTime = '00 : 00';
+            //   this.setData({
+            //             orderInfo: this.orderInfo
+            //         })
+            this.$apply();
+                getCountTime(countTime, (countNumber, countDownTime, timer) => {
+                    self.timer = timer;
+                    if((countNumber <= 0) ) {
+                        clearInterval(this.timer)
+                    }
+                    if (countNumber <= 0) {
+                        // Toast('支付超时~');
+                        res.data.countDownTime = '00 : 00'
+                         clearInterval(timer)
+                        // this.$parent.getRequest(url.cancelOrder, 'POST', {
+                        //     id: res.data.memberCarUsed.id
+                        // }).then(res => {
+                        //     clearInterval(timer)
+                        // });
+                        // this.loadingInfo = true;
+                        // this.getOrderDetail();
+                        return false;
+                    }
+                    
+                    
+                    this.countDownTime = countDownTime;
+                  
+                    this.$apply();
+                });
+            }
+            this.$apply();
+        });
+    }
+    onUnload() {
+        console.log("卸载")
+        clearInterval(this.timer)
+    }
+
+    events = {};
+
+    onPullDownRefresh() {
+        wx.showNavigationBarLoading();
+        this.getOrderDetail();
+
+        setTimeout(() => {
+            // 隐藏导航栏加载框
+            wx.hideNavigationBarLoading();
+            // 停止下拉动作
+            wx.stopPullDownRefresh();
+        }, 500);
+    }
+
+
+    onShow() {
+        this.isRiskAuditStatus = wx.getStorageSync('isRiskAuditStatus');
+        if(this.orderId) {
+            this.orderInfo = {};
+            
+            this.$apply();
+          
+            this.loadingInfo = true;
+            clearInterval(this.timer)
+            this.getOrderDetail();
+        }
+        console.log(this.isRiskAuditStatus);
+    }
+
+    onLoad(option) {
+        console.log(option);
+        let self = this;
+
+        this.orderId = option.orderId;
+
+        clearInterval(this.timer)
+        this.usedCouponId = []; //优惠券列表
+        this.usedDaysPackageId = []; // 天次套餐
+        this.orderInfo = {};
+        this.$apply();
+        this.getOrderDetail();
+
+
+
+        // this.$parent.getUserInfo(function (userInfo) {
+        //   if (userInfo) {
+        //     self.userInfo = userInfo
+        //   }
+        // })
+    }
+}
+</script>

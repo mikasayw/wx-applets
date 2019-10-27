@@ -1,0 +1,25 @@
+
+module.exports = { 
+    numFormat: function(num) {
+
+        // 小于0  去负数
+        // if(0 >= num) {
+		//     num = (num || 0).toString().substr(1,999999999)
+		// }
+        var result = [ ], counter = 0, spot = [];
+        num = (num || 0).toString().split('');
+       
+        for (var i = num.length - 1; i >= 0; i--) {
+            
+            if(num.indexOf('-') != 0 && num.indexOf('.') > i || num.indexOf('.') == -1) {
+                    counter++;
+                    result.unshift(num[i]);
+                
+                if ( !(counter % 3) && i != 0) { console.log(result);result.unshift(',')}
+            } else {
+                spot.unshift(num[i])
+            }
+        }
+        return result.join('') + spot.join('');
+    }
+}

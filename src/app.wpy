@@ -1,0 +1,602 @@
+<style lang="scss">
+
+.container {
+    height: 100%;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    // justify-content: space-between;
+    box-sizing: border-box;
+}
+image {
+    vertical-align: top;
+}
+.loadings {
+    height:300rpx;
+    line-height:300rpx;
+    text-align:center;
+}
+
+.loading-auto {
+    width: 100rpx;
+    height: 100rpx;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 199;
+    text-align: center;
+}
+.toast-loading {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .van-loading {
+        background:rgba(0,0,0,0.8);
+        padding: 80rpx;
+        border-radius:5px;
+    }
+
+}
+// .full-loading {
+//     width: 100rpx;
+//     height: 100rpx;
+//     position: absolute;
+//     left: 0;
+//     right: 0;
+
+// }
+
+.popup {
+    border-radius: 5px;
+    bottom: 20rpx !important;
+    margin: 0 auto !important;
+    padding: 30rpx 0rpx;
+    width: 94% !important;
+    left: 50% !important;
+    right: 50% !important;
+    box-shadow:0px 2px 13px rgba(0,0,0,.1);
+
+    .popup-head {
+        padding: 15rpx 0 33rpx 0;
+        text-align: center;
+        color: #333;
+        font-size: 36rpx;
+        position: relative;
+        &:after {
+            content: '';
+            border-bottom: 1px #ccc solid;
+            position: absolute;
+            bottom: 0;
+            left: -50%;
+            right: 0;
+            width: 200%;
+            transform: scale(.5);
+        }
+    }
+}
+
+.van-button.buts {
+    width:250rpx;
+    height:95rpx;
+    line-height: 95rpx;
+    background:rgba(18,43,77,1);
+    border-radius:100rpx;
+    color: #fff;
+    margin: 20rpx auto;
+}
+.van-button.empty-but {
+    background: none;
+    border: 1px rgba(18,43,77,1) solid;
+    color: rgba(18,43,77,1);
+}
+.car-line {
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYMAAAAJCAYAAADQOEAYAAAAAXNSR0IArs4c6QAAAUJJREFUaAXt2D9rg0AYx/Fea+zgHAqlQ6HQl9ShS4YsGToVh+DkH1Ts0KWULA5d8ooCEkr7DjqWKIqaxy1DCMlNGr6CIOedPM9nuB+euuBCAAEEEBisQBRFj2VZBqZpeo7jZLqNXOouZB0CCCCAQC8Eun38SQJh5brusgsHnaoIAx011iCAAAL9E+j28+eqqjLP876CIHg4pUTC4BQt5iKAAAI9F2jb9kruSV3XawmFNI7j+2NKJgyOUWIOAgggMDwBQ0JhKsdH33J8tEiS5O5QC4TBIR3eIYAAAgMXkEAYSQuzoih+JBQ+JBRu97VEGOxTYQwBBBA4MwEJhWtp6SXP8185PnoPw/Bmt0Xl+/58d4BnBBBAAIHhCDRNM5ZqXzUq3iilPi3LerNt+0/Jb0Os8RGWIIAAAgicgYAEwr9hGOkWdSNUdgqlZqAAAAAASUVORK5CYII=');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    margin-top: .3rem;
+    width: 80%;
+    margin: 20rpx auto 0 auto;
+    height: .5rem;
+    position: relative;
+}
+
+
+    .custom-foot {
+        box-shadow:0px 2px 20px rgba(0,0,0,0.2);
+        border-top: 1px;
+        background: #fff;
+        padding: 0 50rpx;
+            .buy {
+            background: #122B4D;
+            border-radius: 80rpx;
+            color: #fff;
+            padding: 0 64rpx;
+        }
+        .custom-foot-amount {
+            color:#131726;
+            font-size: 28rpx;
+        }
+        .custom-foot-buy {
+            
+            padding: 28rpx 0;
+            // padding-top: 14rpx;
+        }
+        .custom-foot-a {
+            color: #333;
+            font-size: 32rpx;
+            font-weight: bold;
+        }
+        .custom-foot-t {
+            color: #0168FF;
+            font-size: 24rpx;
+        }
+    }
+    .inline-block {
+        display: inline-block;
+    }
+
+
+    .hairline-top {
+        &:after {
+            content: '';
+            border-top: 1px #ccc solid;
+            transform: scale(.5);
+            position: absolute;
+            top: 0;
+            left: -50%;
+            right: 0;
+            z-index: 1;
+            width: 200%;
+        }
+    }
+    .hairline-bottom {
+         &:after {
+            content: '';
+            border-bottom: 1px #ccc solid;
+            transform: scale(.5);
+            position: absolute;
+            bottom: 0;
+            left: -50%;
+            z-index: 11111;
+            width: 200%;
+        }
+
+    }
+
+// 订单详情
+.order-info {
+    padding: 50rpx 40rpx;
+    background: #fff;
+    margin-bottom: 20rpx;
+    .car-line {
+        margin: 0 auto;
+    }
+    .car-brand {
+        color: #333;
+        font-size: 36rpx;
+        position: relative;
+        padding-bottom: 80rpx;
+        .pay-countDown {
+            color: #ff8366;
+            font-size: 26rpx;
+        }
+        .order-price {
+            color: #666666;
+            font-size: 34rpx;
+        }
+        .status-name {
+            font-size: 24rpx;
+            color: #666;
+        }
+        .carPlateNum {
+            color: #999;
+            font-size: 24rpx;
+        }
+    }
+    .car-l {
+        text-align: left;
+    }
+    .car-day {
+        text-align: center;
+        font-size: 24rpx;
+        color: #333;
+        line-height: 45rpx;
+    }
+    .car-r {
+        text-align: right;
+    }
+    .init-time {
+        .time {
+            color: #333;
+            font-size: 28rpx;
+            line-height: 28rpx;
+        }
+        text {
+            color: #999;
+            font-size: 24rpx;
+        }
+    }
+    .car-address {
+        margin-top: 40rpx;
+        .time {
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+        }
+    }
+    
+}
+
+
+</style>
+
+<script>
+import wepy from 'wepy';
+import 'wepy-async-function';
+import {url, getRequest, setStorageSync, getStorageSync} from './lib/util'
+const serverUrl= 'https://appapibeta.cuco.cn';
+// const serverUrl = 'https://callphone.cuco.cn'
+
+export default class extends wepy.app {
+    
+    config = {
+        
+        pages: [
+            'pages/index',
+            'pages/cloudHomeBar', //  云车home H5
+            'pages/home',
+            'pages/carTypeSearch',  // 搜索
+            'pages/carTypeDetail', // 车辆详情
+            'pages/garageBar', // 车库
+            'pages/packageList', // 套餐列表
+            'pages/packageDetail', // 套餐详情
+            'pages/couponList', // 卡券列表
+            'pages/cardRecordList', // 卡明细
+            'pages/depositRecordList', // 保证金
+            'pages/service', // 服务
+            'pages/customer', //  客服中心 h5
+            'pages/violation', // 违章列表
+            'pages/violationDetail', // 位置详情
+            'pages/orderDetail',  // 订单详情
+            'pages/packageBanner', // 我的套餐
+            'pages/orderList', // 订单列表
+            'pages/login', // 登陆
+            'pages/identity', // 身份认证 
+            'pages/license', //  驾驶证认证
+            'pages/real', // 实名认证
+            'pages/fixedPay', //充值套餐
+            'pages/stock', // 无库存
+            'pages/agreement', //'协议'
+            'pages/state', // 认证状态
+            'pages/understand',
+            'pages/webView', 
+            'pages/market', 
+            'pages/pay', 
+            'pages/share'
+
+        ],
+        "permission": {
+            "scope.userLocation": {
+                "desc": "你的位置信息将用于小程序位置的效果展示"
+            }
+        },
+         
+        window: {
+            backgroundTextStyle: 'light',
+            navigationBarBackgroundColor: '#fff',
+            navigationBarTitleText: 'WeChat',
+            navigationBarTextStyle: 'black'
+        },
+        usingComponents: {
+            'van-row': 'components/vant/row/index',
+            'van-col': 'components/vant/col/index',
+            'van-icon': 'components/vant/icon/index',
+            "van-cell": "components/vant/cell/index",
+            "van-cell-group": "components/vant/cell-group/index",
+            "van-button": "components/vant/button/index",
+            "van-tab": "components/vant/tab/index",
+            "van-tabs": "components/vant/tabs/index",
+            "van-loading": "components/vant/loading/index",
+            "van-toast": "components/vant/toast/index",
+            "van-checkbox": "components/vant/checkbox/index",
+            "van-transition": "components/vant/transition/index",
+            "van-popup": "components/vant/popup/index",
+            "van-datetime-picker": "components/vant/datetime-picker/index",
+            "van-field": "components/vant/field/index",
+            "van-dialog": "components/vant/dialog/index",
+            "van-collapse": "components/vant/collapse/index",
+            "van-collapse-item": "components/vant/collapse-item/index",
+            "van-panel": "components/vant/panel/index",
+            "van-dialog": "components/vant/dialog/index",
+            "van-switch-cell": "components/vant/switch-cell/index",
+            "van-tag": "components/vant/tag/index",
+            "van-notice-bar": "components/vant/notice-bar/index"
+        },
+       
+    };
+
+    globalData = {
+        userInfo: null,
+        token: '',
+    };
+
+    constructor() {
+        super();
+        this.use('requestfix');  // 修复小程序请求并发问题。
+    }
+
+    onLaunch() {
+        
+        var options = wx.getLaunchOptionsSync();
+        console.log(options)
+        if(options && options.query.active) {
+            wx.setStorageSync('active', options.query.active)
+        }
+        if(options && options.query && options.query.materialId) {
+            console.log(options.query.materialId)
+            wx.setStorageSync('materialId', options.query.materialId)
+            console.log(wx.getStorageSync('materialId'))
+        }
+        // this.testAsync();
+        // this.login();
+        if(!wx.getStorageSync('openId')) {
+            this.getUserInfo();
+        }
+
+
+        // wx.showShareMenu({
+        //     withShareTicket: true
+        // })
+        
+    }
+    onShareAppMessage(title, path, imageUrl) {
+        return {
+            title: title || '有了云车 不用买车！',
+            imageUrl: imageUrl  || 'https://cucopic.cuco.cn/xcx/share_image.jpg',
+            path: path || '/pages/home',
+            success: function (res) {
+            // 转发成功
+            console.log("转发成功:" + JSON.stringify(res));
+            },
+            fail: function (res) {
+            // 转发失败
+            console.log("转发失败:" + JSON.stringify(res));
+            }
+        }
+    }
+    
+ 
+
+     getRequest(url, method, data) {
+         var self = this;
+         return new Promise(function (resolve, reject) { 
+            wepy.request({
+                url: serverUrl +url,
+                method: method,
+                data: data,
+                header: {
+                    'Content-Type': 'application/json',
+                    'token': wx.getStorageSync('token') || '',
+                    'cityCode': wx.getStorageSync('cityCode') || '110000',
+                    'osType': 2,
+                    'appVersion':'1.3.0'
+                },
+                success: function (res) {
+                    // Toast({
+                    //     duration: 100000,
+                    //     message: res.data.message
+                    // })
+                    if (res.data.code == '1000' && res.data.message == '账号未登录') {
+                        console.log(self)
+                        wx.navigateTo({
+                            url: './login'
+                        })
+                        return false;
+                    }
+                    if(res.data.code !== '0000') {
+                        wx.showToast({
+                            title: res.data.message || '接口请求失败',
+                            icon: 'none',
+                            duration: 4000
+                        })
+                    }  
+                    resolve(res.data)
+    
+                },
+                fail: function (res) {
+                    reject(res)
+                    console.log("failed");
+                }
+            })
+            
+        })
+    }
+
+    // sleep(s) {
+    //     return new Promise((resolve, reject) => {
+    //         setTimeout(() => {
+    //             resolve('promise resolved');
+    //         }, s * 1000);
+    //     });
+    // }
+
+    login() {
+        
+        this.getRequest(url.getMemberInfo, 'POST', {
+            xcxOpenId: wx.getStorageSync('openId'),
+            mobile:  wx.getStorageSync('mobile'),
+            materialId: wx.getStorageSync('materialId') || '',
+        }).then((result) => {
+            this.globalData.userInfo  = result.data;
+            wx.setStorageSync('riskAuditStatus', result.data.riskAuditStatus)
+            wx.setStorageSync('isRiskAuditStatus', result.data.riskAuditStatus == 1 || result.data.riskAuditStatus == 5)
+            
+        
+            this.getMemberInfoToken();
+            // this.$apply();
+        }) 
+    }
+    getMemberInfoToken() {
+        this.getRequest(url.memberLogin, 'POST', {
+            isFromApplet: 1,
+            mobile: wx.getStorageSync('mobile'),
+            materialId: wx.getStorageSync('materialId') || '',
+        }).then((res) => {
+            this.globalData.token = res.data.token;
+            wx.setStorageSync('token', res.data.token);
+        })
+    }
+
+
+    // 未认证 操作
+    toRouterAuth() {
+        var riskAuditStatus = wx.getStorageSync('riskAuditStatus');
+        if(riskAuditStatus == 3 || riskAuditStatus == 2 || riskAuditStatus == 4) {
+            // wx.navigateTo({
+            //     url: './state'
+            // })
+            this.toRouter(`state`)
+            return false;
+        }
+
+        // 认证超时
+        if(riskAuditStatus == 6 || riskAuditStatus == 0) {
+            this.toRouter(`identity`)
+            return false;
+        }
+        // wx.navigateTo({
+        //     url: './identity'
+        // })
+
+        // this.$parent.toRouter(`identity`)
+    }
+
+    // 统一管理路由
+    toRouter(router) {
+
+        // 删除记录 匹配车库车库id isCarDetailId
+        // if(router.match('orderDetail')) {
+            
+        // }
+        if(getCurrentPages().length >= 8) {
+            wx.reLaunch({
+                url: `./${router}`
+            })
+        } else {
+            wx.navigateTo({
+                url: `./${router}`
+            })
+        }
+    }
+
+    // 上传
+    uploadTask(url) {
+        return new Promise((resolve, reject) => {
+            wx.chooseImage({
+                success(res) {
+                    const tempFilePaths = res.tempFilePaths
+                    const uploadTask =  wx.uploadFile({
+                        url: serverUrl + url, 
+                        filePath: tempFilePaths[0],
+                        headers: {
+                            token: wx.getStorageSync('token'),
+                            'cityCode': wx.getStorageSync('cityCode') || '110000',
+                            'osType': 2,
+                            'appVersion':'1.3'
+                        },
+                        name: 'imporfile',
+                        formData: {
+
+                        },
+                        success(res) {
+
+                            const data = res.data
+                            const result = JSON.parse(data)
+                            if(result.code != '0000') {
+                                wx.showToast({
+                                    title: result.message,
+                                    icon: 'none',
+                                    duration: 2000
+                                    })
+                            }
+                            resolve(JSON.parse(data));
+                        }
+                    })
+
+                    uploadTask.onProgressUpdate((res) => {
+                            wx.showLoading({
+                                title: `上传中 ${res.progress}%`,
+                            })
+
+                            if(res.progress == 100) {
+                                wx.showToast({
+                                    title: '上传成功',
+                                    icon: 'success',
+                                    duration: 2000
+                                })
+                                wx.hideLoading()
+                            }
+                            console.log('上传进度', res.progress)
+                            console.log('已经上传的数据长度', res.totalBytesSent)
+                            console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
+                        })
+                }
+            })
+        })
+    }
+
+    getUserInfo(cb) {
+        const that = this;
+        console.log(this.globalData.userInfo)
+        try {
+            if(!this.globalData.userInfo.mobile) {
+                cb && cb(this.globalData.userInfo);
+            }
+        } catch(e) {
+            console.log(e)
+        }
+        
+        if (this.globalData.userInfo) {
+            return this.globalData.userInfo;
+        }
+        
+         wx.login({
+            success(res) {
+                console.log(res)
+                if (res.code) {
+                // 发起网络请求
+                    that.getRequest(url.getOpenId, 'GET', {
+                        code: res.code
+                    })
+                    .then((res) => {
+                        wx.setStorageSync('openId', res.data.xcxOpenid || '')
+                        wx.setStorageSync('mobile', res.data.mobile || '')
+                        that.globalData.userInfo = res.data;
+
+                        if(!res.data.mobile) {
+                            // wx.reLaunch({
+                            //     url: `./login`
+                            // })
+                        } else {
+                            that.login();
+                        }
+                        
+                        cb && cb(res.data);
+                    })
+                } else {
+                        console.log('登录失败！' + res.errMsg)
+                }
+            },
+            fail(err) {
+                console.log(err)
+            }
+        })
+    }
+}
+</script>

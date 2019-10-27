@@ -1,0 +1,185 @@
+<style lang="scss">
+$fffcolor: #fff;
+page {
+    background: #fff;
+    .share {
+        color: #000;
+        margin: 0 50rpx;
+        .share-n {
+            font-size: 44rpx;
+            margin-bottom: 12rpx;
+            margin-top: 60rpx;
+        }
+        .share-t {
+            font-size: 32rpx;
+        }
+        .package {
+            text-align: center;
+            position: relative;
+            .package-info {
+                text-align: left;
+                position: absolute;
+                top: 175rpx;
+                left: 50rpx;
+                z-index: 1;
+                width: 100%;
+                .package-info-t {
+                    font-size: 24rpx;
+                    color: #F1F0EE;
+                    margin-left: 30rpx;
+                }
+            }
+        }
+         .packinfo-icon {
+            text-align: center;
+            margin-top: 45rpx;
+
+            image {
+                width: 60rpx;
+                height: 60rpx;
+            }
+            text {
+                color:#fff;
+                font-size: 18rpx;
+                display: block;
+                line-height: 18rpx;
+            }
+        }
+        .give-l {
+            color: #666666;
+            font-size: 32rpx;
+            text-align: center;
+        }
+    }
+    .give-b {
+        position: fixed;
+        left: 0;
+        bottom: 60rpx;
+        right: 0;
+        margin: 0 auto;
+        z-index: 1;
+        text-align: center;
+        width: 100%;
+
+    }
+    .give-but {
+        background: #CAB37B;
+        color: #fff;
+        font-size: 40rpx;
+        width: 400rpx;
+        height: 108rpx;
+        line-height: 108rpx;
+        
+    }
+    .rule {
+        color: #999;
+        font-size: 30rpx;
+        margin-top: 20rpx;
+    }
+     
+}
+</style>
+<template>
+    <view class="container">
+        <view class="share">
+            <view class="share-n">送TA会员权益</view>
+            <view class="share-t">好友赠卡为会员专享权益，好友领取后可体验 会员全部用车权益</view>
+            <view wx:if="{{package.cityPackageVO5}}" class="package">
+                <image src="{{package.cityPackageVO5.packageImageUrl}}" mode="aspectFit" ></image>
+                <view class="package-info">
+                    <view class="package-info-t" wx:if="{{package.cityPackageVO5}}">有效期{{package.cityPackageVO5.memberDays}} 天</view>
+                       <van-row>
+                        <van-col span="5" custom-class="packinfo-icon">
+                            <image src="../image/index_icon1.png" width="100%" mode="aspectFit"/>
+                            <text>
+                                {{package.cityPackageVO5.carUsedSize}}款豪车
+                            </text>
+                        </van-col>
+                        <van-col span="5" custom-class="packinfo-icon">
+                                <image src="../image/index_icon2.png" width="100%" mode="aspectFit"/>
+                            <text>
+                                会员价格
+                            </text>
+                            </van-col>
+                        <van-col span="5" custom-class="packinfo-icon">
+                            <image src="../image/index_icon3.png" width="100%" mode="aspectFit"/>
+                            <text>
+                                {{package.cityPackageVO5.serviceResponseTime}}小时响应
+                            </text>
+                        </van-col>
+                    </van-row>
+                </view>
+            </view>
+            <view class="give-l">还可赠送{{package.cityPackageVO5.sendCardNum}}张</view>
+        </view>
+        <view class="give-b">
+            <van-button type="default" open-type="share" round custom-class="give-but" bind:tap="onGive">赠送</van-button>
+            <!-- <view class="rule">查看规则</view> -->
+        </view>
+        
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import {url, getRequest} from '../lib/util'
+
+export default class Index extends wepy.page {
+    config = {
+        'navigationBarTitleText': '赠送好友',
+        'enablePullDownRefresh': false,
+        "backgroundTextStyle": "dark",
+    };
+    components = {
+    };
+
+    data = {
+        // 17600737100
+        mobile: '',
+        package: {},
+        packageId: '',
+    };
+
+    computed = {};
+
+    methods = {
+        onGive() {
+            // wx.getShareInfo({
+            //     shareTicket: '转发',
+
+            // })
+            // wx.showShareMenu({
+            //     withShareTicket: true
+            // })
+        }
+    };
+
+
+    onShareAppMessage(res) {
+        if(res.from === 'button') {
+            console.log("来自button")
+        }
+        let title = "只为更美好的用车体验",
+            imageUrl = 'https://cucopic.cuco.cn/xcx/share_image.jpg',
+            path = `/pages/index?isGiveMobile=${wx.getStorageSync('mobile')}&packageId=${this.package.cityPackageVO5.packageId}`;
+            // wx.getStorageSync('mobile')
+
+        return this.$parent.onShareAppMessage(title, path, imageUrl);
+    }
+    onLoad(option) {
+
+         this.$parent.getRequest(url.getGiveCard, 'POST', {
+                rightsInterestsId: 5, 
+            }).then((res) =>{
+                console.log(res)
+                if(res.code != '0000') {
+                    return false;
+                }
+                this.package = res.data;
+                this.$apply();
+
+            })
+       
+    }
+}
+</script>

@@ -1,0 +1,86 @@
+<style lang="scss">
+$fontcolor: #7b7b7b;
+$activecolor: #13b113;
+.cell {
+    color: #0168FF;
+    .van-icon {
+        vertical-align: middle;
+        margin-top: -4rpx;
+    }
+}
+
+</style>
+<template>
+     <view class="inline-block">
+        <view class="inline-block" wx:if="{{usedStatus == 2}}"  bind:tap="onClickDial"> | 管家送车中 
+            <view class="inline-block cell"> (<van-icon name="phone-o" size="26rpx" color="#0168FF" />{{butler.butlerName || '-'}})</view>
+            </view>
+        <view class="inline-block" wx:if="{{usedStatus == 4}}"  bind:tap="onClickDial"> | 管家取车中 
+            <view class="inline-block cell"> (<van-icon name="phone-o" size="26rpx" color="#0168FF" />{{butler.butlerName || '-'}})</view>
+            </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+ import {url, getRequest} from '../lib/util'
+export default class dial extends wepy.component {
+    props = {
+    };
+    data = {
+        butler: '',
+        usedStatus: '',
+        butlerName: '',
+        memberMobile: '',
+    };
+
+    
+
+    methods = {
+        onClickDial(e) {
+            let self = this;
+            getRequest(url.ppoeDial, 'POST', {
+                aNumber: this.memberMobile,// 用户，
+                bNumber: this.butler.butlerMobile, // 管家
+                xNumberRestrict: 0
+            }).then((res) => {
+                console.log(res);
+                try {
+                    if(res.data.xNumber) {
+                        wx.makePhoneCall({
+                            phoneNumber: res.data.xNumber,
+                            fail() {
+                                wx.makePhoneCall({
+                                    phoneNumber: self.butlerMobile,
+                                })
+                            }
+                        }) 
+                    }
+                } catch(e) {
+                    wx.makePhoneCall({
+                        phoneNumber: self.butlerMobile,
+                    })
+                    console.log(e)
+                }
+            })
+        },
+
+        /** 
+         * butler  管家对象
+         * usedStatus 当前状态
+         * memberMobile 用户电话
+        */
+        butlerTask(butler, usedStatus, memberMobile) {
+            this.butler = butler;
+            this.usedStatus = usedStatus;
+            this.memberMobile = memberMobile
+            this.$apply();
+        }
+    };
+
+    onLoad() {
+
+    }
+}
+</script>

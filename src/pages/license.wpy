@@ -1,0 +1,490 @@
+<style lang="scss">
+
+    .identity-Authentication {
+        font-size: 50rpx;
+        color: #333;
+        margin-top: 50rpx;
+        
+        padding-bottom: 10rpx;
+        border-bottom: 1px #ccc solid;
+        .identity-t {
+            color: #666;
+            font-size: 26rpx;
+            margin-top: 11rpx;
+        }
+    }
+    .tips-t {
+        font-size: 30rpx;
+        color: #333;
+        margin-top: 35rpx;
+    }
+
+    .identity  {
+        margin-left: 40rpx;
+        margin-right: 40rpx;
+        .card {
+            margin-top: 20rpx;
+            .frontCard {
+                width: 47.8%;
+                    height: 204rpx;
+                .card-img {
+                    width: 100%;
+                    height: 100%;
+                }
+                
+            }
+            .backCard {
+                width: 47.8%;
+                    height: 204rpx;
+                .card-img { 
+                    width: 100%;
+                    height: 100%;
+                }
+                
+            }
+            
+        }
+  
+    }
+
+    .cell {
+        margin-left: -20rpx;
+        .van-cell-group {
+            border: none;
+            &:after {
+                border: none;
+            }
+        }
+        .van-cell {
+            margin-left: -20rpx;
+            margin: 24rpx 0;
+        }
+    }
+      button.real {
+        color:#1E5F9B;
+        border: 0;
+        font-size: 26rpx;
+    }
+
+
+</style>
+<template>
+  <view class="container">
+      <view class="identity">
+          <view class="identity-Authentication">
+              <view>实名认证</view> 
+              <view class="identity-t">库可云车会严格保障您的信息安全</view> 
+          </view>     
+          <view class="card">
+              <van-row>
+                <van-col span="11" custom-class="frontCard" bind:tap="onUploadFrontCard">
+                    <view class="card-img" style="background: url({{frontCardUrl?frontCardUrl : frontCardNormal}}) no-repeat; background-size: 100% 100%; " ></view>
+                </van-col>
+                <van-col span="11" offset='1' custom-class="backCard"   bind:tap="onUploadBackCard">
+                    <view class="card-img" style="background:url({{backCardUrl?backCardUrl : backCardNormal}}) no-repeat; background-size: 100% 100%; " ></view>
+                </van-col>
+              </van-row>
+          </view>
+          <view class="tips-t">
+              请上传清晰、无反光、无遮挡的证件照片
+          </view>
+          <view class="cell">
+              <van-cell-group>
+                    <van-field
+                        value="{{ cardInfo.drivingLicenseOriginalName }}"
+                        placeholder="姓名"
+                        id="1"
+                        bind:input="onInputCard"
+                    />
+                     <van-field
+                        value="{{ cardInfo.drivingLicenseOriginalNo }}"
+                        placeholder="证件号码"
+                        id="2"
+                        bind:input="onInputCard"
+                    />
+                    <van-field
+                        value="{{ cardInfo.periodValidityCartype }}"
+                        placeholder="准驾车型"
+                        id="3"
+                        bind:input="onInputCard"
+                    />
+                    <van-field
+                        readonly
+                        id="4"
+                        value="{{ cardInfo.startDateDriveLicense }}"
+                        placeholder="起始时间"
+                        bind:tap="onCardChange"
+                    />
+                    <van-field
+                        readonly
+                        id="5"
+                        value="{{ cardInfo.drivingLicensePeriodValidity }}"
+                        placeholder="过期时间"
+                        bind:tap="onCardChange"
+                    />
+                </van-cell-group>
+          </view>
+        
+          <view style="text-align:center; margin-top: 20rpx;">
+              <van-button type="default" round="{{true}}" custom-class="buts" bind:tap="onClickSure">确定</van-button>
+              <view style=" margin-top: 20rpx;">
+                  <van-button type="default" custom-class="real" bind:tap="onClickReal">驾驶证不在身边</van-button>
+              </view> 
+          </view>
+      </view>
+
+      <van-popup show="{{ isCardDate }}" position="bottom" bind:close="onClosePopup">
+        <van-datetime-picker
+            type="date"
+            value="{{ currentDate }}"
+            bind:cancel="onClosePopup"
+            bind:confirm="onSelectSureInput"
+            formatter="{{ formatter }}"
+            />
+        </van-popup>
+        <van-toast id="van-toast" />
+        <van-toast id="custom-selector" />
+
+  </view>
+</template>
+
+<script>
+
+
+
+  import wepy from 'wepy'
+
+  import { url, serverUrl } from '../lib/util';
+  import Toast from '../components/vant/toast/toast';
+  import moment from 'moment'
+  moment.locale('zh-cn');
+  
+  export default class Index extends wepy.page {
+    config = {
+      "navigationBarTitleText": '驾驶证认证'
+    }
+    components = {
+    }
+
+    data = {
+        isLicenseType: '', //  4:起始日期  5：过期时间
+        isCardDate: false,
+        frontCardNormal: 'https://h5.cuco.cn/wechatCucoXImage/licenseFront.jpg',
+        backCardNormal: 'https://h5.cuco.cn/wechatCucoXImage/license_back.jpg',
+        frontCardUrl: '', // 驾驶证正面
+        backCardUrl: '', // 驾驶证反面
+        cardInfo: {
+            drivingLicenseOriginalName: '', //驾驶证姓名
+            drivingLicenseOriginalNo: '', //驾驶证本号
+            startDateDriveLicense: '', //起始日期
+            periodValidityCartype: '', // 准驾车型
+            drivingLicensePeriodValidity: '', // 过期时间
+             
+        },
+        currentDate: new Date().getTime(),
+        minDate: new Date().getTime(),
+        formatter(type, value) {
+            if (type === 'year') {
+                return `${value}年`;
+            } else if (type === 'month') {
+                return `${value}月`;
+            }
+            return value;
+        }
+
+
+    }
+
+    computed = {
+   
+    }
+    
+    onInputCard(e) {
+        console.log(e);
+        var index = e.currentTarget.id; 
+
+        if(index == 1) {
+            this.cardInfo.drivingLicenseOriginalName  = e.detail;
+        } else if( index == 2) {
+            this.cardInfo.drivingLicenseOriginalNo = e.detail;
+        } else if(index == 3) {
+            this.cardInfo.periodValidityCartype = e.detail;
+        }
+    }
+    onClickSure() {
+        if(!this.frontCardUrl) {
+            Toast('请上传驾驶证正面')
+            return false;
+        } else if(!this.backCardUrl) {
+            Toast('请上传驾驶证反面')
+            return false;
+        } else if(!this.cardInfo.drivingLicenseOriginalName) {
+            Toast('请填写驾驶证姓名')
+            return false;
+        } else if(!this.cardInfo.drivingLicenseOriginalNo) {
+            Toast('请填写驾驶证号')
+            return false;
+        } else if(!this.cardInfo.periodValidityCartype) {
+            Toast('请填写准驾车型')
+            return false;
+        } else if(!this.cardInfo.startDateDriveLicense) {
+            Toast('请填写驾驶证起始日期')
+            return false;
+        }else if(!this.cardInfo.drivingLicensePeriodValidity) {
+            Toast('请填写驾驶证过期时间')
+            return false;
+        }  else {
+            
+            this.$parent.getRequest(url.saveMemberInfo, 'POST', {
+                picType: 1, // 上传类型0：身份证，1：驾驶证
+                name: this.cardInfo.drivingLicenseOriginalName,
+                drivingLicenseOriginalNo: this.cardInfo.drivingLicenseOriginalNo,
+                drivingLicenseOriginal: this.frontCardUrl,
+                drivingLicenseCopy: this.backCardUrl,
+                periodValidityCartype: this.cardInfo.periodValidityCartype,
+                startDateDriveLicense: moment(this.cardInfo.startDateDriveLicense).format('YYYY-MM-DD HH:mm:ss'),
+                drivingLicensePeriodValidity: moment(this.cardInfo.drivingLicensePeriodValidity).format('YYYY-MM-DD HH:mm:ss')
+            }).then((res) => {
+                if(res.code != '0000') {
+                    return false;
+                }
+
+                var toast = Toast.loading({
+                    duration: 0,       // 持续展示 toast
+                    forbidClick: true, // 禁用背景点击
+                    message: '30',
+                    loadingType: 'spinner',
+                    selector: '#custom-selector'
+                });
+
+                
+
+                let second = 30;
+                var timer = setInterval(() => {
+                    second--;
+                    if (second) {
+                        toast.setData({
+                            message: `认证中 ${second} S`
+                        });
+                    } else {
+                        clearInterval(timer);
+                        Toast.clear();
+                    }
+                }, 1000);
+
+                this.$parent.getRequest(url.authSubmit, 'POST', {
+                    memberId: res.data.memberId
+                }).then((result) => {
+                    console.log(result);
+                    if(result.code != '0000') {
+                        return false;
+                    }
+                    clearInterval(timer);
+                    Toast.clear();
+                    Toast.success(result.data.message);
+                    //  wx.navigateTo({
+                    //     url: `./home`
+                    // })
+
+
+                    wx.setStorageSync('riskAuditStatus', result.data.auditStatus)
+                    wx.setStorageSync('isRiskAuditStatus', result.data.auditStatus == 1 || result.data.auditStatus == 5)
+                    if(wx.getStorageSync('routerAuth')) {
+                        setTimeout(() => {
+                            wx.redirectTo({
+                                url: `${wx.getStorageSync('routerAuth')}`
+                            })
+                            wx.removeStorageSync('routerAuth')
+
+                        }, 1000)
+
+                        return false;
+                    }
+                    setTimeout(() => {
+                        wx.switchTab({
+                            url: `./home`
+                        })
+                    }, 1000)
+                    
+                    // if(result.data.auditStatus == 1 || result.data.auditStatus == 5) {
+                       
+                    // }
+                })
+            })
+        }
+    }
+    onClickReal() {
+        var toast = Toast.loading({
+            duration: 0,       // 持续展示 toast
+            forbidClick: true, // 禁用背景点击
+            message: '30',
+            loadingType: 'spinner',
+            selector: '#custom-selector'
+        });
+
+        
+
+        let second = 30;
+        var timer = setInterval(() => {
+            second--;
+            if (second) {
+                toast.setData({
+                    message: `认证中 ${second} S`
+                });
+            } else {
+                clearInterval(timer);
+                Toast.clear();
+            }
+        }, 1000);
+
+
+        this.$parent.getRequest(url.authSubmit, 'POST', {
+        }).then((result) => {
+            console.log(result);
+            if(result.code != '0000') {
+                return false;
+            }
+            clearInterval(timer);
+            Toast.clear();
+            Toast.success(result.data.message);
+            //  wx.navigateTo({
+            //     url: `./home`
+            // })
+            wx.setStorageSync('riskAuditStatus', result.data.auditStatus)
+            wx.setStorageSync('isRiskAuditStatus', result.data.auditStatus == 1 || result.data.auditStatus == 5)
+            
+            if(wx.getStorageSync('routerAuth')) {
+                setTimeout(() => {
+                    wx.redirectTo({
+                        url: `${wx.getStorageSync('routerAuth')}`
+                    })
+                    wx.removeStorageSync('routerAuth')
+
+                }, 1000)
+
+                return false;
+            }
+            setTimeout(() => {
+                wx.switchTab({
+                    url: `./home`
+                })
+            }, 1000)
+            
+            // if(result.data.auditStatus == 1 || result.data.auditStatus == 5) {
+            
+            // }
+        })
+    }
+    onClosePopup() {
+         this.isCardDate = false;
+    }
+ 
+    onSelectSureInput(e) {
+        console.log(e.detail)
+        if(this.isLicenseType == 4) {
+            this.cardInfo.startDateDriveLicense = moment(e.detail).format('YYYY-MM-DD')
+        } else {
+            this.cardInfo.drivingLicensePeriodValidity = moment(e.detail).format('YYYY-MM-DD')
+
+        }
+        this.isCardDate = false;
+        this.$apply();
+    }
+    onCardChange(e) {
+        console.log(e)
+        let index = e.currentTarget.id;
+        this.isLicenseType = index; //  4:起始日期  5：过期时间
+
+        console.log(this.isLicenseType)
+      
+        this.isCardDate = true;
+        this.$apply();
+    }
+
+    // 驾驶证正面
+    onUploadFrontCard() {
+        this.$parent.uploadTask(url.uploadDrivingLicense).then((res) => {
+            console.log(res)
+            if(res.code != '0000') {
+                return false;
+            }
+
+            if(res.data.isSuccessURL == 1) {
+                this.frontCardUrl =res.data.imageURL;
+            }  else {
+                this.frontCardUrl = res.data.drivingLicenseOriginal; // 驾驶证正面
+                this.cardInfo.drivingLicenseOriginalName  = res.data.drivingLicenseOriginalName; //驾驶证姓名
+                this.cardInfo.drivingLicenseOriginalNo = res.data.drivingLicenseOriginalNo; //驾驶证号
+                this.cardInfo.startDateDriveLicense = res.data.startDateDriveLicense; // 驾驶证起始日期
+                this.cardInfo.drivingLicensePeriodValidity = res.data.drivingLicensePeriodValidity; // 驾驶证过期时间
+                this.cardInfo.periodValidityCartype = res.data.periodValidityCartype; // 准驾车型
+            }
+            this.$apply();
+        }) 
+    }
+
+    // 驾驶证反面
+    onUploadBackCard() {
+        this.$parent.uploadTask(url.uploadDrivingLicenseCopy).then((res) => {
+            console.log(res)
+
+            if(res.code != '0000') {
+                return false;
+            }
+
+
+            if(res.data.isSuccessURL == 1) {
+                this.backCardUrl =res.data.imageURL;
+            } else {
+                this.backCardUrl = res.data.drivingLicenseCopy;
+            }
+            this.$apply();
+        })
+    }
+
+    methods = {
+ 
+  
+    }
+
+    events = {
+     
+    }
+
+    onLoad() {
+        let self = this
+        // 回显数据
+        this.$parent.getRequest(url.memberCardIdInfo, 'POST', {})
+        .then((res) => {
+            console.log(res);
+
+            if( res.code != '0000') {
+                return false;
+            }
+
+            this.memberInfo = res.data.memberInfo
+            if(res.data.memberInfo ) {
+                this.frontCardUrl = res.data.memberInfo.drivingLicenseOriginal || '';
+                this.backCardUrl = res.data.memberInfo.drivingLicenseCopy || '';
+
+                this.cardInfo = {
+                    drivingLicenseOriginalName: res.data.memberInfo.name, //驾驶证姓名
+                    drivingLicenseOriginalNo: res.data.memberInfo.drivingLicenseOriginalNo, //驾驶证本号
+                    startDateDriveLicense: res.data.memberInfo.startDateDriveLicense, //起始日期
+                    periodValidityCartype: res.data.memberInfo.periodValidityCartype, // 准驾车型
+                    drivingLicensePeriodValidity: res.data.memberInfo.drivingLicensePeriodValidity, // 过期时间
+                }
+            }
+            this.$apply();
+        })
+
+      // this.$parent.getUserInfo(function (userInfo) {
+      //   if (userInfo) {
+      //     self.userInfo = userInfo
+      //   }
+      // })
+    }
+  }
+
+
+</script>

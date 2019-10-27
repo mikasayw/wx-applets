@@ -1,0 +1,72 @@
+<style lang="less">
+
+</style>
+<template>
+  <view class="container">
+
+    <web-view src="{{url}}" bindload="onBindLoad" binderror="onBinderror" ></web-view>
+
+  </view>
+    <!-- <tab :active.sync="currentTab" /> -->
+
+</template>
+
+<script>
+
+
+
+  import wepy from 'wepy'
+
+
+  export default class Index extends wepy.page {
+    config = {
+      "navigationBarTitleText": ''
+    }
+    components = {
+    }
+
+    data = {
+        riskAuditStatus: '',
+        url:''
+    }
+
+    computed = {
+   
+    }
+
+    methods = {
+        onBindLoad(e) {
+            wx.showToast({
+                title: '',
+                icon: 'loading',
+                duration: 1000
+            })
+            console.log(e)
+        },
+        onBinderror(e) {
+            wx.showToast({
+                title: '加载失败',
+                icon: 'loading',
+                duration: 2000
+            })
+            console.log(e)
+        }
+  
+    }
+
+    events = {
+     
+    }
+
+    onShow(option) {
+    }
+
+    onLoad(option) {
+        this.url = `https://wechat.cuco.cn/bridge/spike.html?carTypeTemp=${option.carTypeTemp}`
+
+ 
+    }
+  }
+
+
+</script>

@@ -1,0 +1,197 @@
+<style lang="scss"> 
+    page {
+        height: 100%;
+        position: relative;
+        .pay-head {
+            background:linear-gradient(180deg,rgba(78,76,89,1) 0%,rgba(19,23,38,1) 100%);
+            box-shadow:0px 2px 4px 0px rgba(0,0,0,0.5);
+            height: 200rpx;
+            text-align: center;
+            padding-top: 54rpx;
+            .type {
+                font-size: 28rpx;
+                color: #ccc;
+                padding-bottom: 26rpx;
+            }
+            .money {
+                font-size: 60rpx;
+                color: #fff;
+                text {
+                    font-size: 32rpx;
+                    vertical-align: middle;
+                    margin-top: -27rpx;
+                    display: inline-block;
+
+                }
+            }
+        }
+    }
+ 
+
+    .container .van-button.empty-but {
+        padding: 0 45rpx;
+       
+    }
+    .bott {
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        bottom: 100rpx;
+        text-align: center;
+        .empty-but {
+            width: 240rpx;
+            background: #122B4D;
+            color: #fff;
+        }
+    }
+
+    
+</style>
+<template>
+  <view class="container">
+      <view class="pay-head">
+          <view class="type">{{(obj.accountType == 7 || obj.accountType == 6) && obj.payType == 0 ? '开启会员' : (obj.payType == 0 || obj.accountType ==2) ? '充值' : '用车费用' }}</view>
+          <view class="money"><text>￥</text>{{obj.money}}</view>  
+      </view>
+      <view class="bott">
+          <van-button type="default" round custom-class="empty-but" bind:tap="onPay">立即支付</van-button>
+      </view>
+      <view wx:if="{{loadingPay}}" class="toast-loading loading-auto">
+            <van-loading type="spinner" color="#fff" />
+        </view>
+  </view>
+</template>
+
+<script>
+
+
+
+  import wepy from 'wepy'
+
+  import { url } from '../lib/util';
+  
+  export default class Index extends wepy.page {
+    config = {
+      "navigationBarTitleText": '支付'
+    }
+    components = {
+    }
+
+    data = {
+        loadingPay: false,
+        active: 0,
+        obj: {}
+    }
+
+    computed = {
+   
+    }
+    onClickActive(e) {
+        this.active = e.currentTarget.id;
+    }
+    onPay() {
+        try {
+            wx.vibrateShort()
+        }  catch(e) {
+            console.log(e)
+        }
+        let self = this;
+        this.loadingPay = true;
+        this.$parent.getRequest(url.wechatPay, 'POST', this.obj).then((res) => {
+                self.loadingPay = false;
+                self.$apply();
+                var obj = res.data.obj;
+                wx.requestPayment({
+                    timeStamp: obj.timeStamp,
+                    nonceStr: obj.nonceStr,
+                    package: obj.package,
+                    signType: 'MD5',
+                    paySign: obj.paySign,
+                    success(data) {
+                        console.log(data);
+
+
+                        // 充值完成 跳转到首页
+                        wx.redirectTo({
+                            url: `./home?member=1`
+                        })
+                    },
+                    fail(fail) {
+                        console.log(fail)
+                    }
+                })
+            })
+    }
+
+    methods = {
+ 
+  
+    }
+
+    events = {
+     
+    }
+
+    onLoad(option) {
+        console.log(wx.getStorageSync('token'))
+      let self = this
+      // payType;//结算类型：0:充值; 1:用车费用
+      console.log(option)
+      if(option && option.token) {
+          wx.setStorageSync('token', option.token)
+      }
+
+        // accountType;//变动项：1:余额;2:违损保证金;6:购买套餐冻结金额 ）；7购买天次套餐8：参加活动缴费类型
+      this.obj = {
+          openId: wx.getStorageSync('openId'),  // openid
+          isFromApplet: 1, // 小程序支付
+          accountType: option.accountType, //
+          payType: option.payType,
+        //   packageMode: option.packageMode || '', //开通会员类型 memberMode  1是会员  2是预付费
+          money: option.money ,//费用
+      }
+      console.log(option);
+      console.log(this.obj)
+
+      // 用车费用  
+      if(option.payType == 0 &&  option.accountType == 2) {
+          this.obj.isComplement = 1;
+
+      }
+      if(option.payType == 1 &&  option.accountType == 1) {
+          this.obj.id = option.id;
+          this.obj.paymentId = option.paymentId;
+          this.obj.usedCouponId = option.usedCouponId ? option.usedCouponId.split(',') : []; // 优惠券id
+          this.obj.usedDaysPackageId = option.usedDaysPackageId ? option.usedDaysPackageId.split(',') : [];
+      }
+      try {
+
+            //   option.accountType == 6
+            if(option.packageMode) {
+                this.obj.packageMode = option.packageMode
+            }
+          } catch(e) {
+              console.log(e)
+          }
+
+      // 开启套餐
+      if(option.payType == 0 &&  (option.accountType == 6 || option.accountType == 7)) { 
+          this.obj.packageIds = String(option.packageIds).split(',');
+          
+      }
+      
+
+      this.$apply();
+
+
+      // this.$parent.getUserInfo(function (userInfo) {
+      //   if (userInfo) {
+      //     self.userInfo = userInfo
+      //   }
+      // })
+    }
+  }
+
+
+</script>

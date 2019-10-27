@@ -1,0 +1,705 @@
+<style lang="scss">
+    $fffcolor: #fff;
+
+    page {
+        background: #f9f9f9;
+    }
+    .package {
+        padding-bottom:120rpx;
+    }
+    .package-name {
+        color: #333;
+        font-weight: bold;
+        font-size: 30rpx;
+        background: $fffcolor;
+        padding: 31rpx 40rpx;
+        text {
+            color: #666;
+            font-weight: normal;
+            font-size: 28rpx;
+        }
+    }
+    .pack-des {
+        padding: 10rpx 0 15rpx 40rpx;
+        .des-introduce {
+            display: inline-block;
+            font-size: 24rpx;
+            color: #888;
+            margin-right: 12rpx;
+        }
+    }
+    .brand {
+        .van-icon {
+            font-size: 50rpx;
+            
+        }
+    }
+    .search-type {
+        background: #fff;
+        overflow: hidden;
+        padding-bottom: 30rpx;
+     
+        .all-brand {
+            font-size: 26rpx;
+        }
+        .type-i {
+            color:#333;
+            font-size: 22rpx;
+        }
+        .van-icon {
+            vertical-align: middle;
+            margin-right: 12rpx;
+        }
+        .van-tabs__line {
+            // background-color:#eef1f7;
+            // border-radius: 35px;
+            // height: 80rpx;
+            // z-index: -1;
+            // border-bottom: 0;
+            // width: 190rpx !important;
+            display: none !important
+        }
+        .active-item {
+            background-color:#eef1f7;
+            border-radius: 35px;
+            height: 70rpx;
+            line-height: 70rpx;
+        }
+        
+    }
+
+    .car-list {
+        background: #fff;
+        .van-row {
+            border-top: 1px #f3f3f3 solid;
+            border-bottom: 1px #f3f3f3 solid;
+        }
+        .van-col {
+            position: relative;
+            border-bottom: 1px #f3f3f3 solid;
+            padding: 30rpx 0;
+        }
+        .car-bor {
+                border-right: 1px #f3f3f3 solid;
+                position: absolute;
+                right: 0;
+                top: 0;
+                z-index: 1;
+                height: 100%;
+            }
+        .car-brand {
+            color: #333;
+            font-size: 26rpx;
+            // margin-top: 30rpx;
+            margin-left: 22rpx;
+            font-weight: bold;
+        }
+        .car-product {
+            overflow:hidden;
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            margin-left: 22rpx;
+            color: #666;
+            font-size: 22rpx;
+            margin-top: 4rpx;
+        }
+        .car-hidden {
+            visibility: hidden;
+        }
+        .car-price {
+            font-size: 22rpx;
+            color: #999;
+            margin-left: 22rpx;
+        }
+        image {
+            width: 100%;
+            height: 170rpx;
+            padding: 10rpx 0;
+        }
+    }
+
+    .des-icon {
+        vertical-align: middle;
+        margin-top: -6rpx;
+    }
+    .pack-car-type {
+        
+        .van-tabs__line {
+            background-color:#0168FF;
+        }
+    }
+    .car-type-active {
+        color: #0168FF !important;
+    }
+    .package-type {
+        padding-right: 70rpx;
+        position: relative;
+        background: #fff;
+        .van-tab {
+            color:#333;
+        }
+        .type-arrow-down {
+            position: absolute;
+            right: 40rpx;
+            top: 24rpx;
+        }
+    }
+    .type-arrow-up {
+        font-size: 24rpx;
+        color:#666;
+        text-align: center;
+        margin-top:0rpx;
+        padding-bottom:9px;
+
+        .van-icon {
+            vertical-align: middle;
+            margin-left: 6rpx;
+            margin-top:-4rpx;
+        }
+    }
+    .select-tag-list {
+        background: #fff;
+        
+        overflow: hidden;
+        position: relative;
+        .select-tag-down {
+            position: absolute;
+            right: 26rpx;
+            top: 29rpx;
+        }
+        .select-tag {
+            white-space: nowrap; 
+            overflow:hidden; 
+            width: 78%;
+            padding: 18rpx 26rpx;
+            // border-bottom: 1px #e6e6e6 solid;
+        }
+        // text-overflow:ellipsis;
+        
+        // white-space:nowrap;
+        .select-item {
+            background: #EEF1F7;
+            color: #333;
+            font-size: 22rpx;
+            padding: 0 24rpx;
+            height: 60rpx;
+            line-height: 60rpx;
+            margin-right: 20rpx;
+            display:inline-block;
+            border-radius:35px;
+            position: relative;
+            .van-icon {
+                vertical-align: middle;
+            }
+            .cross-tag {
+                position: absolute;
+                right: -6rpx;
+                top: -2rpx;
+                z-index: 1;
+                background:#ccc;
+                border-radius:100%;
+                padding:4rpx;
+
+            }
+        }
+    }
+    
+
+    .used-way {
+        font-size: 26rpx;
+        color: #999;
+        text-align: center;
+        padding-top: 40rpx;
+        &:after {
+            content: '';
+            border-top: 1px #ccc solid;
+            width: 35%;
+            display: inline-block;
+            margin-left: 30rpx;
+            vertical-align: middle
+        }
+        &:before {
+            content: '';
+            border-top: 1px #ccc solid;
+            width: 35%;
+            display: inline-block;
+            margin-right: 30rpx;
+            vertical-align: middle
+        }
+    }
+
+    .service {
+        text-align: center;
+        padding-bottom: 20rpx;
+        .used-way {
+            padding-bottom: 20rpx;
+        }
+        
+        .img {
+            width: 90rpx;
+            height: 90rpx;
+            border-radius: 100%;
+        }
+        .title {
+            font-size: 24rpx;
+            color: #666;
+            margin-top: 24rpx;
+        }
+        .introduce {
+            font-size: 20rpx;
+            color: #999;
+            margin-top: 6rpx;
+        }
+        .van-col {
+            margin: 45rpx 0;
+        }
+    }
+
+     .car-base {
+        background: $fffcolor;
+        margin-top: 20rpx;
+        padding-top: 30rpx;
+    }
+    .custom-foot {
+        position: fixed;
+        left: 0;
+        right: 0;
+        z-index: 1;
+        bottom: 0;
+    }
+    .custom-foot-maxDay {
+        font-size: 22rpx;
+        color: #666;
+    }
+
+
+
+</style>
+<template>
+    <view class="container package">
+        <!-- <van-toast id="van-toast" /> -->
+        <view class="package-name">{{packInfo.packageInfo.packageName}} <text>￥{{filter.numFormat(packInfo.packageInfo.rechargeOnce)}}</text></view>
+        <view class="pack-des">
+            <view class="des-introduce" wx:for="{{packInfo.packageDescriptions}}" wx:key="index">
+                <van-icon size="26rpx" custom-class="des-icon" name="https://h5.cuco.cn/wechatCucoXImage/icon_2.png" />
+                {{item.introduce}}
+            </view>
+        </view>
+
+        <view class="select-tag-list" wx:if="{{isSelectTag}}">
+            <view class="select-tag">
+                <view wx:for="{{curList}}" id="{{index}}" bind:tap="onClickDeleteTag" wx:key="index" class="select-item" wx:if="{{item.typeStr}}">
+                    <van-icon wx:if="{{item.logoUrl}}" size="40rpx" name="{{item.logoUrl}}" />
+                    {{item.typeStr}}
+                    <van-icon custom-class="cross-tag" size="20rpx" color="#f9f9f9" name="cross" />
+                </view>
+            </view>
+             <van-icon bind:click="onClickDownHide" custom-class="select-tag-down" color="#ccc" size="34rpx" name="arrow-down" />
+        </view>
+
+        <view class="package-type" wx:if="{{isType}}">
+            <van-tabs bind:click="onClickCarType" active="{{activeType}}" tab-active-class="car-type-active" custom-class="pack-car-type" border="{{false}}" tab-class="type-i" swipe-threshold="6" line-width="40">
+                <van-tab title="全部" title-style="font-size: 26rpx; color:#333;"></van-tab>
+                <van-tab wx:for="{{searchData.carTypeList}}" wx:key="index"   data-index="{{ index }}"  title="{{item.typeStr}}"></van-tab>
+            </van-tabs>
+
+            <van-icon bind:click="onClickDown" custom-class="type-arrow-down" size="38rpx"  name="arrow-down" color="#d2d2d2" />
+        </view>
+        <view style="padding-top: 30rpx; background:#fff" wx:if="{{isTypeSearch}}">
+            
+            <view class="search-type brand" wx:if="{{searchData.carBrandVOList}}">
+                <van-tabs bind:click="onClickType(0) " active="{{curActive[0].active}}" tab-active-class="active-item" border="{{false}}" swipe-threshold="3" tab-class="type-i" line-width="90">
+                    <van-tab title="所有品牌" title-style="font-size: 24rpx; color:#333;"></van-tab>
+                    
+                    <van-tab wx:for="{{searchData.carBrandVOList}}" wx:key="index"   data-index="{{ index }}"   icon="{{item.logoUrl}}" title="{{item.typeStr}}"></van-tab>
+                </van-tabs>
+            </view>
+            <view class="search-type brand" wx:if="{{searchData.carTypeList}}">
+                <van-tabs bind:click="onClickType(1) " active="{{curActive[1].active}}" tab-active-class="active-item" border="{{false}}" tab-class="type-i" swipe-threshold="3" line-width="90">
+                    <van-tab title="所有车型 " title-style="font-size: 24rpx; color:#333;"></van-tab>
+                    <van-tab wx:for="{{searchData.carTypeList}}" wx:key="index"  data-index="{{ index }}" title="{{item.typeStr}} " icon="https://h5.cuco.cn/wechatCucoXImage/car_{{item.type}}.png"></van-tab>
+                </van-tabs>
+            </view>
+            <!-- <view class="search-type">
+                <van-tabs bind:click="onClickType(2)"  active="{{curActive[2].active}}" tab-active-class="active-item" border="{{false}}" tab-class="type-i" swipe-threshold="3" line-width="90">
+                    <van-tab title="价格区间"  title-style="font-size: 26rpx; color:#333;"></van-tab>
+                    <van-tab wx:for="{{searchData.carPriceRangeList}}" wx:key="index"  title="{{item.typeStr}}"></van-tab>
+                
+                </van-tabs>
+
+            </view> -->
+            <view class="search-type" wx:if="{{searchData.carSceneVOList}}">
+                <van-tabs bind:click="onClickType(2)" active="{{curActive[2].active}}" tab-active-class="active-item" border="{{false}}" tab-class="type-i" swipe-threshold="3" line-width="90">
+                    <van-tab title="用车场景"  title-style="font-size: 24rpx; color:#333;"></van-tab>
+                    <van-tab wx:for="{{searchData.carSceneVOList}}" wx:key="index" title="{{item.typeStr}}"></van-tab>
+                </van-tabs>
+            </view>
+
+            <view class="type-arrow-up" bind:tap="onClickSelectTag">收起<van-icon name="arrow-up" color="#d2d2d2" size="38rpx" /></view>
+        </view>
+
+         <view class="loadings" wx:if="{{loading}}">
+            <van-loading color="#000" size="70rpx" />
+        </view>
+        <view class="car-list" wx:else>
+            <van-row>
+                <van-col span="12" class="car-list-l" wx:for="{{packInfo.carTypeList}}" wx:key="index" id="{{item.id}}"  bind:tap="onDetail">
+                    <view class="car-bor"></view>
+                    <view class="car-brand">{{item.brand}} {{item.carType}}</view>
+                    <view class="car-product {{!item.product ? 'car-hidden':''}}">{{item.product}}</view>
+                    <image src="{{item.imageUrl}}" mode="aspectFit"></image>
+                    <view class="car-price">￥{{item.price}}/天</view>
+                </van-col>
+            </van-row>
+            <view wx:if="{{carList.length == '0'}}">
+                暂无数据~
+            </view>
+        </view>
+
+
+        <view class="service car-base">
+            <view class="used-way">云车服务</view>
+            <van-row>
+                <van-col span="8" wx:for="{{packInfo.serviceDescription}}" wx:key="index">
+                    <image class="img" src="{{item.imageUrl}}" mode="aspectFit"></image>
+                    <view class="title ">{{item.title}}</view>
+                    <view class="introduce">{{item.introduce}}</view>
+                </van-col>
+            </van-row>
+        </view>
+
+        <view class="custom-foot">
+            <van-row custom-class="custom-foot-buy">
+                <van-col span="14">
+                    <view class="custom-foot-amount">{{packInfo.packageInfo.packageName}} ￥{{filter.numFormat(packInfo.packageInfo.rechargeOnce)}}</view>
+                    <view class="custom-foot-maxDay">最多可用车{{packInfo.packageInfo.maxDay}}天次，节假日可用</view>
+                </van-col>
+                <van-col span="10" style="text-align:right">
+                    <van-button type="default" bind:click="onWechatBuy" custom-class="buy">购买套餐</van-button>
+                </van-col>
+            </van-row>
+        </view>
+        <view wx:if="{{loadingPay}}" class="toast-loading loading-auto">
+            <van-loading type="spinner" color="#fff" />
+        </view>
+    <login wx:if="{{isLogin}}"></login>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import {url, getRequest} from '../lib/util'
+import Toast from '../components/vant/toast/toast';
+import filter from '../wxs/filter.wxs';
+import Login from '../components/login'
+export default class Index extends wepy.page {
+    config = {
+        navigationBarTitleText: '云车套餐'
+    };
+    components = {
+        login:Login
+    };
+    data = {
+        loadingPay:false,
+        isLogin: false,
+        isTypeSearch: false,
+        isSelectTag: false,
+        activeType: 0,
+        carDetail: {},
+        packInfo: {},
+        loading: false,
+        active: 0, // 
+        searchData: [],
+        isType: true, // 全部车型，suv 轿车...
+        carActive: 0,
+        curActive: [
+            {index: 0, active: ''},
+            {index: 1, active: ''},
+            // {index: 2, active: ''},
+            {index: 2, active: ''},
+        ],
+        cur: {
+            brand: '',
+            type: '',
+            priceRangeType: '',
+            sceneType: '',
+            "cityCode": wx.getStorageSync('cityCode'),
+            rightsInterestsId: '',
+        }, // 搜索条件
+        curList: []
+    };
+      onRefresh(data) {
+        console.log(data)
+        this.isLogin = false;
+        this.$parent.login();
+        this.onLoad(this.cur)
+        this.$apply();
+    }
+    onLoginHide() {
+        this.isLogin = false;
+        this.$parent.globalData.userInfo = null;
+        wx.reLaunch({
+            url: `./cloudHomeBar`
+        })
+        this.$apply();
+    }
+
+    computed = {};
+
+    onWechatBuy() {
+        var self = this;
+        this.loadingPay = true;
+        if(!wx.getStorageSync('isRiskAuditStatus')) {
+
+            wx.setStorageSync('routerAuth', `./packageDetail?id=${this.cur.rightsInterestsId}`) // 缓存进入前路由
+            this.loadingPay = false;
+            this.$parent.toRouterAuth();
+            return false;
+        }
+        this.$parent.getRequest(url.wechatPay, 'POST', {
+            isFromApplet: 1,
+            openId: wx.getStorageSync('openId'),
+            packageIds: String(this.cur.rightsInterestsId).split(','),
+            // money: this.currentCustomAmount.rechargeOnce,
+            accountType: 6,
+            payType: 0,
+        }).then((res) => {
+            this.loadingPay = false;
+            var obj = res.data.obj;
+                wx.requestPayment({
+                    timeStamp: obj.timeStamp,
+                    nonceStr: obj.nonceStr,
+                    package: obj.package,
+                    signType: 'MD5',
+                    paySign: obj.paySign,
+                    success(data) {
+                        wx.showToast({
+                            title: '购买成功',
+                            icon: 'none',
+                            duration: 2000
+                        })
+                        self.onLoad(self.cur)
+                        
+                    },
+                    fail(fail) {
+                        console.log(fail)
+                    }
+                })
+        })
+    }
+
+      onClickDeleteTag(e) {
+            this.curList[e.currentTarget.id] = 0;
+
+            this.onClickType({
+                detail: {
+                    index: 0
+                },
+                currentTarget: {
+                    dataset: {
+                        wpyonclicktypeA: this.curActive[e.currentTarget.id].index
+                    }
+                }
+            })
+
+            this.curActive[e.currentTarget.id].active = '0';
+
+
+            
+            var isTrue = this.curList.map((item) => {
+
+                return !item.typeStr
+            })
+            console.log(isTrue);
+
+            
+            if(isTrue.indexOf(false) == -1) {
+                this.isSelectTag = false;
+                this.isType = true;
+            }
+
+            // if(this.curList.length == 0) {
+            //     this.isSelectTag = false;
+            //     this.isType = true;
+            // }
+            // if(isStatus) {
+                    
+            // }
+            // var isType = false;
+            // this.curActive.map((item) => {
+            //     if(!item.active || item.active == '0') {
+            //          isType = true
+
+            //     } else {
+            //         isType = false
+
+            //     }
+            // })
+
+            // this.isType = isType;
+            // this.isSelectTag = !isType;
+        }
+
+        onClickType( event) {
+
+            var index = event.currentTarget.dataset.wpyonclicktypeA
+
+            this.loading = true;
+
+            this.active = event.detail.index;
+            this.curActive[index].active = this.active;
+
+            console.log(event)
+
+
+            if(index == 0) {
+                if(this.active) {
+                    this.curList[index] = this.searchData.carBrandVOList[this.active -1]
+                    this.cur.brand = this.active == -1 ? '':  this.searchData.carBrandVOList[this.active  -1].typeStr || 0;
+                }  else {
+                     this.cur.brand = ''
+                }
+                
+            } else if(index == 1){
+                 if(this.active) { 
+                     this.curList[index] = this.searchData.carTypeList[this.active -1]
+                     this.curList[index].logoUrl = `https://h5.cuco.cn/wechatCucoXImage/car_${index}.png`
+                     this.cur.type  = this.active == -1 ? '': this.searchData.carTypeList[this.active  -1].type || 0;
+                 } else {
+                      this.cur.type = '';
+                 }
+                
+            } 
+            // else if(index == 2) {
+            //     if(this.active) {  
+            //         this.curList[index] = this.searchData.carPriceRangeList[this.active -1]
+            //         this.cur.priceRangeType = this.active == -1 ? '': this.searchData.carPriceRangeList[this.active  -1].type || 0;
+            //     } else {
+            //         this.cur.priceRangeType = ''
+            //     }
+                 
+            // } 
+            else {
+                if(this.active) {   
+                    this.curList[index] = this.searchData.carSceneVOList[this.active -1]
+                    this.cur.sceneType = this.active == -1 ? '': this.searchData.carSceneVOList[this.active  -1].type || 0;
+                } else {
+                    this.cur.sceneType = ''
+                }
+            }
+
+            if(this.active == 0) {
+                this.curList[index] = true
+            }
+            console.log(this.curList);
+            this.$parent.getRequest(url.getPackageInfo, 'POST', this.cur)
+            .then((res) => {
+                
+                this.loading = false;
+                this.packInfo = res.data;
+                this.$apply();
+            });
+
+
+        }
+        onDetail(e) {
+            console.log(e);
+            wx.navigateTo({
+                url: `./carTypeDetail?id=${e.currentTarget.id}`
+            })
+        }
+    
+    methods = {
+      
+        onClickDownHide() {
+            this.isSelectTag = false;
+            this.isTypeSearch = true;
+        },
+        onClickSelectTag(e) {
+            var isTrue = this.curList.map((item) => {
+                return String(item) == 'true'
+            })
+            
+            if(isTrue.indexOf(false) == -1) {
+                this.isType = true;
+            } else {
+                this.isSelectTag = true;
+            }
+
+            this.isTypeSearch = false;
+        },
+        onClickDown() {
+            this.isType = false;
+            this.isTypeSearch = true;
+
+            this.cur.type = '';
+        },
+        onClickCarType(e) {
+            console.log(e)
+            
+            this.active = e.detail.index;
+            if(this.active == 0) {
+                this.cur.type = ''
+            } else {
+                this.cur.type = this.active - 1
+            }
+            this.$parent.getRequest(url.getPackageInfo, 'POST', this.cur)
+            .then((res) => {
+                
+                this.loading = false;
+                this.packInfo = res.data;
+                this.$apply();
+            });
+        },
+        
+  
+    };
+    wxs = {
+        filter: filter
+    }
+
+    events = {};
+
+    async getList() {
+        let res = await this.$parent.getRequest(url.getCarTypeSearchList, 'POST', {});
+        // Toast.clear();
+        this.searchData = res.data;
+        this.$apply();
+    }
+    onLoad(option) {
+        
+            var self = this;
+        if(!wx.getStorageSync('mobile') || !wx.getStorageSync('token')) {
+            this.$parent.getUserInfo((userInfo) => {
+                if (userInfo) {
+                    self.isLogin = true;
+                    self.$apply();
+                }
+            })
+            
+        
+            return false;
+        } else {
+                self.isLogin = false;
+                self.$apply();
+        }
+
+        // Toast.loading({
+        //     mask: true,
+        //     message: '加载中...',
+        //     duration: 0,
+        // });
+        this.loading = true;
+        this.getList();
+        this.cur.rightsInterestsId = option.id || option.rightsInterestsId;
+        this.$parent.getRequest(url.getPackageInfo, 'POST', this.cur)
+        .then((res) => {
+            this.packInfo = res.data;
+            this.loading = false;
+            
+            this.$apply();
+        });
+    
+    }
+}
+</script>

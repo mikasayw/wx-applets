@@ -1,0 +1,340 @@
+<style lang="scss">
+    $fffcolor: #fff;
+    page {
+        background: $fffcolor;
+    }
+
+    .package-banner {
+        padding: 0 50rpx;
+        swiper {
+            height: 435rpx;
+        }
+        .slide-image {
+            width: 100%;
+            height: 360rpx;
+            border-radius: 10px;
+            transition:all .8s; 
+            -moz-transition:all .8s;
+            -o-transition:all .8s;
+        }
+        .swiper {
+            // margin: 0 20rpx;
+            .mark {
+                background: rgba(0, 0, 0, .5);
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 1;
+                border-radius: 10px;
+                width: 100%;
+                height: 360rpx;
+            }
+            .lock {
+                position: absolute;
+                right: -18rpx;
+                top: 30rpx;
+                color: #fff;
+                z-index: 2;
+                font-size: 26rpx;
+                image {
+                    width: 170rpx;
+                    height: 45rpx;
+                }
+            }
+        }
+   
+      
+        .package-name {
+            color: #fff;
+            position: absolute;
+            left: 50rpx;
+            top: 40rpx;
+             font-size: 34rpx;
+             
+            .balance {
+                font-size: 26rpx;
+                color: #fff;
+                margin-top: 10rpx;
+            }
+        }
+       
+    }
+     .swiper-lock {
+            .package-name {
+                color: #eee;
+                z-index: 10;
+                 .balance {
+                     color: #eee;
+                 }
+            }
+        }
+
+        .detailed-list {
+            background: #fff;
+            margin-top: 20rpx;
+            .deposit-title {
+                font-size: 28rpx;
+                color:#666;
+            }
+            .deposit-value {
+                color: #FF8366;
+                font-size: 30rpx;
+            }
+            .depos-col {
+                color: #333;
+            }
+            .deposit-label {
+                color:#999;
+                font-size: 22rpx;
+            }
+        }
+
+ .icon_1 {
+            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAcCAYAAAAN3M1lAAAAAXNSR0IArs4c6QAABMpJREFUWAmdmGuIVVUUx+9MZln4KURCxBCTtIjQoqmxScfH+CiQoKJUUqZsMERNJqMGnFKLJqTEKCOxAYciiPBDmjo+ctCUwEjIFJMeioj50V5mdfv9j2sf1j7n3LlXN6yzHvu39l57n333vTOlcrk8HpmD3F6qocE9gXQjD1XDYZ5HDiMLqrHZ/noCY5AbkUYGuDMLFPjTid2EPAs/u6Dfh+bh3IysgV3oO6rZKux7BzUwQLWd2+b4Vvj+dq7bsZ2wNe9cfV1d3TckH3UDaOduc35kwn9C4HMX1M61OD81YdfhbEoDl3dujvMrmtqxEgMcQB1zVBOTjXZ+ZMK/T2C7Cz4H3+z81ITtwOlJA6VSF+yjzi80k8KsZz/6hKMmMsAo52fNdwnssmAdeil8UxYyfwVaO60m9m3Yfs9nWhgrK5OwDzmJhDaJAUYGx2vj1xNTjpomXA7fmHjuYexyQp9ZWOx62FkOi8y0MEVtgC8xf5RP0wDNDDAi8TIP+P8IvYXoKKhpvHb4exPPPYxdQiicz2uw34Od5rDUjApT1AbYg/mzfJqYqQwwPPEyD/h/Cb2JHLIuTfgi/HjzU2XsIgLhfA7A/gB2UgqZkStMcStuN+Zpx01jgGHmR8om7CJ42Do04cvwd0UgDuw/qDZEi1e7FtkE+0Di2aOwMPXZZL2YZ4zVTrQwgC7MXIO/RPA15Fvr1IQd8HeYnyrYv3GeRvoseB1a3yYN5ievKdg5bavbQcdZ69ROzGCAoTmYgE24GvM769eEK+H17RI12L8ILEAOWscgdA/s3fJ1uKs2YK1+JhIK0u5sZfBfi5Lhryf+KhIK+hO7A95fR0kq7A0YHyP3JIFS6Tf0YzUVpgQGGIjSx3uIfNoFJtKAhc0m1O7dasA5eL2+XIMdTFD3XDiTpyqesVx2PqB770ralfDlmgpjRXqVM5CwWzq8+tQWNni9yk4k7NYf2PrU5prtbA8dYbcuYLdVLYzEAYDTEX++vuC1nCeWa/DJgafDn6+V8D9kYdhBxDYj4Xz9jv0k7JF+C7OiWoDDFaE7aDuJ59C5Bq9z2IGEK+Ii9ivwx7MwrHb1Q+Q+69MHZB5schdWLIxE3VtTkWGWqBt+B4lnzY8UvF73S0h4JXrdq+CPRiCOLWAjZpP16ep4CvaQ+cX3GIkqeDIy3EB9J+4k8Yz5kbJFvEAwfA1pZ9fAH4lAHFgdjQ1Is/VpAa2w+81PVG7HrCgl3WKgiuol8bT5kbKi2gk2WId29nV4/QCNmrH6uaQzq6YFPAO7N/HcIyqMRN1rE5GRxugjvpvEX8yPlC1iGcFG69AiuuC/jkAcY/WLNvwU1wLaYHuzrPy0MCvqQWKjDFRRe0n8yfxIGb+YoHLUVNRa+K8Szz2MXUvoEQuLXQy7zWGRmRZGdAIy2vXuI/Gk87PmIgJTLKhFrIPvy0Lmv4F+3GyxS2G3mF+oksJY0f30hntHYB+JJwozCMIvRIVzIuwd+D0ysg12FbG5Lt4O+6nzC816EsfRE+4dQQdIzN07IRteK384+OgN8Dudn5qw+sXamga4TmA/cn5FUzs21vUeJDF377h+mTOdvxF+q/Oz5nwX6ITtdn7/Jqu62n8RVPxDIszI2OFfBPNDrFb9P12KyrcygB7yAAAAAElFTkSuQmCC) no-repeat;
+            background-size: 100%;
+            width: 38rpx;
+            height: 36rpx;
+            position: absolute;
+            right: 40rpx;
+            bottom: 120rpx;
+        }
+        .again-buy {
+            position: absolute;
+            top: 40rpx;
+            right: 40rpx;
+            font-size: 26rpx;
+            color:#fff;
+            .van-icon {
+                vertical-align: middle;
+                margin-top: -4rpx;
+            }
+        }
+</style>
+<template>
+    <view class="container">
+        <view class="package-banner">
+            <view wx:if="{{packageBanner.length == 0}}" bind:tap="onPackList" style="texta-align:center">
+                <image src="https://h5.cuco.cn/wechatCucoXImage/packageEmpty.png" mode="aspectFit"  class="slide-image" />
+            </view>    
+            <swiper 
+                indicator-dots="{{true}}"
+                indicator-color="#ccc"
+                indicator-active-color="#46535F"
+                bindchange="onChangeCurrent"
+                duration="200"
+            >
+                <block wx:for="{{packageBanner}}" wx:key="index" wx:if="{{packageBanner && packageBanner.length}}">
+                    <swiper-item class="swiper {{item.isLock ? 'swiper-lock': ''}}">
+                        <view class="package-name">
+                            <view>{{item.packageName}}</view>
+                            <view class="balance" wx:if="{{item.packageType == 1 || item.packageType == 0}}">余额 ￥{{filter.numFormat(item.balance)}}</view>
+                            <view class="balance" wx:if="{{item.packageType == 2}}">可用{{item.surplusDays}}天</view>
+                            <!-- <view class="balance" wx:if="{{item.packageType == 3}}">可用{{item.surplusDays}}天</view> -->
+                        </view>
+                        <!-- <view wx:if="{{item.packageType == 2 || item.packageType == 0}}" class="icon_1"></view> -->
+                        <view wx:if="{{item.packageType == 0 && item.packageId != 2}}" class="again-buy" bind:tap="onAgainBuyPay" id="{{item.packageId}}">充值<van-icon name="arrow" color="#fff" size="26rpx" /></view>
+                        <view wx:if="{{item.packageType == 2}}" class="again-buy" bind:tap="onAgainBuy" id="{{item.packageId}}">再次购买<van-icon name="arrow" color="#fff" size="26rpx" /></view>
+                        <image src="{{item.packageImage}}" mode="aspectFit"  class="slide-image" />
+                        <view wx:if="{{item.isLock}}" class="mark" ></view>
+                        <view wx:if="{{item.isLock}}" bind:tap="onClickActivation" class="lock"><image src="https://h5.cuco.cn/wechatCucoXImage/lock.png" mode="aspectFit" ></image></view>
+                    </swiper-item>
+                </block>
+                </swiper>
+        </view>
+        <view>
+            <view class="detailed-list" wx:for="{{detailedList}}" wx:key="index">
+                <van-cell
+                title="{{item.payTypeDesc}}"
+                title-class="deposit-title"
+                value-class="deposit-value {{item.total <= 0 ? 'depos-col' :''}}"
+                label-class="deposit-label"
+                value="{{item.days ? item.days:item.total}}"
+                label="{{item.created}}"
+                >
+                </van-cell>
+            </view>
+            
+        </view>
+        
+        <view wx:if="{{loading}}" class="loading-auto">
+            <van-loading color="#000" size="100rpx" />
+        </view>
+
+        <van-popup show="{{ isActivation }}" bind:close="onHideActivation" position="bottom" custom-class="popup">
+           <view class="popup-head">套餐激活说明</view>
+           <van-panel border="{{false}}" wx:for="{{explainList}}" wx:key="index" title="{{item.title}}" desc="{{item.content}}" >
+                <!-- <view>内容</view> -->
+            </van-panel>
+            <view style="text-align: center; margin: 20rpx 0">
+                <van-button type="default" bind:tap="onAgainBuyPay" custom-class="buts empty-but">充值</van-button>
+            </view>
+      </van-popup>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+import {url, getRequest} from '../lib/util';
+import Toast from '../components/vant/toast/toast';
+import filter from '../wxs/filter.wxs';
+export default class Index extends wepy.page {
+    config = {
+        navigationBarTitleText: '我的套餐'
+    };
+    components = {};
+
+    data = {
+        isActivation: false,
+        packageBanner: [],
+        loading: true,
+        detailedList: [],
+        explainList: [
+            {
+                title: '1.套餐为什么会变成待激活？',
+                content: '当套餐余额不足支付 1 天用车费用时，套餐将进入待激活状态，待激活状态下用车费用将按ONCE价格收取。'
+            },
+            {
+                title: '2.如何激活套餐？',
+                content: '需要进行续费，续费后套餐余额大于等于 1万元时套餐将自动激活。'
+            }
+        ],
+
+    };
+
+    computed = {};
+
+    methods = {};
+    onPackList() {
+        wx.navigateTo({
+            url: `./packageList`
+        })
+    }
+    onAgainBuy(e) {
+        console.log(e)
+        this.$parent.getRequest(url.wechatPay, 'POST', {
+            packageIds: [e.currentTarget.id],
+            accountType: 7,
+            payType: 0,
+            isFromApplet: 1,
+            openId: wx.getStorageSync('openId')
+        }).then((res) => {
+            var obj = res.data.obj;
+            wx.requestPayment({
+                timeStamp: obj.timeStamp,
+                nonceStr: obj.nonceStr,
+                package: obj.package,
+                signType: 'MD5',
+                paySign: obj.paySign,
+                success(data) {
+                    console.log(data);
+                    self.list();
+                },
+                fail(fail) {
+                    console.log(fail)
+                }
+            })
+        })
+    }
+
+    onHideActivation() {
+        this.isActivation = false;
+    }
+    onClickActivation() {
+        this.isActivation = true
+    }
+
+    onClickDetail(e) {
+        var row = e.currentTarget.dataset.item;
+        wx.navigateTo({
+            url: `./packageDetail?id=${row.packageId}&packageType=${row.packageType}`
+        })
+        console.log(e);
+    }
+
+    events = {};
+    onAgainBuyPay() {
+        wx.navigateTo({
+            url: `./fixedPay`
+        })
+    }
+    onWechatBuy() {
+        this.$parent.getRequest(url.wechatPay, 'POST', {
+            packageIds: String(this.currentCustomAmount.packageId).split(','),
+            money: this.currentCustomAmount.rechargeOnce,
+            accountType: 7,
+            payType: 0,
+        }).then((res) => {
+            wx.requestPayment({
+                timeStamp: res.data.timeStamp,
+                nonceStr: res.data.nonceStr,
+                package: `prepay_id=${res.data.prepayId}`,
+                signType: 'MD5',
+                paySign: res.data.againSign,
+                success(data) {
+                    console.log(data);
+                },
+                fail(fail) {
+                    console.log(fail)
+                }
+            })
+        })
+    }
+    onChangeCurrent(event) {
+        let current = event.detail.current
+        console.log(current)
+        this.packageDetailList(this.packageBanner[current].id);
+    }
+    packageDetailList(id) {
+        this.$parent.getRequest(url.myPackageDetailList, 'POST', {
+            "cityCode": wx.getStorageSync('cityCode'),
+            id: id,
+        }).then((res) => {
+            this.detailedList = res.data || [];
+            this.detailedList.map((item) => {
+
+                item.total = item.total >= 0 ? `+${item.total}` : `${item.total}`
+                if(item.days) {
+                    item.days = item.days >= 0 ? `+${item.days}天`: `${item.days}天`
+                }
+                
+                return item;
+            })
+
+
+            this.$apply();
+            
+        })
+    }
+
+    wxs = {
+        filter: filter
+    }
+  
+    onLoad() {
+        this.$parent.getRequest(url.myPackageBanner, 'POST', {
+            "cityCode": wx.getStorageSync('cityCode'),
+        }).then((res) => {
+            console.log(res);
+            this.loading = false;
+            this.packageBanner = res.data || []
+
+
+            this.$apply();
+
+            if(this.packageBanner == 0 ) {
+                this.packageBanner = []
+                return false;
+            }
+
+            if(!res.data) {
+                this.packageBanner = [];
+            } else {
+                this.packageDetailList(res.data[0].id)
+            }
+            this.$apply();
+        })
+       
+    }
+}
+</script>

@@ -1,0 +1,212 @@
+<style lang="scss">
+
+    .identity-Authentication {
+        font-size: 50rpx;
+        color: #333;
+        margin-top: 50rpx;
+        
+        padding-bottom: 10rpx;
+        border-bottom: 1px #CCCCCC solid;
+        .identity-t {
+            color: #666;
+            font-size: 26rpx;
+            margin-top: 11rpx;
+        }
+    }
+
+    .identity  {
+        margin-left: 40rpx;
+        margin-right: 40rpx;
+        .check {
+            color:#666;
+            font-size: 26rpx;
+            margin-left: -10rpx;
+            margin-top: 70rpx;
+            text {
+                display: inline-block;
+                margin-left: -8rpx;
+            }
+            checkbox {
+                transform:scale(.6);
+                vertical-align: middle;
+               
+            }
+        }
+    }
+
+    .cell {
+        margin-left: -20rpx;
+        .van-cell-group {
+            border: none;
+            &:after {
+                border: none;
+            }
+        }
+        .van-cell {
+            margin-left: -20rpx;
+            margin: 24rpx 0;
+        }
+    }
+
+</style>
+<template>
+  <view class="container">
+      <view class="identity">
+          <view class="identity-Authentication">
+              <view>实名认证</view> 
+              <view class="identity-t">库可云车会严格保障您的信息安全</view> 
+          </view>     
+  
+          <view class="cell">
+              <van-cell-group>
+                    <van-field
+                        value="{{ cardInfo.idCardName }}"
+                        placeholder="请输入身份证姓名"
+                        id='1'
+                        bind:input="onInputCard"
+                    />
+                     <van-field
+                        value="{{ cardInfo.idcardNum }}"
+                        placeholder="请输入身份证号"
+                        id='2'
+                        bind:input="onInputCard"
+                        type="idcard"
+                    />
+                </van-cell-group>
+          </view>
+          <view>
+                <checkbox-group bindchange="onChangeCheck" class="check">
+                    <label class="checkbox">
+                        <checkbox  checked="{{isCheck}}" color="#979797" />
+                        <text>我已阅读并同意</text>
+                    </label>
+                    <text style="color:#1675FF" data-ids='1' bind:tap="onClickBook">《库可云车用户协议》</text>
+                </checkbox-group>
+          </view>
+          <view style="text-align:center; margin-top: 20rpx;">
+              <van-button type="default" round="{{true}}" custom-class="buts" bind:tap="onClickSure">确定</van-button>
+             
+          </view>
+      </view>
+
+        <van-toast id="van-toast" />
+
+  </view>
+</template>
+
+<script>
+
+
+
+  import wepy from 'wepy'
+
+  import { url, serverUrl } from '../lib/util';
+  import Toast from '../components/vant/toast/toast';
+  
+  export default class Index extends wepy.page {
+    config = {
+      "navigationBarTitleText": '实名认证'
+    }
+    components = {
+    }
+
+    data = {
+        value: '',
+        isCheck: false,
+        memberInfo: {},
+        frontCardNormal: 'https://h5.cuco.cn/wechatCucoXImage/frontIdCard.jpg',
+        backCardNormal: 'https://h5.cuco.cn/wechatCucoXImage/backIdCard.jpg',
+        frontCardUrl: '', // 身份证正面
+        backCardUrl: '', // 身份证反面
+        cardInfo: {
+            idcardNum: '', //身份证号
+            idCardName: '', //身份证姓名
+            idcardPeriodValidity: '',
+        },
+    }
+
+    computed = {
+   
+    }
+    onClickBook() {
+        wx.navigateTo({
+            url: `./agreement`
+        })  
+    }
+  
+    onInputCard(e) {
+        console.log(e);
+        var index = e.currentTarget.id; 
+
+        if(index == 1) {
+            this.cardInfo.idCardName  = e.detail;
+        } else if( index == 2) {
+            this.cardInfo.idcardNum = e.detail;
+        } 
+    }
+    onClickSure() {
+        if(!this.cardInfo.idcardNum) {
+            Toast('请填写身份证姓名')
+            return false;
+        } else if(!this.cardInfo.idCardName) {
+            Toast('请填写身份证号')
+            return false;
+        } else if(!this.isCheck) {
+            Toast('请阅读用户协议,并同意')
+            return false;
+        } else {
+            this.$parent.getRequest(url.saveMemberInfo, 'POST', {
+                picType: 0, // 上传类型0：身份证，1：驾驶证
+                name: this.cardInfo.idCardName,
+                idcardNum: this.cardInfo.idcardNum
+            }).then((res) => {
+                if(res.code != '0000') {
+                    return false;
+                }
+
+                wx.setStorageSync('riskAuditStatus', res.data.auditStatus)
+                wx.setStorageSync('isRiskAuditStatus', res.data.auditStatus == 1 || res.data.auditStatus == 5)
+
+                // if(wx.getStorageSync('orderId')) {
+                //     setTimeout(() => {
+                //         wx.reLaunch({
+                //             url: `./orderDetail?orderId=${wx.getStorageSync('orderId')}`
+                //         })
+                //     }, 1000)
+
+                //     return false;
+                // }
+
+                wx.navigateTo({
+                    url: `./license`
+                })
+                console.log(res)
+            })
+        }
+    }
+   
+    onChangeCheck() {
+        this.isCheck = this.isCheck ? false : true;
+        console.log(this.isCheck);
+    }
+
+
+    methods = {
+ 
+  
+    }
+
+    events = {
+     
+    }
+
+    onShow() {
+        
+    }
+
+    onLoad() {
+    }
+  }
+
+
+</script>

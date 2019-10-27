@@ -1,0 +1,1490 @@
+<style lang="scss">
+    $fffcolor: #fff;
+    page {
+        background:  #ededed;
+    }
+    .park {
+        swiper {
+            height: 850rpx;
+            padding-top: 60rpx;
+            
+        }
+        .slide-close {
+            background: #d1d1d1;
+            border-radius: 100%;
+            position: absolute;
+            right: 120rpx;
+                top: 50rpx;
+            z-index: 1;
+            padding: 10rpx;
+            transition:all 1s; 
+            -moz-transition:all 1s;
+            -o-transition:all 1s;
+            width:40rpx;
+            height:40rpx;
+
+            // display: none;
+        }
+        .slide-image {
+            width: 100%;
+            height: 330rpx;
+            transition:all .8s; 
+            -moz-transition:all .8s;
+            -o-transition:all .8s;
+        }
+        .slide-name {
+            font-size: 40rpx;
+            font-weight: bold;
+            color:#3a3a3a;
+            position: fixed;
+            bottom: 200rpx;
+            width: 100%;
+            right: 0;
+            text-align: center;
+            margin: 0 auto;
+            // transition:all .8s; 
+            // -moz-transition:all .8s;
+            // -o-transition:all .8s;
+            
+        }
+        .swiper-current {
+            image {
+                transform:translateY( 60px) translateZ(0px);
+                transition:all .8s; 
+                -moz-transition:all .8s;
+                -o-transition:all .8s;
+            }
+        }
+        .swiper-item {
+            
+        }
+    }
+    .openCar {
+        color: #fff;
+        background: #122B4D;
+        border-radius: 100%;  
+        width: 120rpx;
+        height: 120rpx;
+        text-align: center;
+        line-height: 120rpx;
+        font-size: 30rpx;
+        margin: 0 auto;
+        margin-top: 120rpx;  
+    }
+    .open-used-car {
+        background:#0168FF;
+        .van-icon {
+            vertical-align:middle;
+        }
+    }
+
+ 
+
+    .city {
+        font-size: 24rpx;
+        color: #666;
+        vertical-align: middle;
+        padding-left:20rpx;
+        padding-top:20rpx;
+
+        .city-arrow {
+            transform: rotate(90deg)
+        }
+        .city-location {
+            vertical-align:middle;
+            margin-top:-5rpx;
+        }
+    }
+
+    
+    .popup swiper {
+        height: 370rpx;
+        padding-top:0rpx;
+        .popup-head-order {
+            text-align: left !important;
+            padding:2rpx 20rpx 28rpx 38rpx;
+            font-size: 26rpx;
+            position: relative;
+            .pay-countDown {
+                display: inline-block;
+                text {
+                    color:#ff8366;
+                }
+            }
+        }
+       .car-address {
+           .init-time {
+               font-size: 24rpx;
+               color:#333;
+               text {
+                   color: #666;
+               }
+           }
+       }
+
+        .order-cancel {
+            position: absolute;
+            right: 40rpx;
+            top: -17rpx;
+            background: none;
+            color:#0168FF;
+            border: 0;
+        }
+
+    }
+    .select-car {
+        position: relative;
+        z-index: 100;
+    }
+
+
+</style>
+<template>
+    <view class="container park">
+        <view class="city">
+            <picker bindchange="onBindCityChange" range-key="city" value="{{cityIndex}}" range="{{cityList}}">
+                <view class="picker">
+                <van-icon custom-class="city-location" name="location" color="#999" size="26rpx" />
+                        {{cityList[cityIndex].city}}
+                        <van-icon custom-class="city-arrow" name="play" color="#999" size="20rpx" />
+                </view>
+            </picker>
+        </view>
+        <view>
+       
+          <swiper
+            previous-margin="120rpx"
+            next-margin="120rpx"
+            current="{{current}}"
+            bindchange="onChangeCurrent"
+            duration="200"
+            bindtransition="onChangeTrans"
+            >
+                <block wx:for="{{parkList}}" wx:key="index">
+                    <swiper-item wx:if="{{item.isExistOfPark == 1}}" bind:tap="onClickToDetail"  data-carTypeId="{{item.carTypeId}}" data-index="{{index}}" class="swiper-item {{index == current? 'swiper-current': ''}}" >
+                        <image src="{{item.imageUrl}}"  mode="aspectFit" class="slide-image"   />
+                    </swiper-item>
+                    
+                </block>
+            </swiper>
+            <view wx:if="{{parkList.length == 0}}" bind:tap="onSelectPark" class="select-car" style="margin-top:-200rpx;">
+                <view class="openCar "  >选车</view>
+            </view>
+            <view class="slide-name" wx:else>
+                <view class="">{{currentRow.brand}} {{currentRow.carType}}</view>
+                 <!-- <view class="" wx:if="{{isCardOrder || orderCarTypeIdcurrentRow.carTypeId}}"> -->
+                <view class="" wx:if="{{orderCarTypeId == currentRow.carTypeId}}">
+                     <view class="openCar open-used-car" bind:tap="onOpenUsedCar">
+                        <van-icon name="notes-o" color="#fff" size="50rpx" />
+                     </view>
+                </view> 
+                <view wx:else class="openCar" bind:tap="onOpenCar">开Ta</view>
+            </view>
+            
+        </view>
+
+        <!-- isSendCarInfo -->
+        <van-popup show="{{ isSendCarInfo }}" bind:close="onClickSendCar" position="bottom" custom-class="popup">
+            <!-- <view wx:if="{{usedLoading}}" class="toast-loading loading-auto">
+                <van-loading type="spinner" color="#fff" />
+            </view> -->
+            <view class="popup-head">{{currentRow.brand}} {{currentRow.carType}}</view>
+            <view class="popup-body">
+                <van-row>
+                    <van-col span="6" class="car-center send-car" data-type="1" bind:tap="onSelectCarTime">
+                         <datePicker sendDate="1">
+                            
+                        </datePicker>
+                    </van-col>
+                    <van-col span="10" class="car-day">
+                        <text wx:if="{{usedDay}}">{{usedDay}}天</text>
+                        <view class="car-line"></view>
+                    </van-col>
+                    <van-col span="6"  class="car-r return-car"  data-type="2" bind:tap="onSelectCarTime">
+                        <datePicker returnDate="2">
+                            
+                        </datePicker>
+                        
+                    </van-col>
+                </van-row>
+                <view class="address">
+                    <van-row>
+                        <van-col span="7" class="address-t">送{{isSamechecked ? '/还' :''}}车地点</van-col>
+                        <van-col span="12" >
+                            <view class="address-val" bind:tap="onChangeArress" id="1">
+                                <text wx:if="{{sendInfo.address}}" class="address-value"><text>{{sendInfo.name ? sendInfo.name : sendInfo.address}}</text></text>
+                                <text wx:else class="address-placeholder">请输入用车地点</text>
+                            </view>
+                        </van-col>
+                    </van-row>
+                    <van-row wx:if="{{!isSamechecked}}" custom-class="address-m">
+                        <van-col span="7" class="address-t">还车地点</van-col>
+                        <van-col span="12" >
+                            <view class="address-val" bind:tap="onChangeArress" id="2">
+                                <text wx:if="{{returnInfo.address}}" class="address-value"><text>{{returnInfo.name ? returnInfo.name : returnInfo.address}}</text></text>
+                                <text wx:else class="address-placeholder">请输入还车地点</text>
+                            </view>
+                        </van-col>
+                    </van-row>
+                </view>
+                <view>
+                <checkbox-group bindchange="onSameCheckboxChange" class="same-check">
+                    <label class="checkbox">
+                        <checkbox  checked="{{isSamechecked}}" color="#979797" />
+                        <text>还车地点相同</text>
+                    </label>
+                </checkbox-group>
+                </view>
+                <view style="text-align:center">
+                    <van-button type="default" wx:if="{{!isUsedDisabled}}"  custom-class="car-send buts" bind:tap="onLaunchCarUsed">确定</van-button>
+                     <van-button type="default" wx:else custom-class="car-send buts">确定</van-button>
+                    
+                </view>
+            </view>
+            
+            <view class="popup-foot"></view>
+        </van-popup>
+       
+       <van-popup show="{{ isCardOrder }}" z-index="101" overlay-style="background-color:rgba(0, 0, 0, .1);" bind:close="onClickDateTimeClose" position="bottom" custom-class="popup">
+           <swiper
+            duration="200"
+            indicator-dots="{{true}}"
+            indicator-active-color="#999999"
+            indicator-color="#EBEBEB"
+            current="{{orderListCurrent}}"
+            >
+                <block wx:for="{{orderList}}" wx:key="index">
+                    <swiper-item wx:if="{{item.cartypeId == currentRow.carTypeId}}" data-index="{{index}}" class="swiper-order" >
+                       <view class="popup-head popup-head-order">
+                           <van-row>
+                                 <!-- <van-col span="2" offset="1" style="">
+                                     {{item.carBrand }} {{item.cartypeName}}
+                                 </van-col> -->
+                                <van-col span="10" offset="1">
+                                    <view
+                                        class="pay-countDown"
+                                        wx:if="{{item.usedStatus == 0}}"
+                                    > 待支付 <text>{{item.countDownTime}}</text>
+                                    </view>
+                                    <view class="status-name"  wx:if="{{item.usedStatus == 1}}"> 待执行</view>
+                                    <view
+                                        class="status-name" 
+                                        wx:if="{{item.usedStatus == 2}}"
+                                    >
+                                    管家送车中
+                                        <!-- <dial></dial> -->
+                                    </view>
+                                    <view class="status-name"  wx:if="{{item.usedStatus == 3}}"> 用车中</view>
+                                    <view
+                                        wx:if="{{item.usedStatus == 4}}"
+                                    >
+                                    管家取车中
+                                        <!-- <dial></dial> -->
+                                    </view>
+                                    <view class="status-name"  wx:if="{{item.usedStatus == 5}}"> 已完成</view>
+                                    <view class="status-name"  wx:if="{{item.usedStatus == 6}}"> 已取消</view>
+                                    <view
+                                        class="carPlateNum"
+                                        wx:if="{{item.carPlateNum}}"
+                                    >{{item.carPlateNum}}</view>
+                                </van-col>
+                                <van-col span="10" >
+                                    <van-button type="default" id="{{item.id}}" bind:click="onClickToOrder" custom-class="order-cancel" wx:if="{{item.usedStatus == 0 }}" data-cartypeId="{{item.cartypeId}}">订单详情</van-button>
+                                    <van-button type="default" id="{{item.id}}" bind:click="onClickUsedCar" custom-class="order-cancel" wx:if="{{item.usedStatus != 0 }}">再约一辆</van-button>
+                                </van-col>
+                            </van-row>
+                                    
+                       </view>
+                            <view class="order-info" bind:tap="onClickToOrder" id="{{item.id}}" >
+                                
+                                <van-row>
+                                    <van-col span="6" offset="1" class="car-l">
+                                        <view class="init-time">
+                                            <view class="time">{{item.sendTime}}</view>
+                                            <text>{{item.sendWeek}} {{item.carTimeStart}}</text>
+                                        </view>
+                                    </van-col>
+                                    <van-col span="10" class="car-day">
+                                        {{item.carUsedPlanDays}}天
+                                        <view class="car-line"></view>
+                                    </van-col>
+                                    <van-col span="6" class="car-r">
+                                        <view class="init-time">
+                                            <view class="time">{{item.returnTime}}</view>
+                                            <text>{{item.returnWeek}} {{item.carTimeEnd}}</text>
+                                        </view>
+                                    </van-col>
+                                </van-row>
+                                <van-row custom-class="car-address">
+                                    <van-col span="22" offset="1" class="init-time" wx:if="{{item.usedStatus == 0 || item.usedStatus == 1 || item.usedStatus == 2 || item.usedStatus == 6}}">
+                                        <text>送车地址</text> {{item.SendAddressName}}
+                                    </van-col>
+
+                                    <van-col span="22" offset="1" class="init-time" wx:else>
+                                        <text>取车地址</text> {{item.returnAddressName}}
+                                    </van-col>
+                                </van-row>
+                            </view>
+                    </swiper-item>
+                </block>
+            </swiper>
+       </van-popup>
+
+       <!-- <van-dialog
+            use-slot
+            show="{{ isDialogConfirm }}"
+            show-cancel-button
+            confirm-button-open-type="getPhoneNumber"
+            bind:close="onDialogConfirm"
+            bind:getphonenumber="getphonenumber">
+            <view style="padding: 30rpx 0; text-align:center">获取用户信息</view>
+        </van-dialog> -->
+        
+            <van-dialog id="van-dialog" />
+        <login wx:if="{{isLogin}}"></login>
+        <view wx:if="{{loadingSelect}}" class="toast-loading loading-auto loading-zindex">
+            <van-loading type="spinner" color="#fff" />
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import {url, getRequest, formatTime, getCountTime} from '../lib/util'
+import DatePicker from '../components/datePicker'
+import Dialog from '../components/vant/dialog/dialog';
+import Dial from '../components/dial'
+import moment from 'moment'
+import Login from '../components/login'
+
+var QQMapWX = require('../lib/qqmap-wx-jssdk.min.js');
+var qqmapsdk;
+
+moment.locale('zh-cn');
+export default class Index extends wepy.page {
+    config = {
+        navigationBarTitleText: '我的云车'
+    };
+    components = {
+        datePicker:DatePicker,
+        dial:Dial,
+        login:Login
+    };
+
+    data = {
+        loadingSelect: false,
+        isLogin: false,
+        orderListCurrent: 0,
+        isUsedDisabled: false,
+        isCardOrder: false, //卡片 订单
+        cityIndex: 0,
+        cityList: [],
+        usedDay: '',
+        isDialogConfirm: false,
+        isSendCarInfo: false,
+        isCarDateTime: false,
+        loading: false,
+        brandActive: 0,
+        sceneActive: 0,
+        typeActive: 0,
+        parkList: [],
+        current: 0,
+        curTrans: '',
+        activeType: 0,
+        categoryList: [],
+        isDx:  '',
+        touchActive: 0,
+        deletePackList: [],
+        brandTypeInfo: [], // 品牌 场景 车型数据
+        // currentDate: new Date().getTime(),
+        week: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+        carUser: {
+            sendTime: '',
+            sendWeek: '',
+            sendStamp: '',
+            returnTime: '',
+            returnWeek: '',
+            returnStamp: '',
+            stamp: '',
+            carTypeId:'',
+        },
+        usedSendTime: '',
+        usedReturnTime: '',
+        sendInfo: {
+            address:'',
+        }, //送车信息
+        returnInfo: {
+            address:'',
+        }, // 取车信息
+
+        isSamechecked: true,
+        isCarType: 1, // 1 用车时间  2：还车时间
+        sendCarRow: {},
+        currentRow: {},
+        orderList: [],
+        orderCarTypeId: '', //记录当前订单车辆id
+        timer: null
+    };
+    onSelectPark() {
+         wx.navigateTo({
+            url: `./carTypeSearch`
+        })
+    }
+     onRefresh(data) {
+        console.log(data)
+        
+        this.isLogin = false;
+        this.$parent.login();
+        this.$apply();
+        this.onLoad();
+    }
+    onLoginHide() {
+        this.isLogin = false;
+        this.$parent.globalData.userInfo = null;
+        console.log(this.isLogin);
+        wx.reLaunch({
+            url: `./cloudHomeBar`
+        })
+        this.$apply();
+    }
+
+    computed = {};
+    onOpenUsedCar() {
+        // this.isCardOrder = true;
+
+        this.getOrderCarList(this.currentRow.carTypeId)
+    }
+    onClickUsedCar() {
+        this.isSendCarInfo = true; // 
+        this.isCardOrder  = false;
+    }
+    onBindCityChange(e) {
+        this.cityIndex = e.detail.value;
+        wx.setStorageSync('cityCode', this.cityList[e.detail.value].code)
+        wx.setStorageSync('cityName', this.cityList[e.detail.value].city)
+        this.callParkList();
+        
+    }
+
+    onDialogConfirm() {
+        // wx.navigateTo({
+        //     url: './login'
+        // })
+        this.isDialogConfirm = false;
+    }
+    onClickToDetail(e) {
+        console.log(getCurrentPages()) // 当前路由层级
+        if(getCurrentPages().length >= 8) {
+            wx.reLaunch({
+                url: `./carTypeDetail?id=${e.currentTarget.dataset.cartypeid}`
+            })
+        } else {
+            wx.navigateTo({
+                url: `./carTypeDetail?id=${e.currentTarget.dataset.cartypeid}`
+            })
+        }
+    }
+    onClickToOrder(e) {
+        console.log(e)
+        console.log(getCurrentPages()) // 当前路由层级
+        // wx.getStorageSync('isCarDetailId')
+
+        this.$parent.toRouter(`orderDetail?orderId=${e.currentTarget.id}`)
+        // if(getCurrentPages().length >= 8) {
+        //     wx.reLaunch({
+        //         url: `./orderDetail?orderId=${e.currentTarget.id}`
+        //     })
+        // } else {
+        //      wx.navigateTo({
+        //         url: `./orderDetail?orderId=${e.currentTarget.id}`
+        //     })
+        // }
+    }
+    getCityList() {
+         this.$parent.getRequest(url.openCityList, 'POST', {
+
+        }).then((res) => {
+
+            this.cityList = res.data.openList;
+            if(wx.getStorageSync('cityCode')) {
+                this.cityList.map((item, index) => {
+                    if(item.code == wx.getStorageSync('cityCode')) {
+                        this.cityIndex = index;
+                        wx.setStorageSync('cityName', item.city)
+                    }
+                });
+            }
+            this.$apply();
+        })
+    }
+
+    getMemberUserInfo() {
+        this.$parent.getRequest(url.getMemberInfo, 'POST', {
+            xcxOpenId:  wx.getStorageSync('openId'),
+            materialId: wx.getStorageSync('materialId') || '',
+            mobile: wx.getStorageSync('mobile'),
+        }).then((result) => {
+            this.memberInfo = result.data;
+            this.$parent.globalData.userInfo  = result.data;
+      
+            this.getMemberInfoToken();
+            this.callParkList();
+
+            this.getCityList();// 获取城市列表
+
+            this.$apply();
+        })
+    }
+    onClickCancel(e) {
+        console.log(e);
+        let self = this;
+        wx.showModal({
+            title: '提示',
+            content: '是否确定取消订单？',
+            confirmColor: '#0168FF',
+            success(res) {
+                if (res.confirm) {
+                    self.$parent.getRequest(url.cancelOrder, 'POST', {
+                        id: e.currentTarget.id
+                    }).then((res) =>{
+                        wx.showToast({
+                            title: '订单已取消',
+                            icon: 'icon',
+                            duration: 2000
+                        })
+                        self.orderCarTypeId = false;
+                        self.isCardOrder = false;
+                        // self.callParkList();
+                        self.getOrderCarList(e.currentTarget.dataset.cartypeid)
+                        // setTimeout(() => {
+                        //     wx.reLaunch({
+                        //         url: './orderList'
+                        //     })
+                        // }, 1000)
+                    })
+                } else if (res.cancel) {
+                console.log('用户点击取消')
+                }
+            }
+        })
+        
+    }
+
+    // 获取token
+    getMemberInfoToken() {
+        this.$parent.getRequest(url.memberLogin, 'POST', {
+            isFromApplet: 1,
+            mobile:  wx.getStorageSync('mobile'),
+            materialId: wx.getStorageSync('materialId') || '',
+        }).then((result) =>{
+            console.log(result);
+            // this.memberInfo = result.data;
+            wx.setStorageSync('token', result.data.token);
+            this.$apply();
+        })
+    }
+
+    // 获取微信绑定手机号
+    getphonenumber(e) {
+        console.log(e)
+        if(e.detail.errMsg != 'getPhoneNumber:ok') {
+            wx.navigateTo({
+                url: './login'
+            })
+
+            return false;
+        }
+
+        let self = this;
+        wx.login({
+            success(r) {
+                self.$parent.getRequest(url.getPhoneNumber, 'POST', {
+                    code: r.code,
+                    iv: e.detail.iv,
+                    encryptedData: e.detail.encryptedData
+                }).then((res) => {
+                    self.isDialogConfirm = false;
+                    
+                    try {
+                        var data = JSON.parse(res.data);
+                        wx.setStorageSync('mobile', data.purePhoneNumber)
+                        // self.$parent.globalData.userInfo.mobile = data.purePhoneNumber;
+                        self.getMemberUserInfo();
+
+                    } catch(e) {
+                        wx.navigateTo({
+                            url: './login'
+                        })
+                    }
+                    
+                })
+            }
+        })
+    }
+    onClickSendCar() {
+        this.isSendCarInfo = false;
+    }
+    onOpenCar(e) {
+        let row = e.target.dataset.item;
+
+        var riskAuditStatus = wx.getStorageSync('riskAuditStatus');
+        if(riskAuditStatus == 3 || riskAuditStatus == 2 || riskAuditStatus == 4) {
+            this.$parent.toRouter(`state`)
+            // wx.navigateTo({
+            //     url: './state'
+            // })
+            return false;
+        }
+
+        // 认证超时
+        if(riskAuditStatus == 6) {
+            this.$parent.toRouter(`identity`)
+            // wx.reLaunch({
+            //     url: `./identity`
+            // })
+            return false;
+        }
+
+
+        // 登陆
+        // if(!wx.getStorageSync('mobile') || !wx.getStorageSync('token')) {
+        //     this.isDialogConfirm = true;
+        // }
+
+
+
+        // 清空数据
+
+
+        this.$invoke(
+                'datePicker',
+                'onEmpty',
+            );
+        this.sendCarRow = row;
+
+        this.sendInfo = {};
+        this.returnInfo = {};
+        this.isSendCarInfo = true;
+        
+    }
+    // 关闭 用车时间组件
+    onClickDateTimeClose() {
+        this.isCardOrder = false;
+        clearInterval(this.timer)
+    }
+
+    onSendLaunch() {
+       
+        // isSamechecked
+        // this.isSendCarInfo = false;
+        wx.showLoading({
+            title: '加载中...',
+        })
+        // this.usedLoading = true;
+        let data = {
+            "carUsedAddressSend": this.sendInfo.address + '-' +this.sendInfo.name || '',
+            "carUsedAddressSendLon": this.sendInfo.longitude,
+            "carUsedAddressSendLat": this.sendInfo.latitude,
+            "operatorType": "0",
+            "carUsedPlanTimeStart": moment(this.carUser.sendStamp).format('YYYY-MM-DD HH:mm:ss'),
+            "carUsedPlanTimeEnd": moment(this.carUser.returnStamp).format('YYYY-MM-DD HH:mm:ss'),
+            "cityCode": wx.getStorageSync('cityCode'),
+            "carUsedAddressReturn": this.isSamechecked ?  (this.sendInfo.address + '-' +this.sendInfo.name || '') : (this.returnInfo.address + '-' + this.returnInfo.address || ''),
+            "carUsedAddressReturnLon": this.isSamechecked ? this.sendInfo.longitude :this.returnInfo.longitude,
+            "carUsedAddressReturnLat": this.isSamechecked ? this.sendInfo.latitude : this.returnInfo.latitude,
+            "cartypeId": this.currentRow.carTypeId
+        };
+        
+        this.$parent.getRequest(url.launchCarUsed, 'POST', data).then((result) =>{
+            if(result.code != '0000') {
+                this.isUsedDisabled = false;
+                this.$apply();
+                return false;
+            }
+            wx.hideLoading()
+            if(result.data.stockFlag == 0) {
+                wx.setStorageSync('launchCarUsedData', JSON.stringify(data))
+                wx.navigateTo({
+                    url: `./stock?startTime=${moment(this.carUser.sendStamp).format('YYYY-MM-DD HH:mm:ss')}&endTime=${moment(this.carUser.returnStamp).format('YYYY-MM-DD HH:mm:ss')}`
+                })
+                // wx.showToast({
+                //     title: '暂无库存，请重新修改用车时间',
+                //     icon: 'none',
+                //     duration: 3000
+                // })
+                // 无库存
+
+                this.$apply();
+                return  false;
+            } 
+
+            wx.hideLoading()
+
+
+                
+             this.isSendCarInfo = true;
+             
+            //  this.carUser = {};
+            //  this.returnInfo = {};
+            //  this.sendInfo = {};
+            this.$apply();
+
+            this.$parent.toRouter(`orderDetail?orderId=${result.data.id}`)
+            //  wx.navigateTo({
+            //     url: `./orderDetail?orderId=${result.data.id}`
+            // })
+            this.$apply();
+
+        })
+    }
+
+    onLaunchCarUsed() {
+        try {
+            wx.vibrateShort()
+        } catch (error) {
+            
+        }
+
+        if(!this.carUser.sendStamp) {
+            wx.showToast({
+                title: '请选择送车时间',
+                icon: 'none',
+                duration: 2000  
+            })
+            return false;
+
+        } else if(!this.carUser.returnStamp) {
+            wx.showToast({
+                title: '请选择取车时间',
+                icon: 'none',
+                duration: 2000  
+            })
+            return false;
+        } else if(!this.sendInfo.address) {
+            wx.showToast({
+                title: '请选择送车地址',
+                icon: 'none',
+                duration: 2000  
+            })
+            return false;
+        } else if(!this.returnInfo.address) {
+            wx.showToast({
+                title: '请选择取车地址',
+                icon: 'none',
+                duration: 2000  
+            })
+            return false;
+        }
+
+
+        this.isUsedDisabled = true;
+        let self = this;
+        this.$parent.getRequest(url.cancelConfirm, 'POST', {})
+        .then((res) =>{
+
+            if(res.data.isNeedConfirm) {
+                Dialog.confirm({
+                    title: '提示',
+                    message: res.data.description
+                    }).then(() => {
+                        this.$parent.getRequest(url.cancelOrder, 'POST', {
+                            id: res.data.id,
+                        }).then((res) =>{
+                            if(res.code != '0000') {
+                                self.isUsedDisabled = false;
+                            }
+
+                            self.onSendLaunch();
+                        })
+                    }).catch(() => {
+                        self.isUsedDisabled = false;
+                    // on cancel
+                });
+                return false;
+            } else {
+
+                this.onSendLaunch();
+            }
+        })
+       
+    }
+
+    onSameCheckboxChange() {
+        this.isSamechecked = this.isSamechecked ? false : true;
+    }
+
+    // e 1:用车地址  2：还车地址
+
+
+    onSetting() {
+        var self = this;
+        wx.openSetting({
+            success: function (r) {
+            },
+            fail: function () {
+                wx.showModal({
+                    title: '是否授权当前位置',
+                    content: '需要获取您的地理位置，请确认授权，否则地图功能将无法使用',
+                    success(resulet) {
+                        if(resulet.confirm ) {
+                            self.onSetting();
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+    getLocation(type) {
+            let self = this;
+            // 腾讯 sdk
+            qqmapsdk = new QQMapWX({
+                key: '4FEBZ-FKVK4-OMDUR-XHRQU-6EDKZ-SZFOP'
+            });
+            
+           wx.chooseLocation({
+            success(res) {
+                self.loadingSelect = false;
+                if(!res.address && !res.name) {
+                    wx.showToast({
+                        title: '请选择地址',
+                        icon: 'none',
+                        duration: 2000
+                    })
+
+                    return false;
+                }
+
+                var sameCity = new Promise((resolve, reject) => {
+                    qqmapsdk.reverseGeocoder({
+                        location: {
+                            latitude: res.latitude,
+                            longitude: res.longitude
+                        },
+                        success(res) {
+                            console.log(res)
+
+                            try {
+                                if(!res.result.ad_info && !res.result.ad_info.city) {
+                                    resolve(true)
+                                    return false;
+                                }
+
+                            var isOpen = false;
+
+                                //判断是否在开通城市
+                               self.cityList.map((item) => {
+                                    if(res.result.ad_info.city.match(item.city)) {
+                                        isOpen = true;
+                                        wx.setStorageSync('cityCode', item.code)
+                                        wx.setStorageSync('cityName', item.city)
+                                        self.getCityList();
+                                    } 
+                                })
+
+
+                                if(isOpen) {
+                                    resolve(true)
+                                } else {
+                                    wx.showToast({
+                                        title: '该城市未开通',
+                                        icon: 'none',
+                                        duration: 2000
+                                    })
+                                }
+                               
+                            } catch(e) {
+                                resolve(true)
+                            }
+                          
+                        }
+                    })
+                })
+
+                sameCity.then((isSame) => {
+                    console.log(isSame +"isSame")
+
+                    if(!isSame) { 
+                        return false;
+                    }
+                    self.$parent.getRequest(url.isFences, 'POST', {
+                        address: res.address,
+                        "cityCode": wx.getStorageSync('cityCode'),
+                        g_latitude: res.latitude,
+                        g_longitude: res.longitude,
+                    }).then((result) => {
+                        if(result.code !== '0000') {
+                            return false;
+                        }
+
+                        if(result.data == 0) {
+                            if(self.isSamechecked) {
+                                self.sendInfo = res;
+                                self.returnInfo = res;
+                                self.$apply();
+                                
+                            } else {
+                                if(type == 1) {
+                                    self.sendInfo = res;
+                                } else {
+                                    self.returnInfo = res;
+                                }
+
+                                self.$apply();
+                            }
+                        } else {
+                                wx.showToast({
+                                    title: '地址已超出取送车服务范围，请重新选择',
+                                    icon: 'none',
+                                    duration: 2500
+                                })
+                                return false;
+                        }
+                        
+
+                    })
+                })
+              
+
+
+            
+
+                
+            },
+            fail(err) {
+                self.loadingSelect = false;
+            }
+        })
+    }
+  
+    onChangeArress(e) {
+        let type = e.currentTarget.id,
+            self = this;
+            this.loadingSelect = true;
+
+        wx.getSetting(({
+            success(res) {
+                console.log(!res.authSetting['scope.userLocation'])
+                if(!res.authSetting['scope.userLocation']) {
+                    wx.authorize({
+                        scope: 'scope.userLocation',
+                        success() {
+                            self.getLocation(type);
+                        },
+                        fail() {
+                            self.loadingSelect = false;
+                            console.log('fail')
+                             wx.showModal({
+                                title: '是否授权当前位置',
+                                content: '需要获取您的地理位置，请确认授权，否则地图功能将无法使用',
+                                success(resulet) {
+                                    console.log(resulet.confirm)
+                                    if(resulet.confirm ) {
+                                        self.onSetting();
+                                    }
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    self.getLocation(type);
+                }
+            },
+            fail() {
+                 self.loadingSelect = false;
+                console.log('setting fail')
+            }
+        }))    
+
+     
+    }
+    onSelectCarTime(e) {
+        console.log(e.currentTarget.dataset.type);
+            this.$invoke(
+                'datePicker',
+                'onIsType',
+                e.currentTarget.dataset.type
+            );
+        // this.currentDate = this.carUser.stamp;
+        this.isCarType = e.currentTarget.dataset.type // 1 用车时间  2：还车时间
+        // console.log(this.currentDate)
+        this.$apply();
+
+        
+    }
+
+    
+    methods = {
+
+        
+
+        // onActive(active, event) {
+        //     this.loading = true;
+        //     this.getbyCategory(active, event.detail.index);
+        // }
+        
+        
+    };
+
+
+
+    // active: 当前的active
+    //  index 当前的tab 索引
+    getbyCategory(active,  index)  {
+        // var data = {}
+
+        // console.log(this.brandTypeInfo.carBrandVOList[index].brand)
+        // if(active == 0) {
+        //     data.brand = this.brandTypeInfo.carBrandVOList[index].brand;
+        // } else if(active == 1) {
+        //     data.filtrateTabs = 1;
+        //     data.type = this.brandTypeInfo.carSceneVOList[index].type;
+        // } else if(active == 2) {
+        //     data.type = this.brandTypeInfo.carTypeList[index].type;
+        // }
+        //     // 获取车库列表
+        // this.$parent.getRequest(url.byCategory, 'POST', data)
+        // .then((res) => {
+        //     this.loading = false;
+        //     Toast.clear();
+        //     this.categoryList = res.data;
+        //     this.$apply();
+        //     console.log(res);
+        // })
+    }
+
+    onClickDelete(e) {
+        console.log(e);
+        let carTypeId = e.currentTarget.dataset.item.carTypeId
+        this.categoryList = this.categoryList.map((item, index) => {
+            if(item.carTypeId == carTypeId) {
+                item.isExistOfPark = e.currentTarget.dataset.item.isExistOfPark ? 0 : 1
+            }
+            return item;
+        })
+
+        console.log(carTypeId);
+        this.parkList.map((item, index) => {
+            if(item.carTypeId == carTypeId) { 
+                item.isExistOfPark = 0;
+                this.deletePackList.push(item)
+                item.index = index; // 记录删除位置
+                this.parkList.splice(index, 1)
+                this.current = 0;
+
+            }
+
+            return item;
+        })
+
+        console.log(this.parkList)
+
+
+
+    }
+    
+    onChangeCheck(e) {
+
+    
+        let carTypeId = e.currentTarget.dataset.item.id
+        this.categoryList = this.categoryList.map((item, index) => {
+            if(item.id == carTypeId) {
+                item.isExistOfPark = e.currentTarget.dataset.item.isExistOfPark ? 0 : 1
+            }
+            return item;
+        })
+
+        // 删除车库
+        if(e.currentTarget.dataset.item.isExistOfPark == 1) {
+            this.parkList.map((item, index) => {
+                if(item.carTypeId == carTypeId) {
+                    
+                    if(item.isExistOfPark == 1) {
+                        item.isExistOfPark = 0;
+
+                        this.deletePackList.push(item)
+                        item.index = index; // 记录删除位置
+                        this.parkList.splice(index, 1)
+                        this.current = 0;
+                    } else {
+                        item.isExistOfPark = 1;
+                        console.log(item)
+                    } 
+                }
+                return item;
+            })
+            return false;
+        }
+
+        // 加入车库
+        var deleteItem = '';
+
+         this.deletePackList.map((items, index) => {
+            if(items.carTypeId == carTypeId) {
+                deleteItem = items;
+                items.isExistOfPark = 1;
+                this.parkList.splice(deleteItem.index, 0, deleteItem)
+                this.deletePackList.splice(index, 1)
+                this.current = deleteItem.index
+            }
+        })
+
+        console.log(this.parkList)
+        
+    }
+    onChangeCurrent(val) {
+        let current =  val.detail.current
+        this.current = val.detail.current;
+        this.isCardOrder = false;
+        this.currentRow = this.parkList[this.current];
+        this.getOrderCarList(this.currentRow.carTypeId)
+        // console.log(this.currentRow)
+
+
+    }
+    onChangeTrans(e) {
+
+        // this.isDx = 0 >=e.detail.dx ? 0 : 1;
+        // this.cur = 0 >=e.detail.dx ? this.current + 1 : this.current -1
+        // console.log(this.cur)
+        // this.current = this.current +1
+
+        // this.cur = e.detail.dx > 200 ? true: false
+        // console.log(e.detail.dx);
+        // console.log(e.detail.dy);
+    // console.log(e)
+        // this.curTrans = `transform: translateY( ${e.detail.dx}px) translateZ(0px)`;
+        // console.log(this.curTrans  )
+    }
+
+    callParkList() {
+        this.$parent.getRequest(url.getParkList, 'POST', {})
+        .then((res) => {
+            wx.hideLoading()
+
+            if(!res.data.carTypeList) {
+                this.parkList = [];
+                this.$apply();
+            }
+
+            if(res.data.carTypeList && res.data.carTypeList.length) {
+                this.parkList = res.data.carTypeList.map((item) => {
+                    item.isExistOfPark = 1;
+                    item.current = false;
+                    return item;
+                });
+
+                // this.parkList[0].current = true;
+                this.currentRow = this.parkList[this.current];
+
+                // 车辆详情进入缓存id
+                if(wx.getStorageSync('isCarDetailId') && this.parkList && this.parkList.length) {
+                    this.parkList.map((item, index) => {
+                        if(item.carTypeId == wx.getStorageSync('isCarDetailId')) {
+                            this.current = index;
+                            this.currentRow = item;
+                            this.isSendCarInfo = true;
+                        
+                            this.getOrderCarList(item.carTypeId)
+                        }
+                    })
+
+                    return false;
+                }
+
+                this.getOrderCarList(this.parkList[this.current].carTypeId)
+            }
+            
+            
+            this.$apply();
+        });
+    }
+    getOrderCarList(carTypeId) {
+       
+       this.isCardOrder = false;
+       this.orderCarTypeId = '';
+        this.$parent.getRequest(url.listCarList, 'POST', {
+            carTypeId: carTypeId
+        }).then((res) => {
+            if(res.code != '0000') {
+                return false;
+            }
+            this.orderList = res.data || [];
+
+            if(!this.orderList) {
+                this.orderList = [];
+                this.orderCarTypeId = '';
+                this.isCardOrder = false;
+                this.$apply();
+                return false;
+            }
+            
+
+            this.orderList.map((item, index) => {
+                if(item.cartypeId == carTypeId) {
+                    this.orderListCurrent = index;
+                    if(!this.isSendCarInfo) {
+                        this.isCardOrder = true;
+                    }    
+                    this.orderCarTypeId = carTypeId;
+                } else {
+                    // this.orderCarTypeId = '';
+                }
+               
+                // 送车地址
+                var sendIndex = item.carUsedAddressSend.indexOf('-') // index;
+                item.SendAddressName = item.carUsedAddressSend.split('-')[0];
+                item.SendAddress = item.carUsedAddressSend.substr(sendIndex == -1 ? 0 : sendIndex+1) 
+                    
+                // 判断是否有地址描述    
+                if(sendIndex == -1) {
+                    item.SendAddress = item.carUsedAddressSend.split('-')[0];
+                }
+
+                // 取车地址
+
+                var ReturnIndex = item.carUsedAddressReturn.indexOf('-') // index;
+                item.returnAddressName = item.carUsedAddressReturn.split('-')[0];
+                item.returnAddress = item.carUsedAddressReturn.substr(ReturnIndex == -1 ? 0 : ReturnIndex+1) 
+
+                // 判断是否有地址描述    
+                if(ReturnIndex == -1) {
+                    item.returnAddress = item.carUsedAddressReturn.split('-')[0];
+                }
+
+                 // 虚拟拨号 组件通信
+                 try {
+                     if(item.usedStatus == 2 || item.usedStatus == 4) {
+                         this.$invoke(
+                            'dial',
+                            'butlerTask',
+                            item.butlerTask,
+                            item.usedStatus,
+                            item.memberMobile
+                        );
+                     }
+                    
+
+                 } catch (error) {
+                     
+                 }
+            
+                item.sendTime = moment(
+                    item.carUsedPlanTimeStart
+                ).format('MM月DD日');
+                item.returnTime = moment(
+                    item.carUsedPlanTimeEnd
+                ).format('MM月DD日');
+                item.sendWeek = this.week[
+                    moment(item.carUsedPlanTimeStart).format('d')
+                ];
+                item.returnWeek = this.week[
+                    moment(item.carUsedPlanTimeEnd).format('d')
+                ];
+                item.carTimeStart = moment(
+                    item.carUsedPlanTimeStart
+                ).format('HH:mm');
+                item.carTimeEnd = moment(
+                    item.carUsedPlanTimeEnd
+                ).format('HH:mm');
+                // this.memberCarUsedPayment = res.data.memberCarUsedPayment;
+                var countTime = parseInt(
+                    moment(item.payEndTime).format('X') -
+                        moment(new Date()).format('X')
+                );
+                if ( item.usedStatus == 0 && this.isCardOrder && item.cartypeId == carTypeId) {
+                    getCountTime(countTime, (countNumber, countDownTime, timer) => {
+                        this.timer = timer
+                        if((countNumber <= 0) ) {
+                            clearInterval(this.timer)
+                        }
+                        if (countNumber <= 0) {
+                            // Toast('支付超时~');
+                            item.countDownTime = '00 : 00'
+                            clearInterval(this.timer)
+                            // this.$parent.getRequest(url.cancelOrder, 'POST', {
+                            //     id: item.id
+                            // }).then(res => {});
+                            // this.loadingInfo = true,
+                            // this.getOrderDetail();
+                            return false;
+                        }
+                        
+                        item.countDownTime = countDownTime;
+                        this.$apply();
+                    });
+                }
+             return item;
+            })
+            this.$apply();
+        })
+
+    }
+
+    
+
+    events = {
+        'selectStamp': (val) =>{
+            console.log(val);
+
+            this.carUser.sendStamp = val.sendStamp;
+            this.carUser.returnStamp = val.returnStamp;
+
+            // 用车天数
+            let m1 = moment(val.returnStamp);
+            let m2 = moment(val.sendStamp);
+            let hours = m1.diff(m2, 'hours');
+            if(hours <= 24) {
+                this.usedDay  = 1;
+            }  else {
+                if(String(hours / 24).indexOf('.') == -1) {
+                    this.usedDay = hours / 24
+                } else {
+                    if(String(hours/24)[(String(hours/ 24).indexOf('.') + 1)] >= 5)  {
+                        this.usedDay = Math.ceil(hours / 24)
+                    } else {
+                        this.usedDay = parseInt(hours / 24)+'.5'
+                    }
+                }
+            }
+            this.$apply();
+        }
+    };
+
+    onShow() {
+
+        this.getCityList();// 获取城市列表
+
+        var self = this;
+        console.log(!wx.getStorageSync('mobile') || !wx.getStorageSync('token'))
+        if(!wx.getStorageSync('mobile') || !wx.getStorageSync('token')) {
+            this.$parent.getUserInfo((userInfo) => {
+                console.log(userInfo)
+                    console.log(!!userInfo)
+                if (userInfo) {
+                    self.isLogin = true;
+                    console.log(self.isLogin)
+                    self.$apply();
+                }
+            })
+         
+            return false;
+        } else {
+            self.isLogin = false;
+            self.$apply();
+        }
+
+
+
+        if(wx.getStorageSync('isCarDetailId')) {
+
+            console.log(wx.getStorageSync('isCarDetailId') + "isCarDetailId")
+            this.callParkList();
+        }
+
+
+         if(this.isSendCarInfo) {
+             this.isCardOrder = false;
+         } else {
+             
+            this.getOrderCarList(this.currentRow.carTypeId)
+            if(wx.getStorageSync('isCarDetailId')) {
+                console.log(wx.getStorageSync('isCarDetailId') + "isCarDetailId")
+                this.callParkList();
+            }
+         }
+        
+         
+    }
+    onHide() {
+        this.isUsedDisabled = false;
+        this.isCardOrder = false;
+        wx.removeStorageSync('isCarDetailId')
+    }
+
+    onShareAppMessage(res) {
+        let title = "只为更美好的用车体验",
+            imageUrl = 'https://cucopic.cuco.cn/xcx/share_image.jpg',
+            path = '/pages/cloudHomeBar';
+
+        return this.$parent.onShareAppMessage(title, path, imageUrl);
+    }
+
+    onLoad() {
+
+         var self = this;
+            if(!wx.getStorageSync('mobile') || !wx.getStorageSync('token')) {
+                this.$parent.getUserInfo((userInfo) => {
+                    if (userInfo) {
+                        self.isLogin = true;
+                        self.$apply();
+                    }
+                })
+                
+                return false;
+            } else {
+                self.isLogin = false;
+                self.$apply();
+            }
+
+
+        wx.showLoading({
+            title: '加载中...',
+        })
+        
+
+        this.callParkList();
+
+        // 获取品牌  场景 车型
+        // this.$parent.getRequest(url.getcarBrand, 'POST', {})
+        // .then((res) => {
+        //     this.brandTypeInfo = res.data;
+        //     this.getbyCategory(0, this.brandActive)
+           
+
+        //     this.$apply();
+        // })
+
+         wx.getSetting({
+                success(res) {
+                    console.log('scope.userLocation ' +!res.authSetting['scope.userLocation'])
+                    if (!res.authSetting['scope.userLocation']) {
+                        wx.authorize({
+                            scope: 'scope.userLocation',
+                            success(res) {
+                            }, 
+                            fail(err) {
+                                console.log(err)
+                                console.log('err')
+                            }
+                        })
+                    }
+                }
+            })
+
+
+
+        this.getCityList();// 获取城市
+
+        wx.setNavigationBarColor({
+            frontColor: '#000000',
+            backgroundColor: '#ededed',
+        });
+
+        wx.setBackgroundColor({
+            backgroundColor: '#ededed', // 顶部窗口的背景色
+        })
+
+
+       
+
+        // this.isDialogConfirm = true;
+
+        // this.$parent.getUserInfo(function (userInfo) {
+        //   if (userInfo) {
+        //     self.userInfo = userInfo
+        //   }
+        // })
+    }
+}
+</script>

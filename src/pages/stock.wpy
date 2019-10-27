@@ -1,0 +1,263 @@
+<style lang="scss">
+    page {
+        background: #F3F4F6;
+        .container {
+            padding-top: 70rpx;
+        }
+        .stock-s {
+            font-size: 24rpx;
+            color: #666;
+            padding: 20rpx 0;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 2;
+            background: #F3F4F6;
+            .stock-c {
+                position: absolute;
+                top: 24rpx;
+                right: 30rpx;
+            }
+        }
+        .stock-list {
+            background: #fff;
+            .stock-item {
+                position: relative;
+                padding:12rpx 25rpx;
+                .stock-line {
+                    position: absolute;
+                    bottom: 0;
+                    left: -50%;
+                    width: 200%;
+                    z-index: 1;
+                    border-bottom: 1px #ccc solid;
+                    transform: scale(.5); 
+                }
+            }
+            .brand {
+                font-size: 28rpx;
+                color: #333;
+                margin-top: 46rpx;
+            }
+            .price {
+                font-size: 26rpx;
+                color: #666;
+                margin-top: 4rpx;
+            }
+            .stock-img image {
+                width: 94%;
+                height: 170rpx;
+            }
+        }
+
+        .stock-t {
+            font-size: 26rpx;
+            color: #333;
+            text-align: center;
+            position: relative;
+            padding-top: 40rpx;
+            padding-bottom: 15rpx;
+            &::after {
+                content: '';
+                transform: scale(.7);
+                width: 100rpx;
+                border-top: 1px #ccc solid;
+                display: inline-block;
+                vertical-align: middle;
+            }
+            &::before {
+                content: '';
+                transform: scale(.7);
+                width: 100rpx;
+                border-top: 1px #ccc solid;
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        .no-stock-list {
+            .stock-item {
+                opacity: .5;
+                .stock-img {
+                    image {
+
+                    }
+                }
+            }
+            
+        }
+    }
+ 
+</style>
+<template>
+  <view class="container ">
+      <view wx:if="{{loading}}" class="full-loading loading-auto">
+            <van-loading type="spinner" color="#000" />
+       </view>
+      <view class="stock" wx:else>
+
+           <view class="stock-s" wx:if="{{isNoStockTips}}">很抱歉，当前车型暂无库存！
+                <van-icon name="cross" bind:tap="onHideTips" color="#666" custom-class="stock-c" size="30rpx;"/>
+           </view>
+      <view class="stock-list">
+          <view class="stock-t">当前可选车型</view>
+          <view wx:for="{{otherOptionsHaveStockList}}" wx:key="index" class="stock-item" data-item="{{item}}" bind:tap="onClickUpdateCar">
+              <view class="stock-line"></view>
+              <van-row>
+                    <van-col span="9" class="stock-img">
+                        <image src="{{item.imageUrl}}" mode="aspectFit"></image>
+                    </van-col>
+                    <van-col span="13" offset="2">
+                        <view class="brand">{{item.brand}}{{item.carType}}</view>
+                        <view class="price">￥{{item.price}}</view>
+                    </van-col>
+               </van-row>
+          </view>
+      </view>
+
+      <view class="stock-list no-stock-list">
+          <view class="stock-t">无库存车型</view>
+          <view wx:for="{{noStockList}}" wx:key="index" class="stock-item">
+              <view class="stock-line"></view>
+              <van-row>
+                    <van-col span="9" class="stock-img">
+                        <image src="{{item.imageUrl}}" mode="aspectFit"></image>
+                    </van-col>
+                    <van-col span="13" offset="2">
+                        <view class="brand">{{item.brand}}{{item.carType}}</view>
+                        <view class="price">￥{{item.price}}</view>
+                    </van-col>
+               </van-row>
+          </view>
+      </view>
+    </view>
+
+  </view>
+</template>
+
+<script>
+
+  import wepy from 'wepy'
+
+  import { url, getRequest, getCountTime } from '../lib/util';
+  
+  export default class Index extends wepy.page {
+    config = {
+      "navigationBarTitleText": '更换车型'
+    }
+    components = {
+    }
+
+    data = {
+        otherOptionsHaveStockList: null, // 可选车型
+        vipHaveStockList: null, //套餐专享车型
+        noStockList:null, // 无库存车型
+        isNoStockTips: true,
+        loading: true,
+    }
+    onHideTips() {
+        this.isNoStockTips = false;
+    }
+    onClickUpdateCar(e) {
+        console.log(e.currentTarget.dataset.item.carTypeId)
+        let row = e.currentTarget.dataset.item,
+            self = this,
+            launchCarUsedData = wx.getStorageSync('launchCarUsedData'),
+            data = JSON.parse(launchCarUsedData);
+
+            data.cartypeId = row.carTypeId || row.id;
+
+
+
+        wx.showModal({
+            title: '更换车型',
+            content: `是否确定更换 ${row.brand} ${row.carType}`,
+            confirmColor:'#000000',
+            success(res) {
+                if (res.confirm) {
+                    wx.showLoading({
+                        title: '加载中',
+                    })
+
+                    self.$parent.getRequest(url.launchCarUsed, 'POST', data).then((result) => {
+                        wx.hideLoading()
+                        if(result.code != '0000') {
+                        }
+                        if(result.data.stockFlag == 0) {
+                            wx.showToast({
+                                title: '暂无库存，请重新修改用车时间',
+                                icon: 'none',
+                                duration: 3000
+                            })
+                            // 无库存
+                            return  false;
+                        } 
+                            
+
+                        wx.removeStorageSync('launchCarUsedData') // 删除缓存发起用车data    
+                        wx.redirectTo({
+                            url: `./orderDetail?orderId=${result.data.id}`
+                        })
+
+                    })
+                } 
+            }
+            
+        })
+   
+
+        
+        
+        
+        
+    }
+
+    computed = {
+   
+    }
+
+    methods = {
+ 
+  
+    }
+
+    events = {
+     
+    }
+
+    onLoad(option) {
+      let self = this
+
+      this.$parent.getRequest(url.getListAndStock, 'POST', {
+          startTime: option.startTime || '2019-05-06 12:00:00',
+          endTime: option.endTime || '2019-05-08 12:00:00',
+      }).then((res) => {
+          this.loading = false;
+          if(res.code != '0000') {
+              return false;
+          }
+
+          this.otherOptionsHaveStockList = res.data.otherOptionsHaveStockList || [];
+          this.noStockList = res.data.noStockList || [];
+          this.vipHaveStockList = res.data.vipHaveStockList || [];
+
+
+          this.$apply();
+
+          console.log(res);
+      })
+
+
+      // this.$parent.getUserInfo(function (userInfo) {
+      //   if (userInfo) {
+      //     self.userInfo = userInfo
+      //   }
+      // })
+    }
+  }
+
+
+</script>

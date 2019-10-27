@@ -1,0 +1,851 @@
+<style lang="scss">
+    $fffcolor: #fff;
+
+    page {
+        background: #f5f5f5;
+    }
+    .swiper-block {
+        text-align: center;
+        swiper {
+            height: 400rpx;
+        }
+    }
+    .swiper-img {
+        width: 100%;
+        height: 290rpx;
+    }
+    .car-info {
+        margin-left: 54rpx;
+        padding-top: 48rpx;
+        padding-bottom:50rpx;
+
+        .product {
+            color: #333;
+            font-size: 32rpx;
+            font-weight: bold;
+        }
+        .marketPrice {
+            color: #999;
+            font-size: 24rpx;
+            margin-top: 4rpx;
+            margin-bottom: 4rpx;
+            text-decoration: line-through;
+        }
+        .price {
+            color: #333;
+            font-size: 26rpx;
+        }
+    }
+    .car-type-detail {
+        background: #fff;
+    }
+    .car-type {
+        color: #666;
+        font-size: 24rpx;
+        text-align: center; 
+        padding-bottom: 20rpx;
+        margin-top: 30rpx;
+        .van-icon {
+            margin-bottom: 6rpx;
+        }
+    }
+
+
+    .car-base {
+        background: $fffcolor;
+        margin-top: 20rpx;
+    }
+
+    .used-way {
+        font-size: 26rpx;
+        color: #999;
+        text-align: center;
+        padding-top: 40rpx;
+        &:after {
+            content: '';
+            border-top: 1px #ccc solid;
+            width: 35%;
+            display: inline-block;
+            margin-left: 30rpx;
+            vertical-align: middle
+        }
+        &:before {
+            content: '';
+            border-top: 1px #ccc solid;
+            width: 35%;
+            display: inline-block;
+            margin-right: 30rpx;
+            vertical-align: middle
+        }
+        
+    
+    }
+    .way {
+       .way-item {
+           position: relative;
+           margin: 0 40rpx;
+           margin-top: 40rpx;
+           border-bottom: 1px #e6e6e6 solid;
+           padding-bottom: 40rpx;
+           &:last-child {
+                border-bottom: 0;
+           }
+           .way-item-name {
+               font-size: 28rpx;
+               color: #333;
+           }
+           .way-item-text {
+               font-size: 24rpx;
+               color: #999;
+               margin-top: 2rpx;
+           }
+           .way-item-r {
+               position: absolute;
+               top: 10rpx;
+               right: 0;
+           }
+           .way-price {
+               font-size: 28rpx;
+               color: #333;
+               font-weight: bold;
+               .van-icon  {
+                   vertical-align: middle;
+               }
+           }
+       }
+    }
+
+
+
+    .service {
+        text-align: center;
+        padding-bottom: 20rpx;
+        .used-way {
+            padding-bottom: 20rpx;
+        }
+        
+        .img {
+            width: 90rpx;
+            height: 90rpx;
+            border-radius: 100%;
+        }
+        .title {
+            font-size: 24rpx;
+            color: #666;
+            margin-top: 24rpx;
+        }
+        .introduce {
+            font-size: 20rpx;
+            color: #999;
+            margin-top: 6rpx;
+        }
+        .van-col {
+            margin: 45rpx 0;
+        }
+    }
+
+    .btn {
+        padding-left: 50rpx !important;
+        padding-right: 50rpx !important;
+        color: #fff !important;
+        background-color: #122B4D !important;
+    }
+    .btn1 {
+        height: 70rpx !important;
+        line-height: 70rpx !important;
+        padding: 0rpx 20rpx !important;
+        color: #fff !important;
+        background-color: #122B4D !important;
+    }
+    .car-base .van-tabs__line {
+        background: #333333;
+    }
+    .car-base .van-tabs--line {
+        padding-top: 60px;
+    }
+    .car-base .van-tabs--line .van-tabs__wrap {
+        height: 60px;
+    }
+    .car-base .van-tab {
+        color: #333;
+    }
+    .bg-c {
+        background-color: #F5F5F5;
+        padding: 10px 20px;
+    }
+    .card {
+        padding: 40rpx;
+        margin: 30rpx 0;
+        background-color: #fff;
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
+        .card-head {
+            display: -webkit-flex;
+            display: flex;
+            justify-content: space-between;
+            .price {
+                color: #0168FF;
+                font-size: 30rpx;
+            }
+            .marketPrice {
+                text-decoration: line-through;
+                color: #9E9E9E;
+                font-size: 22rpx;
+            }
+        }
+        .chunk {
+            margin: 20rpx 0;
+            background-color: #F5F5F5;
+            font-size: 24rpx;
+            color: #46535F;
+            padding: 32rpx 42rpx;
+            .chunk-t {
+                font-size: 22rpx;
+                color: #666666;
+            }
+            .chunk-img {
+                text-align: center;
+                font-size: 18rpx;
+            }
+        }
+    }
+
+    .custom {
+        width: 94%;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 10px;
+        margin-bottom: 25rpx;
+        overflow: hidden;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 7;
+        transition-duration:0.5s;
+        -webkit-transition-duration:0.5s;
+        
+        .custom-body {
+            padding: 26rpx 0;
+        }
+        .custom-foot {
+            box-shadow: none;
+        }
+        .van-tabs__line {
+            background-color: #333 !important;
+        }
+        .custom-name {
+            padding: 35rpx 60rpx;
+            position: relative;
+            line-height: 100%;
+            color: #333;
+            font-size: 35rpx;
+            border-bottom:1px #ccc solid;
+        }
+        .custom-cross {
+            position: absolute;
+            right: 60rpx;
+            top: 24rpx;
+        }
+
+        .custom-day, .custom-mode {
+            margin: 0 60rpx;
+            .custom-day-text {
+                line-height: 88rpx;
+                color: #999;
+                font-size: 25rpx;
+            }
+        }
+        .buy {
+            background: none;
+            border-radius: 80rpx;
+            color: #fff;
+            padding: 0 14rpx;
+            width: 210rpx;
+            border: 1px #122B4D solid;
+            color: #122B4D;
+        }
+        .custom-foot-buy {
+            margin: 28rpx 0;
+            padding-top: 14rpx;
+        }
+        .custom-foot-a {
+            color: #333;
+            font-size: 32rpx;
+            font-weight: bold;
+        }
+        .custom-foot-t {
+            color: #0168FF;
+            font-size: 24rpx;
+        }
+        // .custom-active {
+        //     border-bottom:2px #ccc solid;
+        // }
+    }
+    .custom-show {
+        bottom: 0rpx;
+        transition-duration:0.3s;
+        -webkit-transition-duration:0.3s;
+
+    }
+    .mark-custom {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        bottom: 0;
+        top: 0;
+        right: 0;
+        left: 0;
+        background: rgba(0, 0, 0, .3);
+        z-index: 6;
+    }
+    .custom-bottom {
+        bottom: -999rpx;
+        transition-duration:0.5s;
+        -webkit-transition-duration:0.5s;
+    }
+
+    .square {
+        border: 1px solid #CCCCCC;
+        padding: 15px;
+        border-radius: 6px;
+        font-size: 28rpx;
+        color: #333333;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    .square-active {
+        border-color:#0168FF;
+    }
+    .van-button.car-detail-but {
+        border: 1px #0168FF solid;
+        color: #0168FF;
+        font-size: 24rpx;
+        margin: 20rpx auto;
+        height:36px;
+        line-height:33px;
+    }
+    .package-des {
+        font-size: 22rpx;
+        color: #0168FF;
+        display: block;
+    }
+  
+
+</style>
+<template>
+    <view class="container car-detail">
+        <!-- <van-toast id="van-toast" /> -->
+        <view class="car-type-detail">
+            <view class="car-info">
+                <view class="product" wx:if="{{carDetail.product}}">{{carDetail.product}}</view>
+                <!-- <view class="marketPrice">￥{{carDetail.marketPrice}}/天</view> -->
+                <!-- <view class="price">￥{{carDetail.price}}/天</view> -->
+            </view>
+            <view class="swiper-block">
+                <swiper
+                    indicator-dots="{{true}}"
+                    indicator-active-color="#999999"
+                    indicator-color="#EBEBEB"
+                    duration="200"
+                >
+                <block wx:for="{{carDetail.imageUrlList}}" wx:key="index">
+                    <swiper-item>
+                        <image src="{{item}}" mode="aspectFit" class="swiper-img"/>
+                    </swiper-item>
+                </block>
+                </swiper>
+            </view>
+            <view class="car-type">
+                <van-row>
+                    <van-col span="6"><van-icon size="40rpx" name="https://h5.cuco.cn/wechatCucoXImage/carType_0.png" /><view>{{carDetail.carriage}}</view></van-col>
+                    <van-col span="6"><van-icon size="40rpx" name="https://h5.cuco.cn/wechatCucoXImage/carType_1.png" /><view>{{carDetail.gearCar}}</view></van-col>
+                    <van-col span="6"><van-icon size="40rpx" name="https://h5.cuco.cn/wechatCucoXImage/carType_2.png" /><view>{{carDetail.drivingMode}}</view></van-col>
+                    <van-col span="6"><van-icon size="40rpx" name="https://h5.cuco.cn/wechatCucoXImage/carType_3.png" /><view>{{carDetail.displacement}}</view></van-col>
+                </van-row>
+            </view>
+            <view style="text-align:center">
+                <van-button type="default" custom-class="car-detail-but" bind:tap="onUsedCar" wx:if="{{isGarage == 1}}">立即用车</van-button>
+                <van-button type="default" custom-class="car-detail-but" bind:tap="onClickAddPark" wx:else>加入我的云车</van-button>
+            </view>
+            
+        </view>
+
+        <view class="way car-base">
+            <view class="used-way">用车方式</view>
+                <van-tabs border="{{false}}" color="#000" active="0" swipeable>
+                    <van-tab wx:for="{{carDetail.moreUesCarWayList}}" wx:key="index" title="{{item.title}}" price="{{item.priceUsedCarWay}}">
+                        <view wx:if="{{item.moreUesCarWayListType == 0}}" class="bg-c">
+                            <view class="card" wx:for="{{item.moreUesCarWay}}" wx:for-item="items" wx:key="index">
+                                <view class="card-head">
+                                    <view style="color: #333333;font-size: 28rpx;">{{items.title}}</view>
+                                    <view style="text-align: right;">
+                                        <view class="price">￥{{items.price}}/天</view>
+                                        <view class="marketPrice">￥{{items.marketPrice}}/天</view>
+                                    </view>
+                                </view>
+                                <view class="chunk">
+                                    <view style="margin-bottom: 20rpx">云车优势</view>
+                                    <view class="chunk-t">门槛低：预授权 {{items.depositLimit}}</view>
+                                    <view class="chunk-t">管家上门取送</view>
+                                </view>
+                                <view class="chunk">
+                                    <view style="margin-bottom: 20rpx">用车流程</view>
+                                    <view class="chunk-img">
+                                        <van-row gutter="25">
+                                            <van-col span="6"><van-icon custom-style="width: 30rpx;height: 30rpx;" name="https://h5.cuco.cn/wechatCucoXImage/service_icon4.png" /><view>创建订单</view></van-col>
+                                            <van-col span="6"><van-icon custom-style="width: 30rpx;height: 30rpx;" name="https://h5.cuco.cn/wechatCucoXImage/service_icon3.png" /><view>管家送车</view></van-col>
+                                            <van-col span="6"><van-icon custom-style="width: 42rpx;height: 30rpx;" name="https://h5.cuco.cn/wechatCucoXImage/service_icon2.png" /><view>交接确认</view></van-col>
+                                            <van-col span="6"><van-icon custom-style="width: 30rpx;height: 30rpx;" name="https://h5.cuco.cn/wechatCucoXImage/service_icon1.png" /><view>开始用车</view></van-col>
+                                        </van-row>
+                                    </view>
+                                </view>
+                                <view style="text-align: center;margin-top: 30rpx">
+                                    <van-button type="default" custom-class="btn" bind:tap="onUsedCar" round>预约下单</van-button>
+                                </view>
+                            </view>
+                        </view>
+                        <view wx:if="{{item.moreUesCarWayListType == 1}}" class="bg-c">
+                            <view class="card" wx:for="{{item.moreUesCarWay}}" wx:for-item="items" wx:key="index">
+                                <view class="card-head">
+                                    <view style="color: #333333;font-size: 28rpx;">{{items.title}}</view>
+                                    <view style="text-align: right;">
+                                        <view class="price">￥{{items.price}}/天</view>
+                                    </view>
+                                </view>
+                                <view style="display: -webkit-flex;display: flex;justify-content: space-between;align-items:flex-end;margin-top:50rpx">
+                                    <view class="chunk" style="margin:0;flex: 2">
+                                        <view class="chunk-t" style="margin: 10rpx 0" wx:for="{{items.packageIntroduces}}" wx:for-item="itemss" wx:key="index" >
+                                            <van-icon name="star" color="#FF9F01" style="vertical-align:middle;margin-right:30rpx"/>
+                                            {{itemss}}
+                                        </view>
+                                    </view>
+                                    <view style="text-align: right;flex: 1">
+                                        <van-button type="default" custom-class="btn1" round data-items="{{items}}" bind:tap="onTapPackage">
+                                            {{items.packageType? '定制' : '查看'}}
+                                        </van-button>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                        
+                        <view wx:if="{{item.moreUesCarWayListType == 2}}" class="bg-c">
+                            <view class="card" wx:for="{{item.moreUesCarWay}}" wx:for-item="items" wx:key="index">
+                                <view class="card-head">
+                                    <view style="color: #333333;font-size: 28rpx;">{{items.title}}</view>
+                                    <view style="text-align: right;">
+                                        <view class="price">￥{{items.price}}/天</view>
+                                    </view>
+                                </view>
+
+                                <view class="chunk" style="margin-top: 50rpx;">
+                                    <view class="chunk-t" style="margin: 10rpx 0" wx:for="{{items.packageIntroduces}}" wx:for-item="itemss" wx:key="index" >
+                                        <van-icon name="star" color="#FF9F01" style="vertical-align:middle;margin-right:30rpx"/>
+                                        {{itemss}}
+                                    </view>
+                                </view>
+                                <view style="text-align: center;margin-top: 30rpx">
+                                    <van-button type="default" bind:click="onUnderstand" data-url="{{item.moreUesCarWay}}" custom-class="btn" round>了解详情</van-button>
+                                </view>
+                            </view>
+                        </view>
+                    </van-tab>
+                </van-tabs>
+
+                
+            <!-- <view wx:for="{{carDetail.moreUesCarWayList}}" wx:key="index" class="way-item">
+                <view class="way-item-name">{{item.title}}</view>
+                <view class="way-item-text">{{item.packageIntroduce}}</view>
+                <view class="way-item-r">
+                    <view class="way-price">￥{{carDetail.price}}/天<van-icon name="arrow" size="36rpx" color="#d2d2d2" /></view>
+                </view> -->
+            
+        </view>
+
+        <!-- <view class="service car-base">
+            <view class="used-way">云车服务</view>
+            <van-row>
+                <van-col span="8" wx:for="{{carDetail.serviceDescription}}" wx:key="index">
+                    <image class="img" src="{{item.imageUrl}}" mode="aspectFit"></image>
+                    <view class="title ">{{item.title}}</view>
+                    <view class="introduce">{{item.introduce}}</view>
+                </van-col>
+            </van-row>
+        </view> -->
+
+        <view class="custom {{isCustom ? 'custom-show' :'custom-bottom'}}">
+            
+            <view class="custom-name">
+                <view wx:if="{{customRow.packageType}}">
+                    {{customRow.packageName}}
+                    <text class="package-des" wx:if="{{currentCustomAmount.packageDescription}}">{{currentCustomAmount.packageDescription}}</text>    
+                </view>
+                <view wx:else>多车型换车套餐</view>
+                
+                <van-icon name="cross" size="46rpx" bind:tap="onCloseCustom" color="#999" custom-class="custom-cross"/>
+            </view>
+
+            <view wx:if="{{customRow.packageType}}">
+                <view class="custom-body">
+                    <van-row custom-class="custom-day" >
+                            <van-col span="5" offset="0" class="custom-day-text">使用天数</van-col>
+                            <van-col span="14">
+                                <van-tabs tab-class="way-item" tab-active-class="custom-active" border="{{false}}"  active="{{ customActive }}" line-width="{{wayWidth}}" bind:click="onClickCustomWay">
+                                    <van-tab  wx:for="{{customRow.uesCarWay}}" wx:key="index"  title="{{item.dayCount}}天" ></van-tab>
+                                </van-tabs>
+                            </van-col>
+                        </van-row>
+                        <van-row custom-class="custom-mode">
+                            <van-col span="5" offset="0" class="custom-day-text">使用方式</van-col>
+                            <van-col span="14">
+                                <van-tabs border="{{false}}" active="{{ modeActive }}" line-width="{{modeWidth}}" bind:click="onClickMode">
+                                    <van-tab wx:for="{{modeList}}" wx:key="index" title="{{item.isContinuity == 1 ? '连续用车': '按需用车'}}"></van-tab>
+                                </van-tabs>
+                            </van-col>
+                        </van-row>
+                </view>
+                <view class="custom-foot">
+                <van-row custom-class="custom-foot-buy">
+                    <van-col span="12">
+                        <view class="custom-foot-amount" wx:if="{{currentCustomAmount.rechargeOnce}}">￥{{filter.numFormat(currentCustomAmount.rechargeOnce)}}</view>
+                        <!-- <view class="custom-foot-t" wx:if="{{currentCustomAmount.price}}">相当于￥{{currentCustomAmount.price}}/天</view> -->
+                        <view> </view>
+                    </van-col>
+                    <van-col span="12" style="text-align:right;position: relative; float: right ">
+                        <van-button type="default" bind:click="onWechatBuy" custom-class="buy" wx:if="{{currentCustomAmount.isOpen == 1}}">立即购买</van-button>
+                         <van-button type="default" bind:click="onSeek" custom-class="buy" wx:else>咨询产品</van-button>
+                    </van-col>
+                </van-row>
+                </view>
+            </view>
+            <view wx:else style="padding: 40rpx;">
+                <view style="display: -webkit-flex;display: flex;justify-content: space-between;">
+                    <view class="square {{item.packageId == cur ? 'square-active' :''}}" wx:for="{{customRow.customizedUseCarWay.modes}}" wx:key="index" data-item="{{item}}" bind:tap="onChangePackage">
+                        <view>{{item.packageDescription}}</view>   
+                        <view style="font-size: 26rpx;color:#CCCCCC;">{{item.packageName}}</view>
+                    </view>
+                </view>
+                <view wx:if="{{customizedUseCarWay.packageCarTypeDescription}}" style="font-size: 24rpx;color:#CCCCCC;margin-top: 20rpx;">*{{customizedUseCarWay.packageCarTypeDescription}}</view>
+                <view style="text-align: center;margin-top: 30rpx">
+                    <van-button type="default" custom-class="btn" round bind:tap="onJumpView">查看详情</van-button>
+                </view>
+            </view>
+            
+        </view>
+        <view class="mark-custom" bind:tap="onCloseCustom" wx:if="{{ isCustom }}"></view>
+        <login wx:if="{{isLogin}}"></login>
+        <view wx:if="{{loadingPay}}" class="toast-loading loading-auto">
+            <van-loading type="spinner" color="#fff" />
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import {url} from '../lib/util'
+import filter from '../wxs/filter.wxs';
+import Login from '../components/login'
+
+export default class Index extends wepy.page {
+    config = {
+        navigationBarTitleText: ''
+    };
+    components = {
+        login: Login,
+    };
+
+    data = {
+        isLogin:false,
+        carDetail: {},
+        customRow: {
+            uesCarWay: []
+        },
+        isCustom: false,
+        customActive: 0,
+        modeActive: 0,
+        wayWidth: 32,
+        modeWidth: 55,
+        modeList: [{isContinuity:1},{isContinuity:1}],
+        currentCustomAmount: {},
+        packageCarTypeDescription: '',
+        customizedUseCarWay: {},
+        cur: null,
+        isGarage: '',
+        loadingPay: false,
+    };
+
+    computed = {};
+
+    methods = {
+
+  
+    };
+
+    events = {};
+
+    wxs = {
+        filter: filter
+    }
+     onRefresh(data) {
+        console.log(data)
+        
+        this.isLogin = false;
+        this.$apply();
+        this.$parent.login();
+        this.onLoad({
+            id: this.carDetail.id
+        });
+    }
+    onLoginHide() {
+        this.isLogin = false;
+        this.$parent.globalData.userInfo = null;
+        wx.reLaunch({
+            url: `./cloudHomeBar`
+        })
+        this.$apply();
+    }
+    onUnderstand(e) {
+        var carTypeTemp = null;
+        var reg = new RegExp("(^|&)" + 'carTypeTemp' + "=([^&]*)(&|$)"); //
+        var r = e.target.dataset.url[0].h5Url.substr(1).match(reg);  //匹配目标参数
+        if (r != null) carTypeTemp = decodeURI(r[2]);
+        wx.navigateTo({
+            url: `./understand?carTypeTemp=${carTypeTemp}`
+        })
+    }
+    onWechatBuy() {
+        console.log(this.currentCustomAmount)
+        this.loadingPay = true;
+         // 身份认证
+         if(!wx.getStorageSync('isRiskAuditStatus')) {
+            wx.setStorageSync('routerAuth', `./carTypeDetail?carTypeId=${this.carDetail.id}`) // 缓存进入前路由
+            this.loadingPay = false
+            this.$parent.toRouterAuth();
+            return false;
+        }
+        
+        this.$parent.getRequest(url.wechatPay, 'POST', {
+            money: this.currentCustomAmount.rechargeOnce,
+            accountType: 7,
+            isFromApplet: 1,
+            openId: wx.getStorageSync('openId'),
+            payType: 0,
+            packageIds: [this.currentCustomAmount.packageId],
+        }).then((res) => {
+            this.loadingPay = false
+            var obj = res.data.obj;
+                wx.requestPayment({
+                    timeStamp: obj.timeStamp,
+                    nonceStr: obj.nonceStr,
+                    package: obj.package,
+                    signType: 'MD5',
+                    paySign: obj.paySign,
+                    success(data) {
+                        console.log(data);
+
+                        wx.showToast({
+                            title: '购买成功',
+                            icon: 'none',
+                            duration: 2000
+                        })
+                    },
+                    fail(fail) {
+                        console.log(fail)
+                    }
+                })
+        })
+    }
+  
+    onClickAddPark() {
+        var self = this;
+        if(!wx.getStorageSync('mobile') || !wx.getStorageSync('token')) {
+            this.$parent.getUserInfo((userInfo) => {
+                if (userInfo) {
+                    self.isLogin = true;
+                    self.$apply();
+                }
+            })
+             this.$parent.getUserInfo((userInfo) => {
+                console.log(userInfo)
+                    console.log(!!userInfo)
+                if (userInfo) {
+                    self.isLogin = true;
+                    console.log(self.isLogin)
+                    self.$apply();
+                }
+            })
+            
+        
+            return false;
+        }else {
+                self.isLogin = false;
+                self.$apply();
+            }
+        this.$parent.getRequest(url.addPark, 'POST', {
+            carTypeIds: [this.carDetail.id]
+        }).then((res) => {
+            if(res.code != '0000') {
+                return false;
+            } 
+
+            this.isGarage = 1;
+
+            this.$apply();
+        })
+    }
+    onJumpView() {
+        if(!this.cur) {
+            wx.showToast({
+                title: '请选择套餐',
+                icon: 'none',
+                duration: 2000
+            })
+
+            return false;
+        }
+        this.isCustom = false;
+
+        wx.navigateTo({
+            url: `./packageDetail?id=${this.cur}`
+        })
+    }
+    onUsedCar() {
+        var self = this;
+        if(!wx.getStorageSync('mobile') || !wx.getStorageSync('token')) {
+            this.$parent.getUserInfo((userInfo) => {
+                if (userInfo) {
+                    self.isLogin = true;
+                    self.$apply();
+                }
+            })
+            
+        
+            return false;
+        } else {
+                self.isLogin = false;
+                self.$apply();
+        }
+        wx.setStorageSync('isCarDetailId', this.carDetail.id) // 判断详情
+
+
+    
+        wx.switchTab({
+            url: './garageBar'
+        })
+    }
+
+    onChangePackage(e) {
+        console.log(e)
+        this.customizedUseCarWay = e.currentTarget.dataset.item;
+        this.cur = this.customizedUseCarWay.packageId;
+    }
+
+    onTapPackage(e) {
+        var self = this;
+         if(!wx.getStorageSync('mobile') || !wx.getStorageSync('token')) {
+            this.isLogin = true;
+             this.$apply();
+           
+            return false;
+        } else {
+                self.isLogin = false;
+                self.$apply();
+            }
+        this.customRow = e.target.dataset.items;
+
+        if(this.customRow.packageType) {
+            this.customActive = 0;
+            this.modeActive = 0;
+            this.modeList = this.customRow.uesCarWay[0].modes;
+            this.currentCustomAmount = this.modeList[0];
+        }
+        this.isCustom = true;
+    }
+    onClickCustomWay(e) {
+        this.customActive = e.detail.index;
+        this.modeList = this.customRow.uesCarWay[e.detail.index].modes;
+        this.currentCustomAmount = this.modeList[this.modeActive]
+        console.log(this.currentCustomAmount)
+    }
+    onClickMode(e) {
+        this.modeActive = e.detail.index;
+        this.currentCustomAmount = this.modeList[e.detail.index]
+    }
+    onSeek() {
+        
+        this.$parent.getRequest(url.rightsInterestsSeek, 'POST', {
+            rightsInterestsIdList: [this.currentCustomAmount.packageId]
+        }).then((res) => {
+            console.log(res);
+
+            if(res.code != '0000')  {
+                return false;
+            }
+            wx.showToast({
+                title: '客户经理稍后将为您详细解答',
+                icon: 'none',
+                duration: 3000
+            })
+
+        })
+    }
+
+    onCloseCustom() {
+        this.isCustom = false;
+    }
+    onShareAppMessage(res) {
+        let title = "只为更美好的用车体验",
+            imageUrl = 'https://cucopic.cuco.cn/xcx/share_image.jpg',
+            path = '/pages/cloudHomeBar';
+
+        return this.$parent.onShareAppMessage(title, path, imageUrl);
+    }
+    onLoad(option) {
+        
+        try {
+            if(option.cityCode) {
+                console.log(option.cityName)
+                wx.setStorageSync('cityCode', option.cityCode || '110000');
+                wx.setStorageSync('cityName', option.cityName || '北京');
+            }
+        } catch (error) {
+            
+        }
+        // Toast.loading({
+        //     mask: true,
+        //     message: '加载中...'
+        // });
+        console.log(option)
+        this.carDetail = {};
+        this.$apply();
+        this.isCustom = false;
+        wx.showLoading({
+            title: '加载中',
+        })
+
+    
+
+        this.$parent.getRequest(url.getCarTypeDetail, 'POST', {
+            carTypeId: option.carTypeId || option.id || 14,
+            "cityCode": wx.getStorageSync('cityCode'),
+        })
+        .then((res) => {
+
+
+            wx.hideLoading();
+            // Toast.clear();
+
+            this.carDetail = res.data;
+            this.isGarage = res.data.isExistOfPark
+            wx.setNavigationBarTitle({
+                title: res.data.brand + res.data.carType
+            })
+            
+            this.$apply();
+        });
+
+      
+        let self = this;
+    
+    }
+}
+</script>

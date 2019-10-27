@@ -1,0 +1,180 @@
+<style lang="scss"> 
+page {
+    height: 100%;
+    position: relative;
+}
+    .pay {
+        padding: 20rpx 40rpx; 
+        .pay-list {
+            border: 1px #CCCCCC solid;
+            font-size: 28rpx;
+            color: #333;
+            border-radius: 10rpx;
+            margin: 15rpx 10rpx;
+            width: 204rpx;
+            height: 70rpx;
+            line-height: 68rpx;
+            // transition:all .2s; 
+            // -moz-transition:all .2s;
+            // -o-transition:all .2s;
+        }
+        .active {
+            background: #131726;
+            border: 1px #131726 solid;
+            color: #fff;
+        }
+        
+    }
+    .way {
+        font-size: 26rpx;
+        color: #999;
+    }
+    .check-icon {
+        text-align: right;
+    }
+    .pay-name {
+        vertical-align: middle;
+    }
+    .container .pay-select.van-cell {
+        margin-top: 30rpx;
+        padding: 10rpx 50rpx;
+    }
+    .container .van-button.empty-but {
+        padding: 0 45rpx;
+       
+    }
+    .bott {
+         position: absolute;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        bottom: 100rpx;
+        width: 240rpx;
+    }
+
+    
+</style>
+<template>
+  <view class="container">
+      <view class="pay">
+          <van-button  wx:for="{{list}}" bind:tap="onClickActive" id="{{index}}" wx:key="index" type="default" custom-class="pay-list {{active == index? 'active':''}}">￥{{item.amount}}</van-button>
+      </view>
+      <!-- <view class="way">请选择支付方式：</view> -->
+      <van-cell custom-class="pay-select">
+            <view slot="title">
+                <van-row>
+                    <van-col span="12">
+                        <view class="van-cell-text">
+                             <van-icon custom-class="pay-name" name="wechat" color="#6FCD08" size="50rpx" />
+                            微信支付
+                            </view>
+                    </van-col>
+                    <van-col span="12" custom-class="check-icon">
+                        <view >
+                            <van-icon name="checked" size="34rpx" color="#000" />
+                        </view>
+                    </van-col>
+                </van-row>
+            </view>
+      </van-cell>
+      <view class="bott">
+          <van-button type="default" round custom-class="empty-but" bind:tap="onPay">立即支付</van-button>
+      </view>
+      <view wx:if="{{loadingPay}}" class="toast-loading loading-auto">
+            <van-loading type="spinner" color="#fff" />
+        </view>
+  </view>
+</template>
+
+<script>
+
+
+
+  import wepy from 'wepy'
+
+  import { url } from '../lib/util';
+  
+  export default class Index extends wepy.page {
+    config = {
+      "navigationBarTitleText": '充值'
+    }
+    components = {
+    }
+
+    data = {
+        loadingPay: false,
+        active: 0,
+        list: [
+            {amount: 10000, text:0.1},
+            {amount: 15000, text:0.2},
+            {amount: 20000, text:0.3},
+            {amount: 25000, text:0.4},
+            {amount: 30000, text:0.5},
+            {amount: 35000, text:0.6},
+            {amount: 40000, text:0.7},
+            {amount: 45000, text:0.8},
+            {amount: 50000, text:0.9},    
+        ]
+    }
+
+    computed = {
+   
+    }
+    onClickActive(e) {
+        this.active = e.currentTarget.id;
+    }
+    onPay() {
+        this.loadingPay = true;
+        console.log(this.list[this.active].text)
+        this.$parent.getRequest(url.wechatPay, 'POST', {
+                money: this.list[this.active].amount,
+                accountType: 1,
+                payType: 0,
+                isFromApplet: 1,
+                openId: wx.getStorageSync('openId')
+            }).then((res) => {
+                this.loadingPay = false;
+                var obj = res.data.obj;
+                wx.requestPayment({
+                    timeStamp: obj.timeStamp,
+                    nonceStr: obj.nonceStr,
+                    package: obj.package,
+                    signType: 'MD5',
+                    paySign: obj.paySign,
+                    success(data) {
+                        console.log(data);
+
+                        wx.navigateBack({
+                            delta: 1
+                        })
+                    },
+                    fail(fail) {
+                        console.log(fail)
+                    }
+                })
+            })
+    }
+
+    methods = {
+ 
+  
+    }
+
+    events = {
+     
+    }
+
+    onLoad() {
+      let self = this
+
+
+      // this.$parent.getUserInfo(function (userInfo) {
+      //   if (userInfo) {
+      //     self.userInfo = userInfo
+      //   }
+      // })
+    }
+  }
+
+
+</script>

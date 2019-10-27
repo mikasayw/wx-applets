@@ -1,0 +1,50 @@
+<style lang="scss">
+$fffcolor: #fff;
+page {
+    background: #f3f4f6;
+}
+.test {
+    position: absolute;
+    top:0;
+    left: 0;
+    color: #fff;
+}
+
+
+
+</style>
+<template>
+    <view class="container">
+          <web-view src="{{url}}"></web-view>
+          <!-- <web-view src="https://wechat.cuco.cn"></web-view> -->
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+export default class Index extends wepy.page {
+    config = {
+        'navigationBarTitleText': '私享云车',
+        'enablePullDownRefresh': true,
+        'backgroundTextStyle': "dark",
+    };
+    components = {};
+
+    data = {
+        url: ''
+    };
+
+    computed = {};
+
+    methods = {};
+
+    events = {};
+
+    onLoad(option) {
+        this.url = `${option.url}?cityCode=${option.cityCode}&carTypeTemp=${option.carTypeTemp}&materialId=${wx.getStorageSync('materialId')|| 1234}`;
+        console.log(this.url)
+        this.$apply();
+    }
+}
+</script>

@@ -1,0 +1,58 @@
+<style lang="scss">
+$fffcolor: #fff;
+page {
+    background: #f3f4f6;
+}
+.test {
+    position: absolute;
+    top:0;
+    left: 0;
+    color: #fff;
+}
+
+
+
+</style>
+<template>
+    <view class="container">
+          <web-view src="{{url}}"></web-view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+export default class Index extends wepy.page {
+    config = {
+        'navigationBarTitleText': '',
+        'enablePullDownRefresh': true,
+        'backgroundTextStyle': "dark",
+    };
+    components = {};
+
+    data = {
+        url: ''
+    };
+
+    computed = {};
+
+    methods = {};
+
+    events = {};
+    onShareAppMessage(res) {
+        let title = this.option.title,
+            imageUrl =  this.option.image,
+            path = `/pages/${this.option.path}?url=${this.option.url}&title=${this.option.title}&image=${this.option.image}&path=${this.option.path}`;
+
+        return this.$parent.onShareAppMessage(title, path, imageUrl);
+    }
+
+    onLoad(option) {
+        console.log(option)
+        this.url = option.url
+        this.option = option;
+        console.log(this.url)
+        this.$apply();
+    }
+}
+</script>

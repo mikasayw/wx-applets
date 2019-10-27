@@ -1,0 +1,281 @@
+<style lang="scss">
+    $fffcolor: #fff;
+
+    page {
+        background: #F1F2F4;
+    }
+    .deposit {
+
+        .deposit-detail {
+            background: #fff;
+
+            padding: 40rpx 40rpx;
+            margin-top: 20rpx;
+            .deposit-left {
+                text-align: left;
+                color: #46535F;
+                font-size: 28rpx;
+                .van-icon {
+                    vertical-align: middle;
+                }
+            }
+            .deposit-right {
+                color: #0168FF;
+                font-size:26rpx;
+                text-align: right;
+                .van-icon {
+                    vertical-align: middle;
+                    margin-top: -6rpx;
+
+                }
+            }
+            .balance {
+                color:#FF8366;
+                font-size: 22rpx;
+                margin-top: 24rpx;
+                text {
+                    font-size: 55rpx;
+                }
+                
+            }
+        }
+        .deposit-list {
+            background: #fff;
+            margin-top: 20rpx;
+            .deposit-title {
+                font-size: 28rpx;
+                color:#666;
+            }
+            .deposit-value {
+                color: #FF8366;
+                font-size: 30rpx;
+            }
+            .depos-col {
+                color: #333;
+            }
+            .deposit-label {
+                color:#999;
+                font-size: 22rpx;
+            }
+        }
+    }
+    .popup .popup-head{
+        border-bottom: none;
+    }
+    .record-tips.van-panel {
+        border: none;
+        &::after{
+            border: none;
+        }
+        .van-cell {
+            border: none;
+            &::after{
+                border: none;
+            }
+        }
+    }
+
+    .empty-but {
+        width: 200rpx;
+    }
+
+
+
+
+</style>
+<template>
+  <view class="container">
+      <view></view>
+      <view class="deposit">
+        <view class="deposit-detail">
+                <van-row>
+                    <van-col span="12" class="deposit-left">
+                        违损保证金  <van-icon name="info-o" bind:click="onClickDeposit" size="32rpx"  color="#999999" />
+                    </van-col>
+                    <van-col span="12" bind:tap="onClickPay" class="deposit-right" wx:if="{{deposit.useableDepositCount < 6000}}">
+                        立即充值
+                        <van-icon name="arrow"  color="#0168FF" size="32rpx" />
+                    </van-col>
+                </van-row>
+                <view class="balance">
+                    <!-- 金额 <text>￥{{filter.numFormat(deposit.useableDepositCount)}}</text> -->
+                    金额 <text>￥{{deposit.useableDepositCount}}</text>
+                </view>
+        </view>
+        <view class="deposit-list">
+            <view wx:for="{{deposit.consumeDetail}}" wx:key="index">
+
+                <van-cell
+                    title="{{item.payTypeDesc}}"
+                    title-class="deposit-title"
+                    value-class="deposit-value {{item.total <= 0 ? 'depos-col' :''}}"
+                    label-class="deposit-label"
+                    value="{{item.total}}"
+                    label="{{item.created}}"
+                    >
+                </van-cell>
+            </view>
+            
+        </view>
+      </view>
+      
+      <van-popup show="{{ isDeposit }}" bind:close="onHideDeposit" position="bottom" custom-class="popup">
+           <view class="popup-head">{{deposit.nounTips.title}}</view>
+           <van-panel custom-class="record-tips" border="{{false}}" wx:for="{{deposit.nounTips.ruleDescriptio}}" wx:key="index" title="{{item.question}}" desc="{{item.answer}}" >
+                <!-- <view>内容</view> -->
+            </van-panel>
+            <view style="text-align:center; margin:20rpx 0">
+                <van-button bind:tap="onClickPay" round custom-class="empty-but"  type="default">充值</van-button>
+            </view>
+      </van-popup>
+
+  </view>
+</template>
+
+<script>
+
+
+
+  import wepy from 'wepy'
+
+
+import {url} from '../lib/util'
+import Toast from '../components/vant/toast/toast';
+import filter from '../wxs/filter.wxs';
+  export default class Index extends wepy.page {
+    config = {
+      "navigationBarTitleText": '违损保证金'
+    }
+    components = {
+    }
+
+    data = {
+        deposit: {},
+        isDeposit: false,
+    }
+
+    computed = {
+   
+    }
+
+    methods = {
+ 
+  
+    }
+
+    events = {
+     
+    }
+
+    onClickPay() {
+        var self = this;
+        if(!wx.getStorageSync('isRiskAuditStatus')) {
+            wx.setStorageSync('routerAuth', `./depositRecordList`) // 缓存进入前路由
+            this.$parent.toRouterAuth();
+            return false;
+        }
+        this.$parent.getRequest(url.wechatPay, 'POST', {
+            money: (10000 - this.deposit.useableDepositCount),
+            isComplement: 1,
+            accountType: 2,
+            payType: 0,
+            isFromApplet: 1,
+            openId: wx.getStorageSync('openId')
+        }).then((res) => {
+            var obj = res.data.obj;
+            wx.requestPayment({
+                timeStamp: obj.timeStamp,
+                nonceStr: obj.nonceStr,
+                package: obj.package,
+                signType: 'MD5',
+                paySign: obj.paySign,
+                success(data) {
+                    console.log(data);
+                    self.list();
+                },
+                fail(fail) {
+                    console.log(fail)
+                }
+            })
+        })
+    }
+
+    onHideDeposit() {
+        this.isDeposit = false;
+    }
+
+    onClickDeposit() {
+        this.isDeposit = true;
+    }
+    wxs = {
+        filter: filter
+    }
+
+    onClose() {
+        this.isDetail = false;
+    }
+
+    list() {
+        this.$parent.getRequest(url.memberDeposit,'POST' ,{
+            page: 1,
+        }).then((res) => {
+
+            this.deposit = res.data || [];
+
+            if(!res.data.consumeDetail ) {
+                this.deposit.consumeDetail = []
+            }
+            res.data.consumeDetail.map((item) => {
+                item.total = item.total >= 0 ? `+${item.total.toFixed(2)}` : `${item.total.toFixed(2)}`
+                return item;
+            })
+            
+            this.$apply();
+            console.log(res);
+        })
+
+    }
+
+
+    onLoad() {
+
+
+        wx.setNavigationBarTitle({
+            title: '我的保证金'
+        })
+
+        this.list()
+
+
+        
+
+        // wx.login({
+        // success(res) {
+        //     if (res.code) {
+        //     // 发起网络请求
+        //         this.$parent.getRequest(url.getOpenId, 'GET', {
+        //             code: res.code
+        //         })
+        //         .then((res) => {
+        //             console.log(res)
+        //         })
+        //     } else {
+        //     console.log('登录失败！' + res.errMsg)
+        //     }
+        // }
+        // })
+        
+
+
+
+
+      // this.$parent.getUserInfo(function (userInfo) {
+      //   if (userInfo) {
+      //     self.userInfo = userInfo
+      //   }
+      // })
+    }
+  }
+
+
+</script>

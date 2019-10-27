@@ -1,0 +1,63 @@
+<style lang="less">
+
+</style>
+<template>
+  <view class="container">
+      <web-view src="https://wechat.cuco.cn/bridge/memberBook.html" bindload="onBindLoad" binderror="onBinderror"></web-view>
+  </view>
+</template>
+
+<script>
+
+
+  import wepy from 'wepy'
+
+  import { url, getRequest, getCountTime } from '../lib/util';
+  
+  export default class Index extends wepy.page {
+    config = {
+      "navigationBarTitleText": '用户协议'
+    }
+    components = {
+    }
+
+    data = {
+      currentTab: 0,
+    
+    }
+
+    computed = {
+   
+    }
+
+    methods = {
+         onBindLoad(e) {
+            wx.showToast({
+                title: '',
+                icon: 'loading',
+                duration: 1000
+            })
+            console.log(e)
+        },
+        onBinderror(e) {
+            wx.showToast({
+                title: '加载失败',
+                icon: 'loading',
+                duration: 2000
+            })
+            console.log(e)
+        }
+    }
+
+    events = {
+     
+    }
+
+    onLoad() {
+      let self = this
+
+    }
+  }
+
+
+</script>

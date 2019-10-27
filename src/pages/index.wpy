@@ -1,0 +1,105 @@
+<style lang="scss">
+ 
+</style>
+<template>
+  <view class="container">
+       <web-view src="{{url}}"></web-view>
+  </view>
+    <!-- <tab :active.sync="currentTab" /> -->
+</template>
+
+<script>
+
+
+
+  import wepy from 'wepy'
+
+  import { url, getRequest } from '../lib/util';
+  
+  export default class Index extends wepy.page {
+    config = {
+      "navigationBarTitleText": '库可云车'
+    }
+    components = {
+    }
+
+    data = {
+      url:``,
+      
+    }
+    onShow() {
+        console.log('onshow')
+        // this.url = `https://h5.cuco.cn?mobile=${wx.getStorageSync('mobile')}`
+        this.url = `https://h5.cuco.cn/aliPayTest?mobile=${wx.getStorageSync('mobile')}`
+    }
+
+    computed = {
+   
+    }
+
+    methods = {
+    }
+    urlEncode(param, key, encode) {
+        if (param==null) return '';
+        var paramStr = '';
+        var t = typeof (param);
+        if (t == 'string' || t == 'number' || t == 'boolean') {
+            paramStr += '&' + key + '='  + ((encode==null||encode) ? encodeURIComponent(param) : param); 
+        } else {
+            for (var i in param) {
+                var k = key == null ? i : key + (param instanceof Array ? '[' + i + ']' : '.' + i)
+                paramStr += this.urlEncode(param[i], k, encode)
+            }
+        }
+        return paramStr;
+    }
+
+    events = {
+     
+    }
+    onShareAppMessage(res) {
+        let title = "创造更美好的汽车消费体验",
+            imageUrl = 'https://h5.cuco.cn/wechatCucoXImage/share_image_1.jpeg',
+            path = '/pages/index';
+
+        return this.$parent.onShareAppMessage(title, path, imageUrl);
+    }
+
+    onLoad(option) {
+      let self = this
+      wx.navigateTo({
+            url: `./home?${this.urlEncode(option)}`,
+            success: () => {
+                console.log('success')
+            },
+            fail:() => {
+                console.log('fail')
+            }
+        })
+    //   console.log(option)
+    //   if(option && option.isGiveMobile && option.packageId) {
+    //       console.log(this.urlEncode(option))
+          
+    //   } else {
+    //       wx.navigateTo({
+    //             url: `./home`,
+    //             success: () => {
+    //                 console.log('success')
+    //             },
+    //             fail:() => {
+    //                 console.log('fail')
+    //             }
+    //         })
+    //   }
+        
+
+      // this.$parent.getUserInfo(function (userInfo) {
+      //   if (userInfo) {
+      //     self.userInfo = userInfo
+      //   }
+      // })
+    }
+  }
+
+
+</script>

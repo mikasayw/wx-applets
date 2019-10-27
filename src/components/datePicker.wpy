@@ -1,0 +1,782 @@
+<style lang="scss">
+$fontcolor: #7b7b7b;
+$activecolor: #13b113;
+.picker-item {
+    text-align: center;
+    line-height: 50px;
+}
+.car-day {
+    text-align: center;
+    font-size: 24rpx;
+    color: #333;
+}
+.picker {
+       .popup-body {
+        padding: 60rpx 60rpx;
+        .car-r {
+            text-align: right;
+        }
+        .init-time {
+            .time {
+                color:#333;
+                font-size: 30rpx;
+                line-height: 24rpx;
+            }
+            text {
+                color:#999;
+                font-size: 24rpx;
+            }
+        }
+        
+    }
+    
+    .address {
+        position: relative;
+        z-index: 80;
+        margin-top: 40rpx;
+        margin-bottom: 30rpx;
+        font-size: 26rpx;
+        .address-m {
+            margin-top: 30rpx;
+        }
+       
+        .address-t {
+            color: #333;
+        }
+    }
+    .address-val {
+        position: relative;
+        font-size: 26rpx;
+        .address-placeholder {
+             color:#ccc;
+        }
+        .address-value {
+            color: #333;
+        }
+        &:after {
+            border-bottom: 1px #ccc solid; 
+            transform: scale(.5);
+            width: 200%;
+            position: absolute;
+            left: -50%;
+            bottom: -6rpx;
+            content: '';
+        }
+    }
+    .car-send {
+
+    }
+    .same-check {
+        color:#666;
+        font-size: 26rpx;
+        margin-left: -10rpx;
+        text {
+            display: inline-block;
+            margin-left: -8rpx;
+        }
+        checkbox {
+            transform:scale(.6);
+            vertical-align: middle;
+        }
+
+    }
+}
+</style>
+<template>
+     <view class="picker">
+         <view class="popup-head">奥迪 A6</view>
+            <view class="popup-body">
+                <van-row>
+                    <van-col span="6" class="car-center send-car" data-type="1" bind:tap="onSelectCarTime">
+                         <picker
+                            class="time-picker"
+                            mode="multiSelector"
+                            bindchange="bindStartMultiPicker"
+                            bindtap="pickerTap"
+                            bindcolumnchange="bindMultiPickerColumn"
+                            value="{{cur}}"
+                            range="{{multiArray}}"
+                        >
+                            <view class="{{carUser.sendStamp}}">
+                                <view class="send-date {{carUser.sendStamp}}">
+                                    <view class="init-time" wx:if="{{carUser.sendDay}}" >
+                                        <view class="time">{{carUser.sendDay}}</view>
+                                        <text>{{carUser.sendWeek}}</text>
+                                        <text> {{carUser.sendTime}}</text>
+                                    </view>
+                                    <view class="init-time" wx:else>
+                                        <view class="time">送车时间{{carUser.sendDay}}</view>
+                                        <text>请设置</text>
+                                    </view>
+                                </view> 
+                            </view>
+                        </picker>
+                    </van-col>
+                    <van-col span="10" class="car-day">
+                        <text wx:if="{{usedDay}}">{{usedDay}}天</text>
+                        <view class="car-line"></view>
+                    </van-col>
+                    <van-col span="6"  class="car-r return-car"  data-type="2" bind:tap="onSelectCarTime">
+                         <picker
+                            class="time-picker"
+                            mode="multiSelector"
+                            bindchange="bindStartMultiPicker"
+                            bindtap="pickerTap"
+                            bindcolumnchange="bindMultiPickerColumn"
+                            value="{{cur}}"
+                            range="{{multiArray}}"
+                        >
+                            <view class="{{carUser.sendStamp}}">
+                                <view class="return-date">
+                                    <view class="init-time" wx:if="{{carUser.returnDay}}" >
+                                        <view class="time">{{carUser.returnDay}}</view>
+                                        <text>{{carUser.returnWeek}}</text>
+                                        <text> {{carUser.returnTime}}</text>
+                                    </view>
+                                    <view class="init-time" wx:else >
+                                        <view class="time">取车时间</view>
+                                        <text>请设置</text>
+                                    </view>
+                                </view>
+                            </view>
+                        </picker>
+                        
+                    </van-col>
+                </van-row>
+                <view class="address">
+                    <van-row>
+                        <van-col span="7" class="address-t">送{{isSamechecked ? '/还' :''}}车地点</van-col>
+                        <van-col span="12" >
+                            <view class="address-val" bind:tap="onChangeArress" id="1">
+                                <text wx:if="{{sendInfo.address}}" class="address-value"><text>{{sendInfo.name ? sendInfo.name : sendInfo.address}}</text></text>
+                                <text wx:else class="address-placeholder">请输入用车地点</text>
+                            </view>
+                        </van-col>
+                    </van-row>
+                    <van-row wx:if="{{!isSamechecked}}" custom-class="address-m">
+                        <van-col span="7" class="address-t">还车地点</van-col>
+                        <van-col span="12" >
+                            <view class="address-val" bind:tap="onChangeArress" id="2">
+                                <text wx:if="{{returnInfo.address}}" class="address-value"><text>{{returnInfo.name ? returnInfo.name : returnInfo.address}}</text></text>
+                                <text wx:else class="address-placeholder">请输入还车地点</text>
+                            </view>
+                        </van-col>
+                    </van-row>
+                </view>
+                <view>
+                <checkbox-group bindchange="onSameCheckboxChange" class="same-check">
+                    <label class="checkbox">
+                        <checkbox  checked="{{isSamechecked}}" color="#979797" />
+                        <text>还车地点相同</text>
+                    </label>
+                </checkbox-group>
+                </view>
+                <view style="text-align:center">
+                    <van-button type="default" wx:if="{{!isUsedDisabled}}"  custom-class="car-send buts" bind:tap="onLaunchCarUsed">确定</van-button>
+                     <van-button type="default" wx:else custom-class="car-send buts">确定</van-button>
+                    
+                </view>
+            </view>
+
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+var QQMapWX = require('../lib/qqmap-wx-jssdk.min.js');
+var qqmapsdk;
+ import {url, getRequest} from '../lib/util'
+ import moment from 'moment';
+ moment.locale('zh-cn');
+
+   
+   const current = function() {
+         let date = new Date()
+         return {
+             year: date.getFullYear(),
+             month: date.getMonth() + 1,
+             day: date.getDate(),
+             hour: date.getHours(),
+             minute: date.getMinutes(),
+             isDisabled: false,
+         }
+
+     }()
+
+
+         // 符合条件的数据
+     let filter = {
+         day: [],
+         hour: [],
+         minute: []
+     };
+     let after_day = 0,
+         app_day = 90;
+
+     let hour_area = [8, 23];
+     let cur = [0,0,0],
+         currentDate = [5, 8, 10, 10];  // 当前时间
+
+
+
+     filter.day = function() {
+          let timeStamp = Date.now(),
+             daysArr = [],
+             daysText = [],
+             isBlock = true,
+             index = '',
+             mIndex = '';
+
+         for (let i = after_day; i < app_day; i++) {
+             let preStamp = timeStamp + 24 * 60 * 60 * 1000 * i,
+                 date = new Date(preStamp),
+                 year = date.getFullYear(),
+                 month = date.getMonth() + 1,
+                 day = date.getDate();
+
+             let text = [`${month}月${day}日今天`, `${month}月${day}日明天`, `${month}月${day}日后天`, `${month}月${day}日`][i] || `${month}月${day}日`;
+
+             daysArr.push({
+                 text: text,
+                 year: year,
+                 month: month,
+                 day: day
+             });
+
+             if(month == currentDate[0] ) {
+                 if(day == currentDate[1]) {
+                    index = i;
+                 }
+             }
+
+             daysText.push(text);
+
+             // 设置当前可选择天数
+            //  if(month == selecTable_date[0]) {
+            //      if(day == selecTable_date[1]) {
+            //          index = i;
+            //      }
+            //  }
+         }
+
+             return daysText.slice(index, 100);
+
+     }
+     filter.hour = function() {
+        let hoursArr = [],
+            index = '';
+        for (let i = hour_area[0]; i <= hour_area[1]; i++) {
+             hoursArr.push(i)
+            //  start.hourArr.push(i)
+         }
+
+         index = hoursArr.indexOf(currentDate[2]);
+
+         return hoursArr.slice(index,100)
+     }
+     filter.minute = function() {
+         let minutesArr = [],
+            index = '';
+         for (let i = 0; i < 60; i += 5) {
+             minutesArr.push(i)
+            //  start.minuteArr.push(i)
+         }
+         index = minutesArr.indexOf(currentDate[3]);
+         return minutesArr.slice(index, 100)
+     }
+
+export default class datePicker extends wepy.component {
+    props = {
+    };
+    data = {
+        week: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+        startDate: '选择',
+        multiArray: [],
+        date: new Date(),
+        timeStamp: Date.now(),
+        daysArr: [], // 年月日
+        daysText: [], // 简写 05/03 今日
+        hoursArr: [],  // 小时
+        minutesArr: [], // 分钟
+        hour: ['08', '23'],
+        dis_min: 5, // 间隔
+        value: [],
+        cur: [0,0,0],
+        selectStamp: '',
+        carUser: {
+            sendDay: '',
+        },
+        isType: '',
+        sendStamp: '',
+        sendCarUser: {},
+        returnCarUser: {},
+        isSamechecked: true,
+        usedSendTime: '',
+        usedReturnTime: '',
+        sendInfo: {
+            address:'',
+        }, //送车信息
+        returnInfo: {
+            address:'',
+        }, // 取车信息
+        usedDay: '',
+
+    };
+
+    methods = {
+        onLaunchCarUsed() {
+            try {
+                wx.vibrateShort()
+            } catch (error) {
+                
+            }
+
+            if(!this.carUser.sendStamp) {
+                wx.showToast({
+                    title: '请选择送车时间',
+                    icon: 'none',
+                    duration: 2000  
+                })
+                return false;
+
+            } else if(!this.carUser.returnStamp) {
+                wx.showToast({
+                    title: '请选择取车时间',
+                    icon: 'none',
+                    duration: 2000  
+                })
+                return false;
+            } else if(!this.sendInfo.address) {
+                wx.showToast({
+                    title: '请选择送车地址',
+                    icon: 'none',
+                    duration: 2000  
+                })
+                return false;
+            } else if(!this.returnInfo.address) {
+                wx.showToast({
+                    title: '请选择取车地址',
+                    icon: 'none',
+                    duration: 2000  
+                })
+                return false;
+            }
+
+
+            this.isUsedDisabled = true;
+            let self = this;
+            this.$parent.getRequest(url.cancelConfirm, 'POST', {})
+            .then((res) =>{
+
+                if(res.data.isNeedConfirm) {
+                    Dialog.confirm({
+                        title: '提示',
+                        message: res.data.description
+                        }).then(() => {
+                            this.$parent.getRequest(url.cancelOrder, 'POST', {
+                                id: res.data.id,
+                            }).then((res) =>{
+                                if(res.code != '0000') {
+                                    self.isUsedDisabled = false;
+                                }
+
+                                self.onSendLaunch();
+                            })
+                        }).catch(() => {
+                            self.isUsedDisabled = false;
+                        // on cancel
+                    });
+                    return false;
+                } else {
+
+                    this.onSendLaunch();
+                }
+            })
+        
+        },
+        onClickSendCar() {
+            this.isSendCarInfo = false;
+        },
+        onSameCheckboxChange() {
+            this.isSamechecked = this.isSamechecked ? false : true;
+        },
+        onSetting() {
+            var self = this;
+            wx.openSetting({
+                success: function (r) {
+                },
+                fail: function () {
+                    wx.showModal({
+                        title: '是否授权当前位置',
+                        content: '需要获取您的地理位置，请确认授权，否则地图功能将无法使用',
+                        success(resulet) {
+                            if(resulet.confirm ) {
+                                self.methods.onSetting();
+                            }
+                        }
+                    })
+                }
+            })
+        },
+        getLocation(type, self) {
+            console.log(self)
+            // 腾讯 sdk
+            qqmapsdk = new QQMapWX({
+                key: '4FEBZ-FKVK4-OMDUR-XHRQU-6EDKZ-SZFOP'
+            });
+            
+            wx.chooseLocation({
+                success(res) {
+                    self.loadingSelect = false;
+                    if(!res.address && !res.name) {
+                        wx.showToast({
+                            title: '请选择地址',
+                            icon: 'none',
+                            duration: 2000
+                        })
+
+                        return false;
+                    }
+
+                    var sameCity = new Promise((resolve, reject) => {
+                        qqmapsdk.reverseGeocoder({
+                            location: {
+                                latitude: res.latitude,
+                                longitude: res.longitude
+                            },
+                            success(res) {
+                                console.log(res)
+
+                                try {
+                                    if(!res.result.ad_info && !res.result.ad_info.city) {
+                                        resolve(true)
+                                        return false;
+                                    }
+
+                                var isOpen = false;
+
+                                    //判断是否在开通城市
+                                self.cityList.map((item) => {
+                                        if(res.result.ad_info.city.match(item.city)) {
+                                            isOpen = true;
+                                            wx.setStorageSync('cityCode', item.code)
+                                            wx.setStorageSync('cityName', item.city)
+                                            self.getCityList();
+                                        } 
+                                    })
+
+
+                                    if(isOpen) {
+                                        resolve(true)
+                                    } else {
+                                        wx.showToast({
+                                            title: '该城市未开通',
+                                            icon: 'none',
+                                            duration: 2000
+                                        })
+                                    }
+                                
+                                } catch(e) {
+                                    resolve(true)
+                                }
+                            
+                            }
+                        })
+                    })
+
+                    sameCity.then((isSame) => {
+
+                        if(!isSame) { 
+                            return false;
+                        }
+                        console.log(self)
+                        self.$parent.$parent.getRequest(url.isFences, 'POST', {
+                            address: res.address,
+                            "cityCode": wx.getStorageSync('cityCode'),
+                            g_latitude: res.latitude,
+                            g_longitude: res.longitude,
+                        }).then((result) => {
+                            if(result.code !== '0000') {
+                                return false;
+                            }
+
+                            if(result.data == 0) {
+                                if(self.isSamechecked) {
+                                    self.sendInfo = res;
+                                
+                                    self.returnInfo = res;
+                                    self.$apply();
+                                } else {
+                                    if(type == 1) {
+                                        self.sendInfo = res;
+                                    } else {
+                                        self.returnInfo = res;
+                                    }
+
+                                    self.$apply();
+                                }
+                            } else {
+                                    wx.showToast({
+                                        title: '地址已超出取送车服务范围，请重新选择',
+                                        icon: 'none',
+                                        duration: 2500
+                                    })
+                                    return false;
+                            }
+                            
+
+                        })
+                    })
+                },
+                fail(err) {
+                    self.loadingSelect = false;
+                }
+            })
+        },
+        onChangeArress(e) {
+            let type = e.currentTarget.id,
+                self = this;
+                this.loadingSelect = true;
+
+            console.log(self)
+            console.log(this);
+            console.log(this.self.$parent.getRequest)
+            wx.getSetting(({
+                success(res) {
+                    console.log(!res.authSetting['scope.userLocation'])
+                    if(!res.authSetting['scope.userLocation']) {
+                        wx.authorize({
+                            scope: 'scope.userLocation',
+                            success() {
+                                self.methods.getLocation(type, self);
+                            },
+                            fail() {
+                                self.loadingSelect = false;
+                                console.log('fail')
+                                wx.showModal({
+                                    title: '是否授权当前位置',
+                                    content: '需要获取您的地理位置，请确认授权，否则地图功能将无法使用',
+                                    success(resulet) {
+                                        console.log(resulet.confirm)
+                                        if(resulet.confirm ) {
+                                            self.methods.onSetting();
+                                        }
+                                    }
+                                })
+                            }
+                        })
+                    } else {
+                        self.methods.getLocation(type, self);
+                    }
+                },
+                fail() {
+                    self.loadingSelect = false;
+                    console.log('setting fail')
+                }
+            }))    
+
+        
+        },
+        onSelectCarTime(e) {
+            console.log(e.currentTarget.dataset.type);
+            // this.currentDate = this.carUser.stamp;
+            this.isType = e.currentTarget.dataset.type // 1 用车时间  2：还车时间
+            // console.log(this.currentDate)
+            this.$apply();
+        },
+        onEmpty() {
+            // console.log('onEmpty');
+            // this.sendCarUser = {};
+            // this.returnCarUser = {};
+        },
+        onIsType(val) {
+            console.log(val)
+            if(val == 2) {
+
+                for (let i = 0; i < this.daysArr.length; i++) { 
+                    if(this.daysArr[i].isDay == this.carUser.returnDay) {
+                        this.cur[0] = i;
+                    }
+                }
+            }
+            this.isType = val;
+
+            this.$apply();
+
+        },
+        pickerTap(e) {
+            console.log(e);
+         
+        },
+        bindStartMultiPicker(e) {
+            var isType = this.isType;
+            const val = e.detail.value;
+
+            const day = this.daysArr[val[0]],
+                  hour =  this.hoursArr[val[1]],
+                  minute = this.minutesArr[val[2]];
+                    // IOS版本浏览器不兼容new Date('2019-05-03')这种格式化，故用new Date('2019/05/03')
+            var timeStamp = new Date(`${day.year}/${day.month}/${day.day} ${hour}:${minute}`).getTime(),
+                timeStr = `${day.text} ${hour}点${minute}分`;
+
+
+            if(this.isType == 1) {
+                this.sendCarUser = {
+                    sendStamp: timeStamp,
+                    sendDay: moment(new Date(timeStamp)).format('MM月DD日'),
+                    sendWeek: this.week[moment(new Date(timeStamp)).format('d')],
+                    sendTime: moment(new Date(timeStamp)).format('HH:mm'),
+                }
+
+                this.returnCarUser = {
+                    returnStamp: new Date(moment(timeStamp).add(48, 'hours')).getTime(),
+                    returnDay: moment(new Date(timeStamp)).add(48, 'hours').format('MM月DD日'),
+                    returnWeek: this.week[moment(new Date(timeStamp)).add(48, 'hours').format('d')],
+                    returnTime: moment(new Date(timeStamp)).add(48, 'hours' ).format('HH:mm'),
+                }
+            
+            } else {
+                this.returnCarUser = {
+                    returnStamp: timeStamp,
+                    returnDay: moment(new Date(timeStamp)).format('MM月DD日'),
+                    returnWeek: this.week[moment(new Date(timeStamp)).format('d')],
+                    returnTime: moment(new Date(timeStamp)).format('HH:mm'),
+                }
+            
+            }
+            if(this.sendCarUser.sendStamp) {
+                if(this.sendCarUser.sendStamp > this.returnCarUser.returnStamp) {
+                    wx.showToast({
+                        title: '送车时间不能大于还车时间',
+                        icon: 'none',
+                        duration: 2000
+                    })
+                return false;
+
+                }
+            }
+            this.carUser = Object.assign({}, this.sendCarUser, this.returnCarUser)
+            this.selectStamp = timeStamp;
+
+            // 用车天数
+            let m1 = moment(this.carUser.returnStamp);
+            let m2 = moment(this.carUser.sendStamp);
+            let hours = m1.diff(m2, 'hours');
+            if(hours <= 24) {
+                this.usedDay  = 1;
+            }  else {
+                if(String(hours / 24).indexOf('.') == -1) {
+                    this.usedDay = hours / 24
+                } else {
+                    if(String(hours/24)[(String(hours/ 24).indexOf('.') + 1)] >= 5)  {
+                        this.usedDay = Math.ceil(hours / 24)
+                    } else {
+                        this.usedDay = parseInt(hours / 24)+'.5'
+                    }
+                }
+            }
+            this.$apply();
+
+            // this.$emit('selectStamp', this.carUser)
+        },
+        bindMultiPickerColumn(e) {
+            console.log(e)
+            console.log('bindMultiPickerColumn')
+            // var isType = this.isType;
+            // const val = e.detail.value;
+
+            // const day = this.daysArr[val[0]],
+            //       hour =  this.hoursArr[val[1]],
+            //       minute = this.minutesArr[val[2]];
+            //       this.isDisabled = true;
+            //         // IOS版本浏览器不兼容new Date('2019-05-03')这种格式化，故用new Date('2019/05/03')
+            // var timeStamp = new Date(`${day.year}/${day.month}/${day.day} ${hour}:${minute}`).getTime(),
+            //     timeStr = `${day.text} ${hour}点${minute}分`;
+
+
+            //     if(this.isType != 1) {
+            //          console.log(this.sendCarUser.returnStamp)
+            //             console.log(this.returnCarUser.returnStamp)
+            //             console.log(this.sendCarUser.returnStamp > this.returnCarUser.returnStamp)
+            //     }
+            // isDisabled
+        },
+        onClickSelect() {
+            
+        },
+
+        
+    };
+    
+    formatNumber(n) {
+         n = n.toString()
+        return n[1] ? n : '0' + n
+    }
+
+    onLoad() {
+
+        this.self = this;
+        // 获取年月日
+        for (let i = 0; i < 90; i++) {
+             let preStamp = this.timeStamp + 24 * 60 * 60 * 1000 * i,
+                 date = new Date(preStamp),
+                 year = date.getFullYear(),
+                 month = this.formatNumber(date.getMonth() + 1),
+                 day = this.formatNumber(date.getDate());
+
+             let text = [`${month}月${day}日今天`, `${month}月${day}日明天`, `${month}月${day}日后天`, `${month}月${day}日`][i] || `${month}月${day}日`;
+
+
+            this.daysArr.push({
+                 text: text,
+                 year: year,
+                 month: month,
+                 day: day,
+                 isDay: `${month}月${day}日`
+             });
+             this.daysText.push(text);
+            //  this.multiArray = text;
+         }
+
+
+        // 获取小时
+         
+        // 今天
+        // if(current.day == this.daysArr[this.cur[0]].day) {
+            
+        //     // 是今天不在送车时间内，只能选择明天
+        //     if(current.hour >= 21 ) {
+        //             this.daysArr.shift(); //
+        //             for (let i = this.hour[0]; i <= this.hour[1]; i++) {
+        //                 this.hoursArr.push(i)
+        //             }
+        //     } else {
+        //         //选择3小时后的时间
+        //         for (let i = current.hour+3;  i <= this.hour[1]; i++) {
+        //             this.hoursArr.push(i)
+        //         //  console.log(this.hoursArr)
+        //         }
+        //     }
+            
+        // } else {
+        //     // 不是今天
+        //     for (let i = this.hour[0]; i <= this.hour[1]; i++) {
+        //          this.hoursArr.push(i)
+        //     }
+            
+        // }
+        for (let i = this.hour[0]; i <= this.hour[1]; i++) {
+                 this.hoursArr.push(this.formatNumber(i))
+            }
+
+        // 获取分钟
+        for (let i = 0; i < 60; i += this.dis_min) {
+             this.minutesArr.push(this.formatNumber(i))
+         }
+
+
+        this.multiArray = [this.daysText,  this.hoursArr,this.minutesArr]
+        this.$apply()
+    }
+}
+</script>

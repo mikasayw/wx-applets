@@ -1,0 +1,258 @@
+<style lang="scss">
+    $fffcolor: #fff;
+
+    page {
+        background: $fffcolor;
+    }
+    .coupon {
+        background: #F1F2F4;
+
+    }
+    
+
+     .card-all {
+        padding: 0 20rpx;
+        background: #fff;
+        padding-bottom: 20rpx;
+        .card-total {
+            
+            .card-value {
+                color: #FF8366;
+                font-size: 30rpx;
+            }
+        }
+        .card-title {
+            color:#999;
+            font-size: #999;
+        }
+        .card-list {
+            box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+            margin-top: 20rpx;
+            border-top-left-radius: .8em ;
+            border-top-right-radius: .8em;
+            // background-color: #AF9170;
+            background: linear-gradient(to right,#C5A887,#9D7F5E);
+            padding: 30rpx 30rpx;
+            margin:20rpx 20rpx;
+
+            .coupon-left {
+                color: #fff;
+                font-size: 28rpx;
+                text-align: left;
+            }
+            .coupon-right {
+                color: #fff;
+                font-size: 22rpx;
+                text-align: right;
+            } 
+        }
+        .card-foot {
+            margin-top: 50rpx;
+            font-size: 22rpx;
+            color: #fff;
+            text-align: right;
+            text {
+                font-size: 55rpx;
+            }
+        }
+    }
+    
+
+    .coupon-all {
+        margin-top: 20rpx;
+        background: #fff;
+        padding: 0 30rpx;
+        
+       
+    }
+    .coupon-list {
+        border: 1px #DFE0E1 solid;
+        border-radius: 4px;
+        background: #F3F4F6;
+        padding: 20rpx 30rpx;
+        // margin-bottom: 20prx;
+        margin-top: 20rpx;
+        .coupon-left {
+            color: #666666;
+            font-size: 28rpx;
+            text-align: left;
+        }
+        .coupon-right {
+            color: #666;
+            text-align: right;
+            text {
+                font-size: 50rpx;
+            }
+        } 
+
+    }
+    .card-item {
+        
+        .card-value {
+            color: #666;
+            font-size: 30rpx;
+        }
+    }
+
+    .card {
+        background: linear-gradient(to right,#848F9F,#7B8697) !important;
+    }
+
+  
+
+
+</style>
+<template>
+  <view class="container coupon">
+      <view class="card-all">
+          <view>
+              <view wx:key="index" class="card-list {{rowsInfo.couponType == 3 || rowsInfo.couponType == 2 ? 'card' :''}}" >
+                <van-row>
+                    <van-col span="12" custom-class="coupon-left">
+                        {{rowsInfo.couponName}}
+                    </van-col>
+                </van-row>
+                  
+                <!-- <view class="card-foot">
+
+                    剩余：<text>{{rowsInfo.balance}}</text>
+                </view> -->
+
+                <view class="card-foot" wx:if="{{rowsInfo.couponType == 3}}">
+
+                    余额：<text>{{rowsInfo.balance}}</text>
+                </view>
+                <view class="card-foot" wx:if="{{rowsInfo.couponType == 0}}">
+                    余额: <text>{{rowsInfo.balance}}</text>
+                </view>
+                <view class="card-foot" wx:if="{{rowsInfo.couponType == 2}}">
+                    剩余: <text>{{rowsInfo.surplusDays }}天</text>
+                </view>
+              </view>
+
+              <view class="card-item {{item.isJust ? 'card-total': ''}}" wx:for="{{rowsInfo.statements}}" wx:key="index">
+                    <van-cell
+                    title-class="card-title"
+                    value-class="card-value"
+                    title="{{item.created}}"
+                    value="{{item.total}}"
+                >
+                </van-cell>
+            </view>
+          </view>
+      </view>
+
+  </view>
+</template>
+
+<script>
+
+
+
+  import wepy from 'wepy'
+
+
+import {url} from '../lib/util'
+import Toast from '../components/vant/toast/toast';
+import filter from '../wxs/filter.wxs';
+  export default class Index extends wepy.page {
+    config = {
+      "navigationBarTitleText": '卡'
+    }
+    components = {
+    }
+
+    data = {
+      isDetail: false,
+      currentTab: 0,
+      cardList: null,
+      couponList: null,
+      rowsInfo: {},
+      explan: '',
+    }
+
+    computed = {
+   
+    }
+
+    methods = {
+ 
+  
+    }
+
+    events = {
+     
+    }
+    wxs = {
+        filter: filter
+    }
+
+    onClose() {
+        this.isDetail = false;
+    }
+
+    onClickDetail(e) {
+        let row = e.currentTarget.dataset.item
+
+        this.rowsInfo = row;
+        this.isDetail = true;
+        this.explan = this.rowsInfo.explan.replace(/\n/i, '<br/>')
+        console.log(this.explan)
+
+        this.$apply();
+    }
+
+    onLoad(option) {
+
+
+        this.$parent.getRequest(url.cardCouponRecordPage,'POST' ,{
+            memberCouponId: option.id,
+            page: 1,
+            pageSize: 20,
+        }).then((res) => {
+            this.rowsInfo = res.data;
+            
+            if(!this.rowsInfo.statements ) {
+                this.rowsInfo.statements = [];
+            }
+            this.rowsInfo.statements.map((item)=>{
+                item.created = item.created.substr(5,11)
+                item.isJust = parseFloat(item.total) >= 0 ? true: false; // 判断正负数
+                item.total = item.total >= 0 ? `+${item.total.toFixed(2)}`: `${item.total.toFixed(2)}`;
+                return item;
+            })
+            this.$apply();
+            console.log(res);
+        })
+
+
+        // wx.login({
+        // success(res) {
+        //     if (res.code) {
+        //     // 发起网络请求
+        //         this.$parent.getRequest(url.getOpenId, 'GET', {
+        //             code: res.code
+        //         })
+        //         .then((res) => {
+        //             console.log(res)
+        //         })
+        //     } else {
+        //     console.log('登录失败！' + res.errMsg)
+        //     }
+        // }
+        // })
+        
+
+
+
+
+      // this.$parent.getUserInfo(function (userInfo) {
+      //   if (userInfo) {
+      //     self.userInfo = userInfo
+      //   }
+      // })
+    }
+  }
+
+
+</script>

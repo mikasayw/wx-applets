@@ -1,0 +1,76 @@
+<style lang="less">
+
+</style>
+<template>
+  <view class="container">
+
+    <web-view src="https://wechat.cuco.cn/bridge/help.html?V=1" bindload="onBindLoad" binderror="onBinderror"></web-view>
+
+  </view>
+    <!-- <tab :active.sync="currentTab" /> -->
+
+</template>
+
+<script>
+
+
+
+  import wepy from 'wepy'
+
+
+  export default class Index extends wepy.page {
+    config = {
+      "navigationBarTitleText": '客服中心'
+    }
+    components = {
+    }
+
+    data = {
+      currentTab: 0,
+    
+    }
+
+    computed = {
+
+        onBindLoad(e) {
+            wx.showToast({
+                title: '',
+                icon: 'loading',
+                duration: 1000
+            })
+            console.log(e)
+        },
+        onBinderror(e) {
+            wx.showToast({
+                title: '',
+                icon: 'loading',
+                duration: 2000
+            })
+            console.log(e)
+        }
+   
+    }
+
+    methods = {
+ 
+  
+    }
+
+    events = {
+     
+    }
+
+    onLoad() {
+      let self = this
+
+
+      // this.$parent.getUserInfo(function (userInfo) {
+      //   if (userInfo) {
+      //     self.userInfo = userInfo
+      //   }
+      // })
+    }
+  }
+
+
+</script>

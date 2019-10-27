@@ -1,0 +1,211 @@
+<style lang="scss">
+    page {
+        background: #ededed;
+        .order-list {
+            background: #fff;
+            margin-top: 20rpx;
+            font-size: 26rpx;
+            padding:27rpx 30rpx;
+            display: -webkit-flex;
+            display: flex;
+            align-items: center;
+        }
+        .useSt {
+            font-size: 27rpx;
+            flex: .7;
+        }
+        .init-time {
+            color: #999;
+            line-height: 60rpx;
+        }
+        .text-hide {
+            overflow : hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            word-break: break-word;
+        }
+        
+    }
+</style>
+<template>
+  <view class="container">
+      <view class="order">
+          <view wx:for="{{orderList}}" wx:key="index" class="order-list" data-res="{{item}}" bind:tap="onLinkDetails">
+            <view class="useSt">
+                {{usedStatusName[item.usedStatus]}}
+                <view style="font-size: 20rpx">{{item.carPlateNum}}</view>
+            </view>
+            <view style="flex: 2">
+                <van-row>
+                    <view class="init-time" style="color: #000;line-height: 40rpx;">
+                        {{item.carBrand}}
+                        {{item.cartypeName}}
+                    </view>
+                </van-row>
+                <van-row>
+                    <van-col span="10">
+                        <view class="init-time">
+                            {{item.carUsedPlanTimeStart}}
+                        </view>
+                    </van-col>
+                    <van-col span="4" style="color: #999;text-align: center">
+                        <view style="font-size: 22rpx">{{item.carUsedPlanDays}}天</view>
+                        <view class="car-line" style="margin: 0 auto"></view>
+                    </van-col>
+                    <van-col span="10" style="text-align: right">
+                        <view class="init-time">
+                            {{item.carUsedPlanTimeEnd}}
+                        </view>
+                    </van-col>  
+                </van-row>
+                <van-row>
+                    <van-col span="22">
+                        <view class="init-time text-hide" style="line-height: 40rpx;">
+                            {{item.carUsedAddressSend == item.carUsedAddressReturn ? '地址' : '送车'}}：{{item.carUsedAddressSend}}
+                        </view>
+                    </van-col>
+                    <van-col span="22" wx:if="{{item.carUsedAddressSend != item.carUsedAddressReturn}}">
+                        <view class="init-time text-hide" style="line-height: 40rpx;">
+                            取车：{{item.carUsedAddressReturn}}
+                        </view>
+                    </van-col>
+                </van-row>
+            </view>
+          </view>
+          <view style="text-align: center;color: #999;font-size: 20rpx;padding: 15px 0;">
+            <van-loading wx:if="{{loadTitle == '加载中'}}" type="spinner"/>
+          </view>
+          <view wx:if="{{orderList.length == 0 && page.page == 1}}" style="line-height: 300rpx; font-size: 26rpx; color:#666; text-align:center">
+            暂无订单
+        </view>
+      </view>
+
+  </view>
+
+</template>
+
+<script>
+
+  import wepy from 'wepy'
+  import moment from 'moment';
+  import { url, getRequest, getCountTime } from '../lib/util';
+
+  export default class Index extends wepy.page {
+    config = {
+      "navigationBarTitleText": '订单列表',
+      'enablePullDownRefresh': true,
+      "backgroundTextStyle": "dark",
+      'onReachBottomDistance': 50,
+    }
+    components = {
+    }
+
+    data = {
+        orderList: [],
+        usedStatusName: {
+            '0': '待支付',
+            '1': '待执行',
+            '2': '管家送车中',
+            '3': '用车中',
+            '4': '管家取车中',
+            '5': '已完成',
+            '6': '已取消'
+        },
+        page: {
+            page: 1,
+            pageSize: 20
+        },
+        loadTitle: '加载完毕'
+    }
+
+    computed = {
+   
+    }
+
+    methods = {
+
+    }
+
+    onLinkDetails(e) {
+        wx.navigateTo({
+            url: `./orderDetail?orderId=${e.currentTarget.dataset.res.id}`
+        })
+    }
+
+    list() {
+        this.orderList = [];
+        this.page.page = 1;
+        this.$parent.getRequest(url.orderListApi, 'POST', {
+            page: 1,
+            pageSize: 20,
+        }).then((res) => {
+            this.orderList = res.data.map(item => {
+                item.carUsedPlanTimeStart = moment(
+                    item.carUsedPlanTimeStart
+                ).format('MM月DD日 HH:mm');
+                item.carUsedPlanTimeEnd = moment(
+                    item.carUsedPlanTimeEnd
+                ).format('MM月DD日 HH:mm');
+                return item;
+            })
+
+            this.$apply();
+        })
+    }
+
+    events = {
+     
+    }
+
+    onLoad() {
+        let self = this
+        this.list();
+    }
+    onShow() {
+        this.list();
+    }
+
+    onReachBottom() {
+        ++this.page.page;
+        this.loadTitle = '加载中';
+        wx.showNavigationBarLoading();
+        getRequest(url.orderListApi, 'POST', this.page).then((res) => {
+            res.data.map(item => {
+                item.carUsedPlanTimeStart = moment(
+                    item.carUsedPlanTimeStart
+                ).format('MM月DD日 HH:mm');
+                item.carUsedPlanTimeEnd = moment(
+                    item.carUsedPlanTimeEnd
+                ).format('MM月DD日 HH:mm');
+                return item;
+            })
+
+            this.orderList = [...this.orderList, ...res.data]
+
+            setTimeout(() => {
+                wx.hideNavigationBarLoading();
+                this.loadTitle = '加载完毕';
+                this.$apply();
+            }, 200);
+        })
+    }
+
+    onPullDownRefresh() {
+        // 显示顶部刷新图标
+        wx.showNavigationBarLoading();
+        this.list();
+
+        setTimeout(() => {
+            // 隐藏导航栏加载框
+            wx.hideNavigationBarLoading();
+            // 停止下拉动作
+            wx.stopPullDownRefresh();
+        }, 200);
+    }
+
+  }
+
+
+</script>

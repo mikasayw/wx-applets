@@ -1,0 +1,156 @@
+<style lang="scss">
+$fontcolor: #7b7b7b;
+$activecolor: #13b113;
+.custom {
+        width: 94%;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 10px;
+        margin-bottom: 25rpx;
+        overflow: hidden;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 7;
+        transition-duration:0.5s;
+        -webkit-transition-duration:0.5s;
+        
+        .custom-body {
+            padding: 26rpx 0;
+        }
+        .custom-foot {
+            box-shadow: none;
+        }
+        .van-tabs__line {
+            background-color: #333 !important;
+        }
+        .custom-name {
+            padding: 35rpx 60rpx;
+            position: relative;
+            line-height: 100%;
+            color: #333;
+            font-size: 35rpx;
+            border-bottom:1px #ccc solid;
+        }
+        .custom-cross {
+            position: absolute;
+            right: 60rpx;
+            top: 24rpx;
+        }
+
+        .custom-day, .custom-mode {
+            margin: 0 60rpx;
+            .custom-day-text {
+                line-height: 88rpx;
+                color: #999;
+                font-size: 25rpx;
+            }
+        }
+        .buy {
+            background: none;
+            border-radius: 80rpx;
+            color: #fff;
+            padding: 0 14rpx;
+            width: 210rpx;
+            border: 1px #122B4D solid;
+            color: #122B4D;
+            
+        }
+        .custom-foot-buy {
+            margin: 28rpx 0;
+            padding-top: 14rpx;
+        }
+        .custom-foot-amount {
+            margin-top: 8rpx;
+            font-weight: bold;
+        }
+        .custom-foot-a {
+            color: #333;
+            font-size: 32rpx;
+            font-weight: bold;
+        }
+        .custom-foot-t {
+            color: #0168FF;
+            font-size: 24rpx;
+        }
+        // .custom-active {
+        //     border-bottom:2px #ccc solid;
+        // }
+    }
+
+</style>
+<template>
+     <view class="day-package">
+           <view class="custom {{isCustom ? 'custom-show' :'custom-bottom'}}">
+                <view class="custom-name">
+                    <!-- {{customRow.brand}} {{customRow.carType}} -->
+                    奥迪 A6L
+                    <!-- <text class="package-des" wx:if="{{currentCustomAmount.packageDescription}}">{{currentCustomAmount.packageDescription}}</text>     -->
+                    <van-icon name="cross" size="46rpx" bind:click="onCloseCustom" color="#999" custom-class="custom-cross"  />
+                </view>
+                <view class="custom-body">
+                    <van-row custom-class="custom-day" >
+                        <van-col span="5" offset="0" class="custom-day-text">使用天数</van-col>
+                        <van-col span="14">
+                            <van-tabs tab-class="way-item" tab-active-class="custom-active" border="{{false}}"  active="{{ customActive }}" line-width="{{wayWidth}}" bind:click="onClickCustomWay">
+                                <van-tab  wx:for="{{customRow.uesCarWay}}" wx:key="index"  title="{{item.dayCount}}天" ></van-tab>
+                            </van-tabs>
+                        </van-col>
+                    </van-row>
+                    <van-row custom-class="custom-mode">
+                        <van-col span="5" offset="0" class="custom-day-text">使用方式</van-col>
+                        <van-col span="14">
+                            <van-tabs border="{{false}}" active="{{ modeActive }}" line-width="{{modeWidth}}" bind:click="onClickMode">
+                                <van-tab wx:for="{{modeList}}" wx:key="index" title="{{item.isContinuity == 1 ? '连续用车': '按需用车'}}"></van-tab>
+                            </van-tabs>
+                        </van-col>
+                    </van-row>
+                </view>
+                <view class="custom-foot">
+                    <van-row custom-class="custom-foot-buy">
+                        <van-col span="12">
+                            <view class="custom-foot-amount" wx:if="{{currentCustomAmount.rechargeOnce}}">￥{{filter.numFormat(currentCustomAmount.rechargeOnce)}}</view>
+                            <!-- <view class="custom-foot-t" wx:if="{{currentCustomAmount.price}}">相当于￥{{currentCustomAmount.price}}/天</view> -->
+                            <view> </view>
+                        </van-col>
+                        <van-col span="12" style="text-align:right;position: relative; float: right ">
+                            <van-button type="default" bind:click="onWechatBuy" custom-class="buy" wx:if="{{currentCustomAmount.isOpen == 1}}">立即购买</van-button>
+                            <van-button type="default" bind:click="onSeek" custom-class="buy" wx:else>咨询产品</van-button>
+                        </van-col>
+                    </van-row>
+                </view>
+            </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+ import {url, getRequest} from '../lib/util'
+ import moment from 'moment';
+ moment.locale('zh-cn');
+
+export default class datePicker extends wepy.component {
+    props = {
+    };
+    data = {
+     
+
+    };
+
+    methods = {
+    
+        
+    };
+    
+    formatNumber(n) {
+         n = n.toString()
+        return n[1] ? n : '0' + n
+    }
+
+    onLoad() {
+
+        
+    }
+}
+</script>
