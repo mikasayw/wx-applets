@@ -550,6 +550,12 @@ export default class extends wepy.app {
             })
         })
     }
+            // this.$parent.getUserInfo((userInfo) => {
+            //     if (userInfo) {
+            //         self.mobile = userInfo.mobile;
+            //         self.$apply();
+            //     }
+            // })
 
     getUserInfo(cb) {
         const that = this;
